@@ -112,5 +112,22 @@ app.controller('myController', ($scope, $http) => {
             }
         }, () => { })
     }
+    $scope.mycarts = []
+    $scope.getmycarts = () => {
+        getMyCarts($scope.currentUser.id, (data) => {
 
+        }, (er) => { })
+    }
+    $scope.myads = []
+    $scope.getMyAds = () => {
+        getMyAds($scope.currentUser.id, (data) => {
+
+        }, () => { })
+    }
+    $scope.notifications = []
+    $scope.getNotifications = () => {
+        getMyNotifications($scope.currentUser.id, (data) => {
+
+        }, () => { })
+    }
 })

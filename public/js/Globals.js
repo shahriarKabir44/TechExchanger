@@ -29,16 +29,16 @@ function getMyCarts(id, success, failure) {
             User(id: ${id}){
                 Carts{
                     Product{
-                        id      
-                        type     
-                        details 
-                        image1  
-                        image2  
-                        image3  
-                        image4  
-                        askedPrice
-                        owner     
-                        postedOn  
+                        id          
+                        type        
+                        details     
+                        image1      
+                        image2      
+                        image3      
+                        image4      
+                        askedPrice  
+                        owner         
+                        postedOn    
                     }
                 }
             }
@@ -50,7 +50,7 @@ function getMyCarts(id, success, failure) {
     })
 }
 
-function getMyNotifs(id, success, failure) {
+function getMyNotifications(id, success, failure) {
     httpPost('/graphql', {
         query: ` query{
             User(id: ${id}){
