@@ -113,6 +113,12 @@ const ProductType = new GraphQLObjectType({
             resolve(parent, args) {
                 return User.findById(parent.owner)
             }
+        },
+        Offerers: {
+            type: new GraphQLList(CartType),
+            resolve(parent, args) {
+                return Cart.find({ productId: parent.id })
+            }
         }
     })
 });

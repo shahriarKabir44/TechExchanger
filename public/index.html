@@ -38,7 +38,7 @@
     }
 </style>
 
-<body>
+<body ng-app="homepage" ng-controller="myController" ng-init="InitializeApp()">
     <!-- search modal -->
     <div class="modal fade" id="searchResultModal">
         <div class="modal-dialog modal-lg">
@@ -134,8 +134,8 @@
 
 
     <!--notifications modal-->
-    <div id="notif_modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
-        aria-hidden="true">
+    <div ng-if="isAuthorized" id="notif_modal" class="modal fade" tabindex="-1" role="dialog"
+        aria-labelledby="my-modal-title" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -301,7 +301,7 @@
     <!--signup modal end-->
 
     <!--update modal-->
-    <div class="modal fade" id="update-modal" role="dialog">
+    <div ng-if="isAuthorized" class="modal fade" id="update-modal" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -356,13 +356,13 @@
     <!--update modal end-->
 
     <!--prod list modal (myads mycart)-->
-    <div class="modal fade" id="product-modal-cart" role="dialog">
+    <div ng-if="isAuthorized" class="modal fade" id="product-modal-cart" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
 
                 <!-- Modal Header -->
                 <div class="modal-header">
-                    <h4 class="modal-title" id="prod-list-title"></h4>
+                    <h4 class="modal-title" id="prod-list-title">Products You have added to cart</h4>
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                 </div>
 
@@ -396,7 +396,7 @@
     <!--prod list modal end-->
 
     <!-- my adds -->
-    <div class="modal fade" id="product-modal-ads" role="dialog">
+    <div ng-if="isAuthorized" class="modal fade" id="product-modal-ads" role="dialog">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -442,7 +442,7 @@
     <!-- my adds end-->
 
     <!--post ad modal-->
-    <div class="modal fade" id="postAd-modal">
+    <div ng-if="isAuthorized" class="modal fade" id="postAd-modal">
         <div class="modal-dialog">
             <div class="modal-content">
 
@@ -521,53 +521,11 @@
     <!--post ad modal end-->
 
     <!--bargain-->
-    <div id="bargain-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="my-modal-title">Offer a price compatible for you</h5>
-                    <button class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="bargain">
-                        <div class="form-group d-flex">
-                            <p for="bargainPc" class="my-auto">Price: </p>
-                            <input id="bargainPc" class="form-control" type="number" name="Price"
-                                placeholder="e.g. ৳700" required="">
-                        </div>
-                        <button class="btn btn-success" type="submit">Done!</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <!--bargain end-->
 
     <!-- conditionals -->
-    <div id="login-or-signup-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header d-flex container" style="display: flex;">
-                    <div>You must</div>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#login-modal"
-                        data-dismiss="modal">Log in</button>
-                    <div>or</div>
-                    <button class="btn btn-primary" data-toggle="modal" data-target="#signup-modal"
-                        data-dismiss="modal">Sign up</button>
-                    <div>to proceed.</div>
-                    <button class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
 
-
-            </div>
-        </div>
-    </div>
     <!-- conditionals end-->
 
 
@@ -587,7 +545,7 @@
             <button class="btn" id="searchBtn"><i class="fa fa-search" aria-hidden="true"></i></button>
         </div>
 
-        <div class="dropdown dropleft" id="loggedin">
+        <div class="dropdown dropleft" ng-if="isAuthorized" id="loggedin">
             <button class="btn btn-light bg-transparent border-0" data-toggle="dropdown" style="padding: 0;">
                 <img src="./assets/propix/1.jpg" style="max-height: 40px; margin-top: 0; border-radius: 50px;" alt="">
             </button>
@@ -620,7 +578,7 @@
             </div>
         </div>
 
-        <div class="dropdown dropleft " id="nouser">
+        <div class="dropdown dropleft " ng-if="!isAuthorized" id="nouser">
             <button class="btn btn-light bg-transparent border-0" data-toggle="dropdown"
                 style="padding: 0; outline: none;">
                 <img src="./assets/system/Avatar.png" style="max-height: 40px; margin-top: 0;" alt="">
@@ -1014,82 +972,7 @@
     </footer>
 </body>
 
-<script>
-    function getel(x) {
-        return document.getElementById(x)
-    }
-    var acptbtn = document.getElementsByClassName('ownerLogd')
-    for (let n = 0; n < acptbtn.length; n++) {
-        acptbtn[n].style.display = 'none'
-    }
-    var active = getel('loggedin')
-    var nouser = getel('nouser')
-    active.style.display = 'none'
-    getel('submit_reg').onclick = () => {
-        nouser.style.display = 'none'
-        active.style.display = 'block'
-        $('signup-modal').modal('hide')
-        for (let n = 0; n < acptbtn.length; n++) {
-            acptbtn[n].style.display = 'block'
-        }
-    }
-
-    getel('login-normal').onclick = () => {
-        $('login-normal').modal('hide');
-
-        nouser.style.display = 'none'
-        active.style.display = 'block'
-        $('signup-modal').modal('hide')
-        for (let n = 0; n < acptbtn.length; n++) {
-            acptbtn[n].style.display = 'block'
-        }
-    }
-    var productroot = document.getElementsByClassName('product')
-    for (let n = 0; n < productroot.length; n++) {
-        productroot[n].onclick = () => {
-            window.location.href = './productpage.html'
-        }
-    }
-
-    getel('searchBtn').onclick = () => {
-        var vl = getel('prods').value
-        var pc = getel('searchbar').value
-        var a = document.getElementsByClassName('prixe')
-        for (let n = 0; n < a.length; n++) {
-            let m = parseInt(pc) + (n * 9);
-            a[n].innerHTML = `Price: ৳ ${m}`
-        }
-        var b = document.getElementsByClassName('ctgr')
-        for (let n = 0; n < a.length; n++) {
-            b[n].innerHTML = `Category: ${vl}`
-        }
-        var b = document.getElementsByClassName('negro')
-        for (let n = 0; n < a.length; n++) {
-            b[n].src = `./assets/products/${vl}${n + 1}.jpg`
-        }
-        $('#searchResultModal').modal({ show: true })
-    }
-
-    $(".scimg").click(function () {
-        $(this).toggleClass("click");
-        $('.fieldset').toggleClass("show");
-    });
-
-    getel('postAdd').onclick = () => {
-        var posted = getel('products-posted')
-        posted.innerHTML = `
-        <div class="d-flex justify-content-between">
-            <img src="./assets/products/a.jpg" style="height: 50px;width:50px" alt="">
-            Table ->500 taka.
-            <a href="./adsPage.html" class="btn btn-primary">view</a>
-        </div>
-        `
-            + posted.innerHTML;
-        $('#postAd-modal').modal('hide')
-        $('#product-modal-ads').modal({ show: true })
-
-    }
-</script>
+<script src="./js/Globals.js"></script>
 <script src="./js/index.js"></script>
 
 </html>
