@@ -37,17 +37,9 @@ if (cluster.isMaster) {
 function startExpress() {
     const app = express();
     app.use(express.static('public'))
-    app.use(session({
-        name: 'eeofbweifb',
-        secret: process.env.secret,
-        resave: false,
-        saveUninitialized: true,
-        cookie: {
-            maxAge: (1000 * 60 * 100)
-        }
-    }));
+
     app.use(express.json())
-    var PORT = process.env.PORT || 4000;
+    var PORT = process.env.PORT || 3000;
     app.listen(PORT)
 
 
@@ -69,6 +61,9 @@ function startExpress() {
             })
         }
     }
+    app.get('/', (req, res) => {
+        res.sendFile('index.html')
+    })
     app.use('/graphql', verifyAuthToken, graphqlHTTP.graphqlHTTP(req => (
         {
             schema: graphqlSchema,
