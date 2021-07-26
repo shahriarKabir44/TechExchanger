@@ -9,7 +9,8 @@ const prodct = mongoose.Schema({
     image4: { type: String },
     askedPrice: { type: Number },
     owner: { type: mongoose.Schema.ObjectId },
-    postedOn: { type: String }
+    postedOn: { type: String },
+    lastUpdated: { type: String }
 })
 const products = mongoose.model('products', prodct)
 
