@@ -70,12 +70,12 @@ function startExpress() {
             })
         }
     }
-    app.use('/graphql', verifyAuthToken, graphqlHTTP.graphqlHTTP(req => (
-        {
-            schema: graphqlSchema,
-            graphiql: true,
-            context: { req }
-        }
-    )));
+    // app.use('/graphql', verifyAuthToken, graphqlHTTP.graphqlHTTP(req => (
+    //     {
+    //         schema: graphqlSchema,
+    //         graphiql: true,
+    //         context: { req }
+    //     }
+    // )));
 
 }
