@@ -5,8 +5,8 @@ var jwt = require('jsonwebtoken')
 const session = require('express-session')
 const webPush = require('web-push')
 require('dotenv').config()
-webPush.setVapidDetails('mailto:abc@def.com', public_key, private_key)
-
+webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
+var graphqlSchema = require('./Graphql/graphqlSchema')
 
 
 mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechExchanger?retryWrites=true&w=majority',
@@ -36,7 +36,6 @@ if (cluster.isMaster) {
 
 function startExpress() {
     const app = express();
-    app.use(cors())
     app.use(express.static('public'))
     app.use(session({
         name: 'eeofbweifb',
@@ -70,12 +69,12 @@ function startExpress() {
             })
         }
     }
-    // app.use('/graphql', verifyAuthToken, graphqlHTTP.graphqlHTTP(req => (
-    //     {
-    //         schema: graphqlSchema,
-    //         graphiql: true,
-    //         context: { req }
-    //     }
-    // )));
+    app.use('/graphql', verifyAuthToken, graphqlHTTP.graphqlHTTP(req => (
+        {
+            schema: graphqlSchema,
+            graphiql: true,
+            context: { req }
+        }
+    )));
 
 }

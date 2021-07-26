@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const paymentSchema = mongoose.Schema({
     cartId: { type: mongoose.Schema.ObjectId },
-    isApproved: { type: number },
-    isPaid: { type: number },
-    productLocation: { type: string },
-    receiverLocation: { type: string }
+    isApproved: { type: Number },
+    isPaid: { type: Number },
+    productLocation: { type: String },
+    receiverLocation: { type: String }
 })
 const Payment = mongoose.model('Payment', paymentSchema)
 

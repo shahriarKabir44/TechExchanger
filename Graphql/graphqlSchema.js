@@ -118,7 +118,7 @@ const ProductType = new GraphQLObjectType({
 });
 
 const NofiticationType = new GraphQLObjectType({
-    name: 'Product',
+    name: 'Nofitication',
     fields: () => ({
         id: { type: GraphQLID },
         senderId: { type: GraphQLID },
@@ -249,3 +249,8 @@ const Mutation = new GraphQLObjectType({
         }
     }
 })
+
+module.exports = new GraphQLSchema({
+    query: RootQueryType,
+    mutation: Mutation
+});
