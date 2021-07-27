@@ -114,6 +114,7 @@ app.controller('myController', ($scope, $http) => {
         $scope.httpPost('/isAuthorized', {}, (data) => {
             if (data) {
                 $scope.isAuthorized = 1
+                $scope.xxx = { name: "voda" }
             }
             else {
 
