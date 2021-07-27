@@ -1,0 +1,60 @@
+<nav class="navbar navbar-expand-md navbar-dark justify-content-between  homepagenav" style="width: 100%;">
+    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+    <img class="logo user ml-n4" src="./assets/system/logo.png" alt="">
+    <div class="d-flex" id="top">
+        <input class="bg-transparent sinput" type="number" id="searchbar" placeholder="e.g. 500৳" autocomplete="off">
+        <select id="prods" class="bg-transparent mr-2 selec">
+            <!-- <option value="null">All types</option> -->
+            <option value="Chairs">Chairs</option>
+            <option value="Beds">Beds</option>
+            <option value="Tables">Tables</option>
+        </select>
+        <button class="btn" id="searchBtn"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </div>
+
+    <div class="dropdown dropleft" ng-if="isAuthorized" id="loggedin">
+        <button class="btn btn-light bg-transparent border-0" data-toggle="dropdown" style="padding: 0;">
+            <img src="./assets/propix/1.jpg" style="max-height: 40px; margin-top: 0; border-radius: 50px;" alt="">
+        </button>
+
+        <div id="colp" class="dropdown-menu ">
+            <div class="dropdown-item activeusr">
+                <a class="" id="dashboard1" data-toggle="modal" data-target="#postAd-modal">Post an Ad</a>
+            </div>
+            <div class="dropdown-item activeusr">
+                <a class=" " id="dashboard2" data-toggle="modal" data-target="#update-modal">Update
+                    info</a>
+            </div>
+            <div class="dropdown-item activeusr">
+                <a class="" id="myAds" data-toggle="modal" data-target="#product-modal-ads">My
+                    Ads</a>
+            </div>
+            <div class="dropdown-item activeusr">
+                <a class="" id="myCart" data-toggle="modal" data-target="#product-modal-cart">My
+                    cart</a>
+            </div>
+            <div class="dropdown-item activeusr">
+                <a class="" id="notifications" data-toggle="modal" data-target="#notif_modal">
+                    Notifications
+                </a>
+            </div>
+            <div class="dropdown-item activeusr">
+                <a class="" id="logOut"><a href="index.html" style="text-decoration: none; color: black;">Log
+                        Out</a></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="dropdown dropleft " ng-if="!isAuthorized" id="nouser">
+        <button class="btn btn-light bg-transparent border-0" data-toggle="dropdown" style="padding: 0; outline: none;">
+            <img src="./assets/system/Avatar.png" style="max-height: 40px; margin-top: 0;" alt="">
+        </button>
+        <div class="dropdown-menu">
+            <div class="dropdown-item noUser" id="loginbtn" data-toggle="modal" data-target="#login-modal">Log in
+            </div>
+            <div class="dropdown-item noUser" id="signupnbtn" data-toggle="modal" data-target="#signup-modal">Sign
+                up
+            </div>
+        </div>
+    </div>
+</nav>

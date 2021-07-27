@@ -61,6 +61,11 @@ function startExpress() {
             })
         }
     }
+    app.post('/isAuthorized', verifyAuthToken, (req, res) => {
+        var user = req.user;
+        console.log(user)
+        res.send({ data: user })
+    })
     app.get('/', (req, res) => {
         res.sendFile('index.html')
     })

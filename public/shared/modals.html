@@ -1,0 +1,479 @@
+<!-- search modal -->
+<div class="modal fade" id="searchResultModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Search Result</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+
+            <div class="modal-body">
+                <div class="container-fluid" style="overflow-x: scroll;">
+                    <div class="row flex-row flex-nowrap">
+                        <div class="s_card">
+                            <div class="card" style="min-width:250px;">
+                                <img class="card-img-top negro" src="" alt="Card image">
+                                <div class="card-body">
+                                    <h4 class="text-success prixe">Price: 450 taka</h4>
+                                    <h4 class="ctgr">Category: Chair</h4>
+                                    <h5>Used for: 2 year</h5>
+                                    <h6 class="">11 users have offered</h6>
+                                    <a href="productpage.html" class="button btn btn-primary">Check it out!</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="s_card">
+                            <div class="card" style="min-width:250px">
+                                <img class="card-img-top negro" src="" alt="Card image">
+                                <div class="card-body">
+                                    <h4 class="text-success prixe">Price: 450 taka</h4>
+                                    <h4 class="ctgr">Category: Chair</h4>
+                                    <h5>Used for: 4 year</h5>
+                                    <h6 class="">23 users have offered</h6>
+                                    <a href="productpage.html" class="button btn btn-primary">Check it out!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="s_card">
+                            <div class="card" style="min-width:250px">
+                                <img class="card-img-top negro" src="" alt="Card image">
+                                <div class="card-body">
+                                    <h4 class="text-success prixe">Price: 450 taka</h4>
+                                    <h4 class="ctgr">Category: Chair</h4>
+                                    <h5>Used for: 3 year</h5>
+                                    <h6 class="">16 users have offered</h6>
+                                    <a href="productpage.html" class="button btn btn-primary">Check it out!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="s_card">
+                            <div class="card" style="min-width:250px;">
+                                <img class="card-img-top negro" src="" alt="Card image">
+                                <div class="card-body">
+                                    <h4 class="text-success prixe">Price: 450 taka</h4>
+                                    <h4 class="ctgr">Category: Chair</h4>
+                                    <h5>Used for: 1 year</h5>
+                                    <h6 class="">6 users have offered</h6>
+                                    <a href="productpage.html" class="button btn btn-primary">Check it out!</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="s_card">
+
+                            <div class="card" style="min-width:250px">
+                                <img class="card-img-top negro" src="" alt="Card image">
+                                <div class="card-body">
+                                    <h4 class="text-success prixe">Price: 450 taka</h4>
+                                    <h4 class="ctgr">Category: Chair</h4>
+                                    <h5>Used for: 1 year</h5>
+                                    <h6 class="">9 users have offered</h6>
+                                    <a href="productpage.html" class="button btn btn-primary">Check it out!</a>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- search modal end -->
+
+
+<!--notifications modal-->
+<div ng-if="isAuthorized" id="notif_modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="my-modal-title">Notifications</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="notif_list">
+                    <li class="notif d-flex justify-content-between">
+                        <p>John Doe offered 500 taka for you table.</p>
+                        <a href="#" class="btn btn-primary">view details</a>
+                    </li>
+                    <li class="notif d-flex justify-content-between">
+                        <p>John Doe offered 200 taka for you chair.</p>
+                        <a href="#" class="btn btn-primary">view details</a>
+                    </li>
+                    <li class="notif d-flex justify-content-between">
+                        <p>Moniruzzaman accepted your offer!</p>
+                        <a href="./purchasePage.html" class="btn btn-primary">Complete Purchase!</a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--notifications modal end-->
+
+<!--login modal-->
+<div class="modal fade" ng-if="!isAuthorized" id="login-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">Log In</h4>
+            </div>
+            <div class="modal-body">
+                <!-- method="POST" -->
+                <form id="loginForm" class=" " action="index.html" method="get">
+                    <div class="form-group my-3">
+
+                        <input type="text" class="form-control" id="uname_login" placeholder="Enter username"
+                            name="uname_login" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback" id="if-un">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group my-3">
+
+                        <input type="password" class="form-control" id="pwd_login" placeholder="Enter password"
+                            name="pwd_login" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+
+                    </div>
+                    <button type="submit" id="login-normal" class="btn btn-primary" data-dismiss="modal">Login</button>
+                </form><!-- type="submit" -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--login modal end-->
+
+<!--signup modal-->
+<div class="modal fade" ng-if="!isAuthorized" id="signup-modal" role="dialog">
+    <div class="modal-dialog">
+        <div id="signuptyp" style="visibility: hidden;">0</div>
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="label">Sign Up</h4>
+                <p id="descreg">Please fill up all the fields</p>
+            </div>
+            <div class="modal-body" style="max-height:100vh;overflow-y: scroll;">
+                <p id="desc"></p>
+                <form class=" " id="signup">
+                    <div class="d-flex">
+                        <div class="mr-2">
+                            <p class="form-control" for="uname" style="min-width: 130px;">Profile Image: </p>
+                        </div>
+                        <div class="form-group">
+                            <input type="file" class="form-control " id="proPic" name="proPic" required>
+                            <div class="valid-feedback">Valid.</div>
+                            <div class="invalid-feedback">Please upload your real picture or no one would want to
+                                make
+                                trade
+                                with you</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <input type="text" class="form-control" id="fname_reg" placeholder="Enter Firstname"
+                                name="fname" required>
+                            <div class="valid-feedback">Valid.</div>
+                            <div class="invalid-feedback">Please fill out this field.</div>
+                        </div>
+                        <div class="form-group col-6">
+                            <input type="text" class="form-control" id="lname_reg" placeholder="Enter Last name"
+                                name="lname" required>
+                            <div class="valid-feedback">Valid.</div>
+                            <div class="invalid-feedback">Please fill out this field.</div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="mail_reg" placeholder="Enter Email" name="mail"
+                            required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group d-flex">
+                        <p class="my-auto">Mobile: </p>
+                        <input type="text" class="form-control" id="phoneUp" placeholder="Enter phone number"
+                            name="phoneUp" required value="+880 ">
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="uname_reg" placeholder="Enter username" name="uname"
+                            required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="pwd_reg" placeholder="Enter password"
+                            name="pswd" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" name="remember" required> I agree on
+                            <a href="/terms">Terms and Conditions</a>
+                            <div class="valid-feedback">Valid.</div>
+                            <div class="invalid-feedback">Check this checkbox to continue.</div>
+                        </label>
+                    </div>
+                    <button id="submit_reg" type="submit" class="btn btn-success">Sign Up</button>
+                    <div class="spinner-grow text-primary" id="signupSpin" style="display: none;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--signup modal end-->
+
+<!--update modal-->
+<div ng-if="isAuthorized" class="modal fade" id="update-modal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title" id="labelUp">Update Info</h4>
+            </div>
+            <div class="modal-body">
+                <p id="desc"></p>
+                <form class=" " id="UpdateUser">
+                    <div class="form-group d-flex">
+                        <input type="text" class="form-control" id="fnameUp" placeholder="Enter Firstname"
+                            name="fnameUp" required>
+                        <input type="text" class="form-control" id="lnameUp" placeholder="Enter Lastname" name="lnameUp"
+                            required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" class="form-control" id="mailUp" placeholder="Enter Email" name="mailUp"
+                            required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group d-flex">
+                        <p class="my-auto">Mobile: </p>
+                        <input type="text" class="form-control" id="phoneUp" placeholder="Enter phone number"
+                            name="phoneUp" required value="+880 ">
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" id="pwdUp" placeholder="Enter password"
+                            name="pswdUp" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+
+
+                    <button type="submit" class="btn btn-success">Update</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--update modal end-->
+
+<!--prod list modal (myads mycart)-->
+<div ng-if="isAuthorized" class="modal fade" id="product-modal-cart" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="prod-list-title">Products You have added to cart</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <ul class="list-group list-group-flush" id="products-added">
+                    <!--dynamic contents-->
+                    <div class="d-flex justify-content-between my-1">
+                        <img src="./assets/products/a.jpg" style="height: 50px;width:50px" alt="">
+                        Bed ->400 taka.
+                        <a href="./cartsPage.html" class="btn btn-primary">view</a>
+                    </div>
+                    <div class="d-flex justify-content-between my-1">
+                        <img src="./assets/products/a.jpg" style="height: 50px;width:50px" alt="">
+                        Chair ->780 taka.
+                        <a href="./cartsPage.html" class="btn btn-primary">view</a>
+                    </div>
+
+                    <!--dynamic contents end-->
+                </ul>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--prod list modal end-->
+
+<!-- my ads -->
+<div ng-if="isAuthorized" class="modal fade" id="product-modal-ads" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title" id="prod-list-title">Products you have posted</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <ul class="list-group list-group-flush" id="products-posted">
+                    <!--dynamic contents-->
+                    <div class="d-flex justify-content-between my-1">
+                        <img src="./assets/products/a.jpg" style="height: 50px;width:50px" alt="">
+                        Bed ->500 taka.
+                        <a href="./adsPage.html" class="btn btn-primary">view</a>
+                    </div>
+                    <div class="d-flex justify-content-between my-1">
+                        <img src="./assets/products/a.jpg" style="height: 50px;width:50px" alt="">
+                        Table ->3400 taka.
+                        <a href="./adsPage.html" class="btn btn-primary">view</a>
+                    </div>
+                    <div class="d-flex justify-content-between my-1">
+                        <img src="./assets/products/a.jpg" style="height: 50px;width:50px" alt="">
+                        Table ->2200 taka.
+                        <a href="./adsPage.html" class="btn btn-primary">view</a>
+                    </div>
+
+
+                    <!--dynamic contents end-->
+                </ul>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- my ads end-->
+
+<!--post ad modal-->
+<div ng-if="isAuthorized" class="modal fade" id="postAd-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Post an ad!</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <p class="mb-3"><span class="text-danger">*</span>Please upload your captures of your product and DO
+                    NOT USE FAKE INFO!</p>
+                <form class=" " id="postAds" enctype="multipart/form-data">
+                    <div class="form-group d-flex ">
+                        <label for="uname">Image1</label>
+                        <input type="file" class="form-control" id="file1" name="file1" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group d-flex ">
+                        <label for="uname">Image2</label>
+                        <input type="file" class="form-control" id="file2" name="file2" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group d-flex ">
+                        <label for="uname">Image3</label>
+                        <input type="file" class="form-control" id="file3" name="file3" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group d-flex ">
+                        <label for="uname">Image4</label>
+                        <input type="file" class="form-control" id="file4" name="file4" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group mt-5">
+
+                        <input type="text" class="form-control" id="AskedPricePostAd" placeholder="Desired Price"
+                            name="AskedPricePostAd" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group form-group-lg my-3">
+
+                        <input type="text" class="form-control" id="DescrPostAd"
+                            placeholder="A short description about yor ad" name="DescrPostAd" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group my-3">
+
+                        <select class="form-control" id="sel1">
+                            <option>Select Category (select one):</option>
+                            <option>Table</option>
+                            <option>Bed</option>
+                            <option>Chair</option>
+                            <option>Quilt</option>
+                            <option>Others</option>
+                        </select>
+                    </div>
+                    <button type="submit" id="postAdd" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--post ad modal end-->

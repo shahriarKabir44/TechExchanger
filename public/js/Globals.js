@@ -16,7 +16,7 @@ function httpPost(url, data, success, errorfn) {
         body: JSON.stringify(data),
         headers: {
             'Content-Type': 'appliction/json',
-            'authorization': `bearer ${localStorage('token')}`
+            'authorization': `bearer ${localStorage.getItem('token')}`
         }
     })
         .then(res => res.json())
