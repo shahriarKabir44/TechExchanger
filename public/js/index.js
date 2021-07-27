@@ -73,44 +73,19 @@ getel('postAdd').onclick = () => {
 
 }
 
-function httpGet(url, success, errorfn) {
-    fetch(url)
-        .then(res => res.json())
-        .then(({ data }) => {
-            success(data)
-        })
-        .catch(err => {
-            errorfn(err)
-        })
-}
-function httpPost(url, data, success, errorfn) {
-    fetch(url, {
-        method: 'POST',
-        body: JSON.stringify(data),
-        headers: {
-            'Content-Type': 'appliction/json',
-            'authorization': `bearer ${localStorage('token')}`
-        }
-    })
-        .then(res => res.json())
-        .then(({ data }) => {
-            success(data)
-        })
-        .catch(err => {
-            errorfn(err)
-        })
-}
+
 
 var app = angular.module('homepage')
 app.controller('myController', ($scope, $http) => {
     $scope.isAuthorized = 0
     $scope.currentUser = {}
     $scope.InitializeApp = () => {
-        httpPost('/isAuthorized', {}, (data) => {
-            if (data) {
-                $scope.currentUser = data
-            }
-        }, () => { })
+        checkAuthorization((data) => {
+            $scope.currentUser = data
+        }, (error) => {
+            $scope.isAuthorized = 0
+            $scope.currentUser = {}
+        })
     }
     $scope.mycarts = []
     $scope.getmycarts = () => {
