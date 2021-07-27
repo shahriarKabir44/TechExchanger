@@ -77,16 +77,48 @@
 
 var app = angular.module('homepage', [])
 app.controller('myController', ($scope, $http) => {
+    $scope.httpPost = (url, data, onSuccess, onError) => {
+        var req = {
+            method: 'POST',
+            url: url,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `bearer ${localStorage.getItem('token')}`
+            },
+            data: data
+        }
+        $http(req).then(function ({ data }) {
+            onSuccess(data)
+        }, function (error) {
+            onError(error)
+        });
+    }
+    $scope.httpGet = (url, onSuccess, onError) => {
+        var req = {
+            method: 'GET',
+            url: url,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `bearer ${localStorage.getItem('token')}`
+            },
+        }
+        $http(req).then(function ({ data }) {
+            onSuccess(data)
+        }, function (error) {
+            onError(error)
+        });
+    }
     $scope.isAuthorized = 0
     $scope.currentUser = {}
     $scope.InitializeApp = () => {
-        checkAuthorization((data) => {
-            $scope.currentUser = data
-            $scope.isAuthorized = 1
-        }, (error) => {
-            $scope.isAuthorized = 0
-            $scope.currentUser = {}
-        })
+        $scope.httpPost('/isAuthorized', {}, (data) => {
+            if (data) {
+                $scope.isAuthorized = 1
+            }
+            else {
+
+            }
+        }, () => { })
     }
     $scope.mycarts = []
     $scope.getmycarts = () => {
