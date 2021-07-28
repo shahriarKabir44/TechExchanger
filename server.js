@@ -68,8 +68,8 @@ function startExpress() {
     })
     app.post('/signup', async (req, res) => {
         var newUser = req.body
-        console.log(req.body)
         try {
+            var toSave = new User(newUser)
             await toSave.save();
             var tempdata = {
                 ...newUser,
@@ -89,6 +89,23 @@ function startExpress() {
     })
     app.get('/', (req, res) => {
         res.sendFile('index.html')
+    })
+    app.post('/updateProfilePicture', verifyAuthToken, async (req, res) => {
+        var { id, imageURL } = req.body
+        User.findByIdAndUpdate(id, { imageURL: imageURL }, async (err, data) => {
+            if (err) console.log(err)
+            else {
+                var finalUser = await User.findById(id)
+                var userToSave = { ...req.user, imageURL: finalUser.imageURL }
+                var authToken = jwt.sign(userToSave, process.env.secret)
+                res.send({
+                    data: {
+                        token: authToken,
+                        user: userToSave
+                    }
+                })
+            }
+        })
     })
     app.use('/graphql', verifyAuthToken, graphqlHTTP.graphqlHTTP(req => (
         {

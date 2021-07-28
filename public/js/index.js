@@ -155,11 +155,16 @@ app.controller('myController', ($scope, $http) => {
             if (!data) alert('invalid Phone number')
             else {
                 localStorage.setItem('token', data.token)
-                localStorage.setItem('user', JSON.stringify(data.user))
-                alert(3)
-                // upload('profilePictures','proPic',['#proPic'],0,data.user.id,[],(urls)=>{
-
-                // })
+                $scope.currentUser = data.user
+                upload('profilePictures', 'proPic', ['#proPic'], 0, data.user.id, [], (urls) => {
+                    $scope.httpPost('/updateProfilePicture', { id: $scope.currentUser.id, imageURL: urls[0] }, ({ data }) => {
+                        localStorage.setItem('token', data.token)
+                        $('#signup-modal').modal('hide')
+                        $scope.currentUser = data.user
+                        alert(`Welcome ${data.user.firstName}!`)
+                        $scope.isAuthorized = 1
+                    }, () => { })
+                })
             }
         }, () => { })
     }
