@@ -1,9 +1,9 @@
 
 
-function getMyAds(id) {
+
+function getMyAdsGQL(id) {
     return {
-        query: ` query{
-            User(id: ${id}){
+        query: `query {User(id: "${id}"){
                 Owned{
                     id      
                     type     
@@ -16,8 +16,8 @@ function getMyAds(id) {
                     owner     
                     postedOn  
                 }
-            }
-        } `
+            }}
+         `
     }
 }
 

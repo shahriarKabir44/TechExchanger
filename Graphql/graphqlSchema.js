@@ -282,7 +282,8 @@ const Mutation = new GraphQLObjectType({
             },
             resolve(parent, args) {
                 var newProduct = new Product({
-                    ...args
+                    ...args,
+                    postedOn: (new date() * 1) + ''
                 })
                 return newProduct.save()
             }

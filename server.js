@@ -7,7 +7,7 @@ const webPush = require('web-push')
 require('dotenv').config()
 webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
 var graphqlSchema = require('./Graphql/graphqlSchema')
-
+var cors = require('cors')
 
 mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechExchanger?retryWrites=true&w=majority',
     {
@@ -38,7 +38,7 @@ if (cluster.isMaster) {
 function startExpress() {
     const app = express();
     app.use(express.static('public'))
-
+    app.use(cors())
     app.use(express.json())
     var PORT = process.env.PORT || 3000;
     app.listen(PORT)
@@ -133,6 +133,7 @@ function startExpress() {
             }
         })
     })
+
     app.use('/graphql', graphqlHTTP.graphqlHTTP(req => (
         {
             schema: graphqlSchema,
