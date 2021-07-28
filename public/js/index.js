@@ -111,21 +111,22 @@ app.controller('myController', ($scope, $http) => {
     $scope.isAuthorized = 0
     $scope.currentUser = {}
     $scope.InitializeApp = () => {
-        $scope.httpPost('/isAuthorized', {}, (data) => {
+        $scope.httpPost('/isAuthorized', {}, ({ data }) => {
             if (data) {
                 $scope.isAuthorized = 1
-                $scope.xxx = { name: "voda" }
+
+                $scope.currentUser = data.user
             }
             else {
-
+                $scope.isAuthorized = 0
+                $scope.currentUser = null
             }
         }, () => { })
     }
+    //authorized parts
     $scope.mycarts = []
     $scope.getmycarts = () => {
-        getMyCarts($scope.currentUser.id, (data) => {
 
-        }, (er) => { })
     }
     $scope.myads = []
     $scope.getMyAds = () => {
@@ -137,6 +138,29 @@ app.controller('myController', ($scope, $http) => {
     $scope.getNotifications = () => {
         getMyNotifications($scope.currentUser.id, (data) => {
 
+        }, () => { })
+    }
+    //authorized part end
+    $scope.signupModel = {
+        password: "",
+        phoneNumber: "",
+        email: "",
+        address: "",
+        imageURL: "",
+        firstName: "",
+        lastName: "",
+    }
+    $scope.submitSignUp = () => {
+        $scope.httpPost('/signup', $scope.signupModel, ({ data }) => {
+            if (!data) alert('invalid Phone number')
+            else {
+                localStorage.setItem('token', data.token)
+                localStorage.setItem('user', JSON.stringify(data.user))
+                alert(3)
+                // upload('profilePictures','proPic',['#proPic'],0,data.user.id,[],(urls)=>{
+
+                // })
+            }
         }, () => { })
     }
 })

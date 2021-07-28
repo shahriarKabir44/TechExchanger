@@ -19,6 +19,7 @@ mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechEx
 
 
 const cluster = require('cluster');
+const User = require('./MongoDBSchemas/User');
 const totalCPUs = require('os').cpus().length;
 
 if (cluster.isMaster) {
@@ -64,6 +65,27 @@ function startExpress() {
     app.post('/isAuthorized', verifyAuthToken, (req, res) => {
         var user = req.user;
         res.send({ data: user })
+    })
+    app.post('/signup', async (req, res) => {
+        var newUser = req.body
+        console.log(req.body)
+        try {
+            await toSave.save();
+            var tempdata = {
+                ...newUser,
+                id: toSave._id
+            }
+            var token = jwt.sign(tempdata, process.env.secret)
+            res.send({
+                data: {
+                    token: token,
+                    user: tempdata
+                }
+            })
+        } catch (error) {
+            console.log(error)
+            res.send({ data: null })
+        }
     })
     app.get('/', (req, res) => {
         res.sendFile('index.html')
