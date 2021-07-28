@@ -2,7 +2,6 @@
 var app = angular.module('homepage', [])
 app.controller('myController', ($scope, $http) => {
     $scope.httpPost = (url, data, onSuccess, onError) => {
-        console.log(url, data)
         var req = {
             method: 'POST',
             url: url,
@@ -63,8 +62,9 @@ app.controller('myController', ($scope, $http) => {
     }
     $scope.notifications = []
     $scope.getNotifications = () => {
-        getMyNotifications($scope.currentUser.id, (data) => {
-
+        $scope.httpPost('/graphql', getMyNotificationsGQL($scope.currentUser.id), ({ data }) => {
+            $scope.notifications = data.User.Notification
+            $('#notif_modal').modal('show')
         }, () => { })
     }
     //authorized part end

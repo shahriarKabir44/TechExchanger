@@ -91,38 +91,8 @@
 </div>
 <!-- search modal end -->
 
-
 <!--notifications modal-->
-<div ng-if="isAuthorized" id="notif_modal" class="modal fade" tabindex="-1" role="dialog"
-    aria-labelledby="my-modal-title" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="my-modal-title">Notifications</h5>
-                <button class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <ul id="notif_list">
-                    <li class="notif d-flex justify-content-between">
-                        <p>John Doe offered 500 taka for you table.</p>
-                        <a href="#" class="btn btn-primary">view details</a>
-                    </li>
-                    <li class="notif d-flex justify-content-between">
-                        <p>John Doe offered 200 taka for you chair.</p>
-                        <a href="#" class="btn btn-primary">view details</a>
-                    </li>
-                    <li class="notif d-flex justify-content-between">
-                        <p>Moniruzzaman accepted your offer!</p>
-                        <a href="./purchasePage.html" class="btn btn-primary">Complete Purchase!</a>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </div>
-</div>
+<div ng-include="'./shared/modals/notification.html'"></div>
 <!--notifications modal end-->
 
 <div ng-include="'./shared/modals/login.html'"></div>

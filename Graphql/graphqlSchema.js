@@ -139,6 +139,12 @@ const NofiticationType = new GraphQLObjectType({
             resolve(parent, args) {
                 return User.findById(parent.senderId)
             }
+        },
+        Product: {
+            type: ProductType,
+            resolve(parent, args) {
+                return Product.findById(parent.productId)
+            }
         }
     })
 });

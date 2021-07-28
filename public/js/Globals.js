@@ -47,18 +47,24 @@ function getMyCarts(id) {
 
 function getMyNotificationsGQL(id) {
     return {
-        query: ` query{
-            User(id: ${id}){
-                Notification{
-                    senderId   
-                    receiverId 
-                    type       
-                    productId  
-                    offer      
-                    time       
-                }
+        query: `query {User(id: "${id}"){
+            Notification{
+                senderId   
+                receiverId 
+                type       
+                productId  
+                offer      
+                time   
+                Sender{
+                    firstName
+                    lastName
+                } 
+                Product{
+                    type
+                    image1
+                }   
             }
-        } `
+        }}`
     }
 }
 

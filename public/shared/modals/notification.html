@@ -1,0 +1,28 @@
+<div ng-if="isAuthorized" id="notif_modal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="my-modal-title" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="my-modal-title">Notifications:</h5>
+                <button class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <ul id="notif_list">
+                    <li ng-repeat="notification in notifications"
+                        style="display: grid;grid-template-columns: 20% 50% auto; box-shadow: 5px 5px 5px;"
+                        class="notif d-flex justify-content-between">
+                        <img ng-src="{{notification.Product.image1}}" style="height: 50px;width:50px" alt="">
+                        <p style="word-break: break-word;margin-top:15px">{{notification.Sender.firstName}}
+                            {{notification.Sender.lastName}} offered
+                            {{notification.offer}} taka for your {{notification.Product.type}}.</p>
+                        <a href="#" style="margin-top: 15px;" class="btn btn-primary">view details</a>
+                    </li>
+
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</div>
