@@ -42,8 +42,9 @@ const UserType = new GraphQLObjectType({
         },
         Notification: {
             type: new GraphQLList(NofiticationType),
-            resolve(parent, args) {
-                return Notification.find({ recieverId: parent.id })
+            async resolve(parent, args) {
+                var res = await Notification.find({ receiverId: parent.id })
+                return res
             }
         }
     })
@@ -71,7 +72,7 @@ const CartType = new GraphQLObjectType({
         ownerId: { type: GraphQLID },
         productId: { type: GraphQLID },
         customerId: { type: GraphQLID },
-        offeredPrice: { type: GraphQLString },
+        offeredPrice: { type: GraphQLInt },
         status: { type: GraphQLInt },
         time: { type: GraphQLString },
         Product: {
@@ -81,13 +82,13 @@ const CartType = new GraphQLObjectType({
             }
         },
         Buyer: {
-            type: ProductType,
+            type: UserType,
             resolve(parent, args) {
                 return User.findById(parent.ownerId)
             }
         },
         Seller: {
-            type: ProductType,
+            type: UserType,
             resolve(parent, args) {
                 return user.findById(parent.customerId)
             }
@@ -128,11 +129,17 @@ const NofiticationType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         senderId: { type: GraphQLID },
-        recieverId: { type: GraphQLID },
+        receiverId: { type: GraphQLID },
         type: { type: GraphQLInt },
         productId: { type: GraphQLID },
         offer: { type: GraphQLInt },
-        time: { type: GraphQLString }
+        time: { type: GraphQLString },
+        Sender: {
+            type: NormalUserType,
+            resolve(parent, args) {
+                return User.findById(parent.senderId)
+            }
+        }
     })
 });
 
@@ -164,13 +171,16 @@ const Mutation = new GraphQLObjectType({
                 ownerId: { type: GraphQLID },
                 productId: { type: GraphQLID },
                 customerId: { type: GraphQLID },
-                offeredPrice: { type: GraphQLString },
+                offeredPrice: { type: GraphQLInt },
                 actionType: { type: GraphQLInt },
-                status: { type: GraphQLInt }
+                status: { type: GraphQLInt },
+
             },
             async resolve(parent, args) {
+                var now = (new Date() * 1) + ''
                 var newCart = {
-                    ...args
+                    ...args,
+                    time: now
                 }
                 var query = {
                     $and: [
@@ -179,19 +189,43 @@ const Mutation = new GraphQLObjectType({
                     ]
                 }
                 delete newCart.actionType
+
+
                 if (args.actionType == 0) {
-                    var newcartToSave = new cart({
-                        ...newCart,
-                        time: (new Date() * 1) + ''
-                    })
+                    var newcartToSave = new Cart(newCart)
 
                     var updateddata = await Cart.findOneAndUpdate(
-                        query, newcartToSave
+                        query, newCart
                     )
                     if (!updateddata) {
-                        return newCart.save()
+                        var newNotification = new Notification({
+                            senderId: args.customerId,
+                            receiverId: args.ownerId,
+                            type: 1,
+                            productId: args.productId,
+                            offer: args.offeredPrice,
+                            time: now
+                        })
+                        await newNotification.save()
+                        return newcartToSave.save()
                     }
-                    else return updateddata
+                    else {
+                        var notificationQuery = {
+                            $and: [
+                                { productId: args.productId },
+                                { senderId: args.customerId }
+                            ]
+                        }
+                        await Notification.findOneAndUpdate(notificationQuery, {
+                            senderId: args.customerId,
+                            receiverId: args.ownerId,
+                            type: 1,
+                            productId: args.productId,
+                            offer: args.offeredPrice,
+                            time: now,
+                        })
+                        return newCart
+                    }
                 }
                 else {
                     return Cart.findOneAndDelete(query)

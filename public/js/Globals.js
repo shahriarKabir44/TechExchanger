@@ -38,6 +38,7 @@ function getMyCarts(id) {
                         owner         
                         postedOn    
                     }
+                    offeredPrice
                 }
             }
         } `
@@ -50,7 +51,7 @@ function getMyNotificationsGQL(id) {
             User(id: ${id}){
                 Notification{
                     senderId   
-                    recieverId 
+                    receiverId 
                     type       
                     productId  
                     offer      
