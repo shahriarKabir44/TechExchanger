@@ -17,7 +17,7 @@ function getMyAdsGQL(id) {
                     postedOn  
                 }
             }}
-         `
+        `
     }
 }
 
@@ -61,9 +61,6 @@ function getMyNotificationsGQL(id) {
         } `
     }
 }
-
-
-
 
 /**
  * 
