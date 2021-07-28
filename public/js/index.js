@@ -114,8 +114,8 @@ app.controller('myController', ($scope, $http) => {
         $scope.httpPost('/isAuthorized', {}, ({ data }) => {
             if (data) {
                 $scope.isAuthorized = 1
-
-                $scope.currentUser = data.user
+                $scope.currentUser = data
+                console.log(data)
             }
             else {
                 $scope.isAuthorized = 0
@@ -168,4 +168,24 @@ app.controller('myController', ($scope, $http) => {
             }
         }, () => { })
     }
+
+
+    $scope.loginEntity = {
+        phoneNumber: "",
+        password: ""
+    }
+    $scope.login = () => {
+        $scope.httpPost('/login', $scope.loginEntity, ({ data }) => {
+            if ((!data)) alert('Invalid credentials')
+            else {
+                console.log(data)
+                $scope.currentUser = data.user
+                $('#login-modal').modal('hide')
+                alert(`Welcome ${data.user.firstName}!`)
+                localStorage.setItem('token', data.token)
+                $scope.isAuthorized = 1
+            }
+        }, () => { })
+    }
+
 })

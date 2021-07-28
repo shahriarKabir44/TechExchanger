@@ -62,6 +62,32 @@ function startExpress() {
             })
         }
     }
+    app.post('/login', async (req, res) => {
+        var { phoneNumber, password } = req.body;
+        var data = await User.findOne({ $and: [{ phoneNumber: phoneNumber }, { password: password }] })
+        if (data == null) res.send({ data: null })
+        else {
+            data.id = data._id
+            delete data.password
+            var toSend = {
+                id: data.id,
+                phoneNumber: data.phoneNumber,
+                email: data.email,
+                address: data.address,
+                imageURL: data.imageURL,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                notificationId: data.notificationId,
+            }
+            var authHeader = jwt.sign(toSend, process.env.secret)
+            res.send({
+                data: {
+                    token: authHeader,
+                    user: toSend
+                }
+            })
+        }
+    })
     app.post('/isAuthorized', verifyAuthToken, (req, res) => {
         var user = req.user;
         res.send({ data: user })
@@ -107,11 +133,10 @@ function startExpress() {
             }
         })
     })
-    app.use('/graphql', verifyAuthToken, graphqlHTTP.graphqlHTTP(req => (
+    app.use('/graphql', graphqlHTTP.graphqlHTTP(req => (
         {
             schema: graphqlSchema,
-            graphiql: true,
-            context: { req }
+            graphiql: true
         }
     )));
 

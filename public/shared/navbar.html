@@ -14,19 +14,18 @@
 
     <div class="dropdown dropleft" ng-if="isAuthorized" id="loggedin">
         <button class="btn btn-light bg-transparent border-0" data-toggle="dropdown" style="padding: 0;">
-            <img src="./assets/propix/1.jpg" style="max-height: 40px; margin-top: 0; border-radius: 50px;" alt="">
+            <img ng-src="{{currentUser.imageURL}}" style="max-height: 40px; margin-top: 0; border-radius: 50px;" alt="">
         </button>
 
         <div id="colp" class="dropdown-menu ">
             <div class="dropdown-item activeusr">
-                <a class="" id="dashboard1" data-toggle="modal" data-target="#postAd-modal">Post an Ad</a>
+                <a class="" data-toggle="modal" data-target="#postAd-modal">Post an Ad</a>
             </div>
             <div class="dropdown-item activeusr">
-                <a class=" " id="dashboard2" data-toggle="modal" data-target="#update-modal">Update
-                    info</a>
+                <a class=" " data-toggle="modal" data-target="#update-modal">Update info</a>
             </div>
             <div class="dropdown-item activeusr">
-                <a class="" id="myAds" data-toggle="modal" data-target="#product-modal-ads">My
+                <a class="" data-toggle="modal" data-target="#product-modal-ads">My
                     Ads</a>
             </div>
             <div class="dropdown-item activeusr">

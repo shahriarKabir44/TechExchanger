@@ -125,45 +125,7 @@
 </div>
 <!--notifications modal end-->
 
-<!--login modal-->
-<div class="modal fade" ng-if="!isAuthorized" id="login-modal" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <h4 class="modal-title">Log In</h4>
-            </div>
-            <div class="modal-body">
-                <!-- method="POST" -->
-                <form id="loginForm" class=" " action="index.html" method="get">
-                    <div class="form-group my-3">
-
-                        <input type="text" class="form-control" id="uname_login" placeholder="Enter username"
-                            name="uname_login" required>
-                        <div class="valid-feedback">Valid.</div>
-                        <div class="invalid-feedback" id="if-un">Please fill out this field.</div>
-                    </div>
-                    <div class="form-group my-3">
-
-                        <input type="password" class="form-control" id="pwd_login" autocomplete="off"
-                            placeholder="Enter password" name="pwd_login" required>
-                        <div class="valid-feedback">Valid.</div>
-                        <div class="invalid-feedback">Please fill out this field.</div>
-
-                    </div>
-                    <button type="submit" id="login-normal" class="btn btn-primary" data-dismiss="modal">Login</button>
-                </form><!-- type="submit" -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-<!--login modal end-->
+<div ng-include="'./shared/modals/login.html'"></div>
 
 <div ng-include="'./shared/modals/signup.html'"></div>
 
