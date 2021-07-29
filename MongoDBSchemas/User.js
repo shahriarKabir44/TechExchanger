@@ -8,7 +8,7 @@ var userSchema = new mongoose.Schema({
     imageURL: { type: String },
     firstName: { type: String, },
     lastName: { type: String },
-    notificationId: { type: String }
+    notificationId: { type: String },
 })
 
 const User = mongoose.model('User', userSchema)

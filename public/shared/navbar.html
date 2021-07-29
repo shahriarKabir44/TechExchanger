@@ -19,7 +19,7 @@
 
         <div id="colp" class="dropdown-menu ">
             <div class="dropdown-item activeusr">
-                <a class="" data-toggle="modal" data-target="#postAd-modal">Post an Ad</a>
+                <a class="" ng-click="initPostAd()">Post an Ad</a>
             </div>
             <div class="dropdown-item activeusr">
                 <a class=" " data-toggle="modal" data-target="#update-modal">Update info</a>
@@ -28,7 +28,7 @@
                 <a class="" ng-click=getMyAds()>My Ads</a>
             </div>
             <div class="dropdown-item activeusr">
-                <a class="" id="myCart" data-toggle="modal" data-target="#product-modal-cart">My
+                <a class="" ng-click="getmycarts()">My
                     cart</a>
             </div>
             <div class="dropdown-item activeusr">

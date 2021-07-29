@@ -1,5 +1,20 @@
+function getel(x) {
+    return document.getElementById(x)
+}
 
-
+var firebaseConfig = {
+    apiKey: "AIzaSyBQSes_ECwHaryrF8vfsjVD_1wWf7cz8Wc",
+    authDomain: "pqrs-9e8eb.firebaseapp.com",
+    databaseURL: "https://pqrs-9e8eb.firebaseio.com",
+    projectId: "pqrs-9e8eb",
+    storageBucket: "pqrs-9e8eb.appspot.com",
+    messagingSenderId: "998501066190",
+    appId: "1:998501066190:web:0be1a2a2d5116d7c77b79f",
+    measurementId: "G-54PCTERKRM"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+firebase.analytics();
 
 function getMyAdsGQL(id) {
     return {
@@ -7,13 +22,8 @@ function getMyAdsGQL(id) {
                 Owned{
                     id      
                     type     
-                    details 
                     image1  
-                    image2  
-                    image3  
-                    image4  
                     askedPrice
-                    owner     
                     postedOn  
                 }
             }}
@@ -23,25 +33,18 @@ function getMyAdsGQL(id) {
 
 function getMyCarts(id) {
     return {
-        query: ` query{
-            User(id: ${id}){
-                Carts{
-                    Product{
-                        id          
-                        type        
-                        details     
-                        image1      
-                        image2      
-                        image3      
-                        image4      
-                        askedPrice  
-                        owner         
-                        postedOn    
-                    }
-                    offeredPrice
+        query: `query {User(id: "${id}"){
+            Carts{
+                Product{
+                    id          
+                    type        
+                    details     
+                    image1      
+                    postedOn    
                 }
+                offeredPrice
             }
-        } `
+        }}`
     }
 }
 
@@ -72,30 +75,37 @@ function getMyNotificationsGQL(id) {
  * 
  * @param {string} folderName 
  * @param {string} fileName 
- * @param {string[]} filesArray 
- * @param {Number} index 
- * @param {Number} ID 
- * @param {function} callback 
- * @param {string[]} URLs 
+ * @param {string} fileId 
+ * @param {string} ID 
  */
-function upload(folderName, fileName, filesArray, index, ID, URLs, callback) {
+function upload(folderName, fileName, fileId, ID) {
     const ref = firebase.storage().ref()
-    const file = document.querySelector(filesArray[index]).files[0]
+    const file = document.querySelector(fileId).files[0]
     const name = folderName + '/' + fileName + ID
     const metadata = {
         contentType: file.type
     }
     const task = ref.child(name).put(file, metadata)
-    task
-        .then(snapshot => snapshot.ref.getDownloadURL())
-        .then(url => {
-            URLs.push(url)
-            index++;
-            if (index < filesArray.length) {
-                upload(folderName, fileName, filesArray, index, ID, URLs, callback)
-            }
-            else {
-                callback(URLs)
-            }
-        }).catch(er => alert('er'))
+    return task.then(snapshot => snapshot.ref.getDownloadURL())
+}
+
+function toggleUploadStatus(index, stat) {
+    var spin = getel(`uploadstat${index}0`)
+    var tick = getel(`uploadstat${index}1`)
+    switch (stat) {
+        case 0:
+            spin.style.display = 'none'
+            tick.style.display = 'none'
+            break;
+        case 1:
+            spin.style.display = 'block'
+            tick.style.display = 'none'
+            break;
+        case 2:
+            spin.style.display = 'none'
+            tick.style.display = 'block'
+            break;
+        default:
+            break;
+    }
 }

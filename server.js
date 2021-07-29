@@ -20,6 +20,7 @@ mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechEx
 
 const cluster = require('cluster');
 const User = require('./MongoDBSchemas/User');
+const Product = require('./MongoDBSchemas/Product')
 const totalCPUs = require('os').cpus().length;
 
 if (cluster.isMaster) {
@@ -87,6 +88,19 @@ function startExpress() {
                 }
             })
         }
+    })
+    app.post('/postAd', verifyAuthToken, async (req, res) => {
+        var now = (new Date() * 1) + ''
+        var newProd = new Product({ ...req.body, owner: req.user.id, postedOn: now })
+        await newProd.save()
+        res.send({ newProductid: newProd._id })
+    })
+    app.post('/updateProduct', verifyAuthToken, async (req, res) => {
+        var id = req.body.id
+        var newProd = { ...req.body }
+        delete newProd.id
+        var newpd = await Product.findByIdAndUpdate(id, newProd)
+        res.send({ data: { ...newProd, id: id } })
     })
     app.post('/isAuthorized', verifyAuthToken, (req, res) => {
         var user = req.user;

@@ -48,13 +48,17 @@ app.controller('myController', ($scope, $http) => {
         }, () => { })
     }
     //authorized parts
+
     $scope.mycarts = []
     $scope.getmycarts = () => {
-
+        $scope.httpPost('/graphql', getMyCarts($scope.currentUser.id), ({ data }) => {
+            $scope.mycarts = data.User.Carts
+            console.log($scope.mycarts)
+            $('#myCarts').modal('show')
+        }, () => { })
     }
     $scope.myads = []
     $scope.getMyAds = () => {
-        console.log('object')
         $scope.httpPost('/graphql', getMyAdsGQL($scope.currentUser.id), ({ data }) => {
             $scope.myads = data.User.Owned
             $('#product-modal-ads').modal('show')
@@ -67,6 +71,63 @@ app.controller('myController', ($scope, $http) => {
             $('#notif_modal').modal('show')
         }, () => { })
     }
+    $scope.uploadStat = [0, 0, 0, 0]
+    $scope.newProduct = {
+        type: "",
+        details: "",
+        image1: "",
+        image2: "",
+        image3: "",
+        image4: "",
+        askedPrice: "",
+        owner: $scope.currentUser.id,
+        postedOn: "",
+        lastUpdated: ""
+    }
+    $scope.initPostAd = () => {
+        for (let n = 0; n < 4; n++) {
+            toggleUploadStatus(n, 0)
+            getel(`file${n + 1}`).value = null
+        }
+        $scope.uploadStat = [0, 0, 0, 0]
+        $scope.newProduct = {
+            type: "",
+            details: "",
+            image1: "",
+            image2: "",
+            image3: "",
+            image4: "",
+            askedPrice: "",
+            owner: "",
+            lastUpdated: ""
+        }
+        $('#postAd-modal').modal('show')
+    }
+    $scope.postAd = async () => {
+        var imageIds = ['#file1', '#file2', '#file3', '#file4']
+        var imageURLProperties = ['image1', 'image2', 'image3', 'image4']
+        for (let n = 0; n < 4; n++) {
+            toggleUploadStatus(n, 0)
+        }
+        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id },
+            $scope.httpPost('/postAd', $scope.newProduct, async (data) => {
+                $scope.newProduct.id = data.newProductid
+                for (let n = 0; n < 4; n++) {
+                    toggleUploadStatus(n, 1)
+                    let url = await upload(`products/${$scope.currentUser.firstName + $scope.currentUser.firstName}/${$scope.newProduct.type}s/`, imageURLProperties[n], imageIds[n], data.newProductid)
+                    $scope.newProduct[imageURLProperties[n]] = url
+                    toggleUploadStatus(n, 2)
+
+                }
+                $scope.httpPost('/updateProduct', $scope.newProduct, ({ data }) => {
+                    $('#postAd-modal').modal('hide')
+                    alert('Your ad as been successfully posted!')
+                }, () => { })
+            })
+
+    }
+
+
     //authorized part end
     $scope.signupModel = {
         password: "",
@@ -78,20 +139,20 @@ app.controller('myController', ($scope, $http) => {
         lastName: "",
     }
     $scope.submitSignUp = () => {
-        $scope.httpPost('/signup', $scope.signupModel, ({ data }) => {
+        $scope.httpPost('/signup', $scope.signupModel, async ({ data }) => {
             if (!data) alert('invalid Phone number')
             else {
                 localStorage.setItem('token', data.token)
                 $scope.currentUser = data.user
-                upload('profilePictures', 'proPic', ['#proPic'], 0, data.user.id, [], (urls) => {
-                    $scope.httpPost('/updateProfilePicture', { id: $scope.currentUser.id, imageURL: urls[0] }, ({ data }) => {
-                        localStorage.setItem('token', data.token)
-                        $('#signup-modal').modal('hide')
-                        $scope.currentUser = data.user
-                        alert(`Welcome ${data.user.firstName}!`)
-                        $scope.isAuthorized = 1
-                    }, () => { })
-                })
+
+                var imageURL = await upload('profilePictures', 'propic', '#proPic', $scope.currentUser.id)
+                $scope.httpPost('/updateProfilePicture', { id: $scope.currentUser.id, imageURL: imageURL }, ({ data }) => {
+                    localStorage.setItem('token', data.token)
+                    $('#signup-modal').modal('hide')
+                    $scope.currentUser = data.user
+                    alert(`Welcome ${data.user.firstName}!`)
+                    $scope.isAuthorized = 1
+                }, () => { })
             }
         }, () => { })
     }

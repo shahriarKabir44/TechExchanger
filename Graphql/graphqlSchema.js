@@ -6,7 +6,7 @@ const {
     GraphQLID,
     GraphQLInt,
     GraphQLList,
-    GraphQLNonNull,
+    GraphQLNonNull
 
 } = graphql;
 
@@ -258,6 +258,7 @@ const Mutation = new GraphQLObjectType({
                     ...args,
                     lastUpdated: (new Date() * 1) + ''
                 }
+
                 delete currentProduct.actionType
                 delete currentProduct.id
                 if (args.actionType) {
@@ -272,26 +273,6 @@ const Mutation = new GraphQLObjectType({
                         return Product.findByIdAndDelete(args.id)
                     }
                 }
-            }
-        },
-        CreateProduct: {
-            type: ProductType,
-            args: {
-                type: { type: GraphQLString, },
-                details: { type: GraphQLString },
-                image1: { type: GraphQLString },
-                image2: { type: GraphQLString },
-                image3: { type: GraphQLString },
-                image4: { type: GraphQLString },
-                askedPrice: { type: GraphQLInt },
-                owner: { type: GraphQLID },
-            },
-            resolve(parent, args) {
-                var newProduct = new Product({
-                    ...args,
-                    postedOn: (new date() * 1) + ''
-                })
-                return newProduct.save()
             }
         }
     }
