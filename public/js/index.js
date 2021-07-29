@@ -1,4 +1,5 @@
 
+
 var app = angular.module('homepage', [])
 app.controller('myController', ($scope, $http) => {
     $scope.httpPost = (url, data, onSuccess, onError) => {
@@ -40,8 +41,10 @@ app.controller('myController', ($scope, $http) => {
                 $scope.isAuthorized = 1
                 $scope.currentUser = data
                 console.log(data)
+                subscribeToPush()
             }
             else {
+                localStorage.clear()
                 $scope.isAuthorized = 0
                 $scope.currentUser = null
             }
@@ -152,6 +155,7 @@ app.controller('myController', ($scope, $http) => {
                     $scope.currentUser = data.user
                     alert(`Welcome ${data.user.firstName}!`)
                     $scope.isAuthorized = 1
+                    subscribeToPush()
                 }, () => { })
             }
         }, () => { })
@@ -172,6 +176,7 @@ app.controller('myController', ($scope, $http) => {
                 alert(`Welcome ${data.user.firstName}!`)
                 localStorage.setItem('token', data.token)
                 $scope.isAuthorized = 1
+                subscribeToPush()
             }
         }, () => { })
     }

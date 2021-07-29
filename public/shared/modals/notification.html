@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <ul id="notif_list">
+                <ul id="notif_list" ng-if="notifications.length">
                     <li ng-repeat="notification in notifications"
                         style="display: grid;grid-template-columns: 20% 50% auto; box-shadow: 5px 5px 5px;"
                         class="notif d-flex justify-content-between">
@@ -21,6 +21,9 @@
                     </li>
 
                 </ul>
+                <h3 style="text-align: center;" ng-if="!notifications.length">
+                    No notifications to show :(
+                </h3>
             </div>
 
         </div>

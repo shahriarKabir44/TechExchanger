@@ -109,3 +109,47 @@ function toggleUploadStatus(index, stat) {
             break;
     }
 }
+
+if (navigator.serviceWorker) {
+    navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+
+        })
+}
+
+var public_key = 'BJ6uMybJWBmqYaQH5K8avYnfDQf9e-iX3euxlHrd6lh3ZBBPlmE8qYMhjoQCF7XACxgwe_ENW1DFT6nzsgsiaMc'
+
+function subscribeToPush() {
+    navigator.serviceWorker.ready.then(async (register) => {
+        const subscription = await register.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: convertToUnit8Array(public_key),
+        })
+        fetch('/subscribe', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json',
+                'authorization': `bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify(subscription)
+        })
+    })
+}
+
+function convertToUnit8Array(base64str) {
+    const padding = '='.repeat((4 - (base64str.length % 4)) % 4)
+    const base64 = (base64str + padding).replace(/\-/g, '+').replace(/_/g, '/')
+    const rawData = atob(base64)
+    var outputArray = new Uint8Array(rawData.length)
+    for (let n = 0; n < rawData.length; n++) {
+        outputArray[n] = rawData.charCodeAt(n)
+    }
+
+    return outputArray
+}
+
+
+function popupShortcut(x) {
+    if (window.innerWidth < 1000)
+        x ? getel('shortcutList').style.left = "0px" : getel('shortcutList').style.left = "-150px"
+}

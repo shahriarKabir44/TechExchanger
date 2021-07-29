@@ -2,7 +2,8 @@ const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const mongoose = require('mongoose');
 var jwt = require('jsonwebtoken')
-const session = require('express-session')
+
+
 const webPush = require('web-push')
 require('dotenv').config()
 webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
@@ -45,7 +46,21 @@ function startExpress() {
     app.listen(PORT)
 
 
+    app.post('/subscribe', verifyAuthToken, async (req, res) => {
+        const subscription = req.body
+        var notificationId = (JSON.stringify(subscription))
+        //res.status(201).json({})
+        User.findByIdAndUpdate(req.user.id, { notificationId: notificationId })
+            .then(data => {
+                webPush.sendNotification(JSON.parse(notificationId), JSON.stringify({ title: 'hello!', body: 'Welcome to TechExchanger!' }))
+                    .then(data => {
+                        res.send({ data: 1 })
+                    })
+                    .catch(err => console.log(err))
 
+            })
+
+    })
 
     function verifyAuthToken(req, res, next) {
         var authHeader = req.headers['authorization']

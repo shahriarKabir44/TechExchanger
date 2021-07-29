@@ -2,6 +2,7 @@
 <html>
 
 <head>
+    <link rel="manifest" href="manifest.json">
     <!--firebase js-->
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-storage.js"></script>
@@ -67,9 +68,9 @@
         <div class="row d-flex">
             <!-- Shortcut -->
             <div class="col-xs-12 col-md-2 panel scfalse" style="float: left;">
-                <img class="scimg" src="./assets/system/SHORTCUT.png" alt="">
-                <fieldset class="fieldset">
-                    <legend class="text-secondary">Shortcuts</legend>
+                <img class="scimg" onclick="popupShortcut(1)" src="./assets/system/SHORTCUT.png" alt="">
+                <fieldset class="fieldset" id="shortcutList">
+                    <legend class="text-secondary" onclick="popupShortcut(0)">Shortcuts</legend>
 
                     <div class="nav" id="myScrollspy">
                         <li class="nav-item">
