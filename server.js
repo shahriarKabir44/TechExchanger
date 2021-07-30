@@ -22,6 +22,9 @@ mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechEx
 const cluster = require('cluster');
 const User = require('./MongoDBSchemas/User');
 const Product = require('./MongoDBSchemas/Product')
+var Cart = require('./MongoDBSchemas/Cart')
+var Notification = require('./MongoDBSchemas/Notification')
+
 const totalCPUs = require('os').cpus().length;
 
 if (cluster.isMaster) {
@@ -36,6 +39,8 @@ if (cluster.isMaster) {
 } else {
     startExpress();
 }
+
+
 
 function startExpress() {
     const app = express();
@@ -78,6 +83,41 @@ function startExpress() {
             })
         }
     }
+
+    app.post('/addToCart', verifyAuthToken, async (req, res) => {
+        var productName = req.body.productName
+        var customerName = req.body.customerName
+        var newCart = { ...req.body }
+        delete newCart.productName
+        delete newCart.customerName
+        var updatedCart = await Cart.findOneAndUpdate({
+            $and: [
+                { productId: args.productId },
+                { customerId: args.customerId }
+            ]
+        }, newCart)
+        var now = (new Date() * 1) + ''
+        if (!updatedCart) {
+            var toSave = new Cart({ ...newCart, time: now, status: 0 })
+            await toSave.save()
+        }
+        var message = `${customerName} has offered ${req.body.offeredPrice} for your ${productName}!`;
+        var newNotification = new Notification({
+            senderId: req.body.customerId,
+            receiverId: req.body.ownerId,
+            type: 1,
+            productId: req.body.productId,
+            offer: req.body.offeredPrice,
+            time: now,
+        })
+        await newNotification.save()
+        var sellerNotificationId = await User.findById(req.body.ownerId)
+        webPush.sendNotification(JSON.parse(sellerNotificationId), JSON.stringify({ title: 'Offer!', body: message }))
+            .then(data => {
+                res.send({ data: newNotification })
+            })
+            .catch(err => console.log(err))
+    })
     app.post('/login', async (req, res) => {
         var { phoneNumber, password } = req.body;
         var data = await User.findOne({ $and: [{ phoneNumber: phoneNumber }, { password: password }] })
@@ -144,6 +184,12 @@ function startExpress() {
     })
     app.get('/', (req, res) => {
         res.sendFile('index.html')
+    })
+    app.post('/logout', verifyAuthToken, (req, res) => {
+        User.findByIdAndUpdate(req.user.id, { notificationId: '' }, (er, data) => {
+            if (er) console.log(er)
+            else res.send({ data: 1 })
+        })
     })
     app.post('/updateProfilePicture', verifyAuthToken, async (req, res) => {
         var { id, imageURL } = req.body

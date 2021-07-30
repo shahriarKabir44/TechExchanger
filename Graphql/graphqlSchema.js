@@ -9,6 +9,7 @@ const {
     GraphQLNonNull
 
 } = graphql;
+const webPush = require('web-push')
 
 var User = require('../MongoDBSchemas/User')
 var Cart = require('../MongoDBSchemas/Cart')
@@ -171,71 +172,24 @@ const RootQueryType = new GraphQLObjectType({
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
     fields: {
-        CartAddDeleteEdit: {
+        CartDelete: {
             type: CartType,
             args: {
-                ownerId: { type: GraphQLID },
+
                 productId: { type: GraphQLID },
                 customerId: { type: GraphQLID },
-                offeredPrice: { type: GraphQLInt },
-                actionType: { type: GraphQLInt },
-                status: { type: GraphQLInt },
+
 
             },
             async resolve(parent, args) {
-                var now = (new Date() * 1) + ''
-                var newCart = {
-                    ...args,
-                    time: now
-                }
+
                 var query = {
                     $and: [
                         { productId: args.productId },
                         { customerId: args.customerId }
                     ]
                 }
-                delete newCart.actionType
-
-
-                if (args.actionType == 0) {
-                    var newcartToSave = new Cart(newCart)
-
-                    var updateddata = await Cart.findOneAndUpdate(
-                        query, newCart
-                    )
-                    if (!updateddata) {
-                        var newNotification = new Notification({
-                            senderId: args.customerId,
-                            receiverId: args.ownerId,
-                            type: 1,
-                            productId: args.productId,
-                            offer: args.offeredPrice,
-                            time: now
-                        })
-                        await newNotification.save()
-                        return newcartToSave.save()
-                    }
-                    else {
-                        var notificationQuery = {
-                            $and: [
-                                { productId: args.productId },
-                                { senderId: args.customerId }
-                            ]
-                        }
-                        await Notification.findOneAndUpdate(notificationQuery, {
-                            senderId: args.customerId,
-                            receiverId: args.ownerId,
-                            type: 1,
-                            productId: args.productId,
-                            offer: args.offeredPrice,
-                            time: now,
-                        })
-                        return newCart
-                    }
-                }
-                else {
-                    return Cart.findOneAndDelete(query)
-                }
+                return Cart.findOneAndDelete(query)
             }
         },
         ProductEditDelete: {

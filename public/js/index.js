@@ -129,6 +129,27 @@ app.controller('myController', ($scope, $http) => {
             })
 
     }
+    navigator.serviceWorker.onmessage = e => {
+        console.log(e)
+        $scope.$apply(function () {
+            $scope.name = "xnxx"
+            console.log('object')
+        })
+    }
+
+    $scope.logout = () => {
+        if (window.confirm('Are you sure?')) {
+            $scope.httpPost('/logout', {}, ({ data }) => {
+                if (data) {
+                    alert(`Hope we meet again, ${$scope.currentUser.firstName}!`)
+                    $scope.isAuthorized = 0
+                    $scope.currentUser = {}
+                    localStorage.clear()
+                }
+
+            })
+        }
+    }
 
 
     //authorized part end
