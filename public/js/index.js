@@ -52,6 +52,37 @@ app.controller('myController', ($scope, $http) => {
     }
     //authorized parts
 
+    $scope.toStore = {}
+    $scope.UpdateInfo = () => {
+        var toStore = { ...$scope.toUpdate }
+        delete toStore.id
+        delete toStore.curPassword
+        var tosend = {
+            id: $scope.currentUser.id,
+            curPassword: $scope.toUpdate.curPassword,
+            toStore: toStore
+        }
+        console.log(tosend)
+        $scope.httpPost('/updateUser', tosend, ({ data }) => {
+            if (data == null) {
+                alert('Incorrect password!')
+            }
+            else {
+                localStorage.setItem('token', data.token)
+                $scope.currentUser = data.user
+                alert('Updating sucessful!')
+                $('#update-modal').modal('hide')
+            }
+        }, () => { })
+    }
+
+    $scope.initUpdate = () => {
+        $scope.toUpdate = { ...$scope.currentUser }
+        delete $scope.toUpdate.password
+
+        $('#update-modal').modal('show')
+    }
+
     $scope.mycarts = []
     $scope.getmycarts = () => {
         $scope.httpPost('/graphql', getMyCarts($scope.currentUser.id), ({ data }) => {

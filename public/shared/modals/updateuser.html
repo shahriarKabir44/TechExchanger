@@ -9,12 +9,12 @@
             </div>
             <div class="modal-body">
                 <p id="desc"></p>
-                <form class=" " ng-submit="updateInfo()">
+                <form class=" " ng-submit="UpdateInfo()">
 
 
                     <div class="form-group d-flex">
                         <p class="my-auto">First Name: </p>
-                        <input type="text" class="form-control" autocomplete="off" ng-model="currentUser.firstName"
+                        <input type="text" class="form-control" autocomplete="off" ng-model="toUpdate.firstName"
                             placeholder="Enter Firstname" required>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill out this field.</div>
@@ -24,7 +24,7 @@
                             <p class="my-auto">Last Name: </p>
                         </label>
 
-                        <input type="text" class="form-control" autocomplete="off" ng-model="currentUser.lastName"
+                        <input type="text" class="form-control" autocomplete="off" ng-model="toUpdate.lastName"
                             placeholder="Enter last name" name="lname" required>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill out this field.</div>
@@ -35,7 +35,7 @@
                             <p class="my-auto">Email address: </p>
                         </label>
 
-                        <input type="email" class="form-control" autocomplete="off" ng-model="currentUser.email"
+                        <input type="email" class="form-control" autocomplete="off" ng-model="toUpdate.email"
                             placeholder="Enter email" name="mail" required>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill out this field.</div>
@@ -47,8 +47,9 @@
                             <p class="my-auto">Mobile number: </p>
                         </label>
 
-                        <input type="text" class="form-control" ng-model="currentUser.phoneNumber"
-                            placeholder="Enter phone number" autocomplete="off" name="phoneUp" required value="+880 ">
+                        <input type="text" class="form-control" ng-model="toUpdate.phoneNumber"
+                            placeholder="Enter phone number" readonly autocomplete="off" name="phoneUp" required
+                            value="+880 ">
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill out this field.</div>
                     </div>
@@ -57,7 +58,7 @@
                             <p class="my-auto">Your address: </p>
                         </label>
 
-                        <input type="text" class="form-control" ng-model="currentUser.address"
+                        <input type="text" class="form-control" ng-model="toUpdate.address"
                             placeholder="Enter your address" autocomplete="off" name="phoneUp" required value="+880 ">
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill out this field.</div>
@@ -65,10 +66,20 @@
 
                     <div class="form-group d-flex">
                         <label for="pwd">
-                            <p class="my-auto">Enter Password: </p>
+                            <p class="my-auto">Enter new password: </p>
                         </label>
 
-                        <input type="text" class="form-control" autocomplete="off" ng-model="currentUser.password"
+                        <input type="password" class="form-control" autocomplete="off" ng-model="toUpdate.password"
+                            placeholder="Enter password (Leave empty if not willing to change)" name="pwd" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group d-flex">
+                        <label for="pwd">
+                            <p class="my-auto">Enter current password: </p>
+                        </label>
+
+                        <input type="password" class="form-control" autocomplete="off" ng-model="toUpdate.curPassword"
                             placeholder="Enter password" name="pwd" required>
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill out this field.</div>

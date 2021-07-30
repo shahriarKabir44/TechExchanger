@@ -1,4 +1,4 @@
-var cacheName = 'vodai';
+var cacheName = 'mychaches';
 
 self.addEventListener('push', (e) => {
     var dat = JSON.parse(e.data.text())

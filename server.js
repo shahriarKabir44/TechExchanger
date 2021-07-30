@@ -55,15 +55,23 @@ function startExpress() {
         const subscription = req.body
         var notificationId = (JSON.stringify(subscription))
         //res.status(201).json({})
-        User.findByIdAndUpdate(req.user.id, { notificationId: notificationId })
-            .then(data => {
-                webPush.sendNotification(JSON.parse(notificationId), JSON.stringify({ title: 'Hello!', body: 'Welcome to TechExchanger!' }))
-                    .then(data => {
-                        res.send({ data: 1 })
-                    })
-                    .catch(err => console.log(err))
+        var newDat = await User.findByIdAndUpdate(req.user.id, { notificationId: notificationId })
+        var user = { ...req.user, notificationId: notificationId }
+        var authHeader = jwt.sign(user, process.env.secret)
 
+
+        webPush.sendNotification(JSON.parse(notificationId), JSON.stringify({ title: 'Hello!', body: 'Welcome to TechExchanger!' }))
+            .then(notif => {
+                res.send({
+                    data: {
+                        user: user,
+                        token: authHeader
+                    }
+                })
             })
+            .catch(err => console.log(err))
+
+
 
     })
 
@@ -83,6 +91,31 @@ function startExpress() {
             })
         }
     }
+    app.post('/updateUser', verifyAuthToken, async (req, res) => {
+        var { id, curPassword } = req.body
+        if (req.body.toStore.password == "") {
+            delete req.body.toStore.password
+        }
+        var realUser = await User.findById(id)
+
+        if (realUser.password == curPassword) {
+            var toSave = { ...req.body.toStore }
+            await User.findByIdAndUpdate(id, toSave)
+            toSave.id = id
+            var user = { ...req.user, ...toSave }
+            var token = jwt.sign(user, process.env.secret)
+            res.send({
+                data: {
+                    user: user,
+                    token: token
+                }
+            })
+        }
+        else {
+            res.send({ data: null })
+        }
+
+    })
 
     app.post('/addToCart', verifyAuthToken, async (req, res) => {
         var productName = req.body.productName
