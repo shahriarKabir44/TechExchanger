@@ -52,7 +52,7 @@ function startExpress() {
         //res.status(201).json({})
         User.findByIdAndUpdate(req.user.id, { notificationId: notificationId })
             .then(data => {
-                webPush.sendNotification(JSON.parse(notificationId), JSON.stringify({ title: 'hello!', body: 'Welcome to TechExchanger!' }))
+                webPush.sendNotification(JSON.parse(notificationId), JSON.stringify({ title: 'Hello!', body: 'Welcome to TechExchanger!' }))
                     .then(data => {
                         res.send({ data: 1 })
                     })

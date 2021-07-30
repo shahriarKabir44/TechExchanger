@@ -1,4 +1,4 @@
-var cacheName = 'helloWorld';
+var cacheName = 'vodai';
 
 self.addEventListener('push', (e) => {
     var dat = JSON.parse(e.data.text())
@@ -15,7 +15,7 @@ self.addEventListener('push', (e) => {
             // array is ordered by last focused
             clients[0].postMessage({
                 type: 'REPLY_COUNT',
-                count: "xnxx",
+                count: "3",
             });
         }
     });
@@ -25,28 +25,21 @@ self.addEventListener('install', event => {
     event.waitUntil(
         caches.open(cacheName)
             .then(cache => cache.addAll([
-                '/js/index.js',
+
                 '/',
-                'index.html'
+
             ]))
     );
 });
-
-self.onfetch = function (event) {
+self.addEventListener('fetch', function (event) {
     event.respondWith(
-        (async function () {
-            try {
-                var response = await fetch(event.request);
-                await cache.put(event.request, response.clone());
-                return response;
-            } catch (error) {
-                var cache = await caches.open(cacheName);
-                var cachedFiles = await cache.match(event.request);
-                if (cachedFiles) {
-                    return cachedFiles;
+        caches.match(event.request)
+            .then(function (response) {
+                if (response) {
+                    return response;
                 }
-                else return null
+                return fetch(event.request);
             }
-        }())
-    )
-}
+            )
+    );
+});
