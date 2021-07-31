@@ -11,7 +11,8 @@ const prodct = mongoose.Schema({
     owner: { type: mongoose.Schema.ObjectId },
     postedOn: { type: String },
     lastUpdated: { type: String },
-    customerCount: { type: Number }
+    customerCount: { type: Number, default: 0 },
+    usedFor: { type: String }
 })
 const products = mongoose.model('products', prodct)
 

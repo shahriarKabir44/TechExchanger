@@ -17,7 +17,7 @@
                         <div style="display: grid;grid-template-columns: 30% 55% 15%;border-radius: 5px;">
                             <img ng-src="{{product.image1}}" style="height: 50px;width:50px" alt="">
                             <div>
-                                <p style="margin:-2px;">Type: {{product.type}}</p>
+                                <p style="margin:-2px;">Type: {{product.category}}</p>
                                 <p style="margin:-2px;">Price: {{product.askedPrice}} taka.</p>
                                 <p style="margin:-2px;">Time: {{product.postedOn}} </p>
                             </div>
@@ -27,7 +27,7 @@
 
                     <!--dynamic contents end-->
                 </ul>
-                <h4 style="text-align: center;">
+                <h4 style="text-align: center;" ng-if="!myads.length">
                     You haven't posted any ads :(
                     <button class="btn btn-primary" ng-click="initPostAd()">Post and ad</button>
                 </h4>

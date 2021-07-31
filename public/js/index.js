@@ -16,7 +16,7 @@ app.controller('myController', ($scope, $http) => {
         $http(req).then(function ({ data }) {
             onSuccess(data)
         }, function (error) {
-            onError(error)
+            if (onError) onError(error)
         });
     }
     $scope.httpGet = (url, onSuccess, onError) => {
@@ -96,6 +96,7 @@ app.controller('myController', ($scope, $http) => {
     $scope.getMyAds = () => {
         $scope.httpPost('/graphql', getMyAdsGQL($scope.currentUser.id), ({ data }) => {
             $scope.myads = data.User.Owned
+            console.log(data.User.Owned)
             $('#product-modal-ads').modal('show')
         })
     }
@@ -118,11 +119,20 @@ app.controller('myController', ($scope, $http) => {
         owner: $scope.currentUser.id,
         postedOn: "",
         lastUpdated: ""
+
+    }
+    $scope.usedFor = {
+        "month": "0",
+        "year": "0"
     }
     $scope.initPostAd = () => {
         for (let n = 0; n < 4; n++) {
             toggleUploadStatus(n, 0)
             getel(`file${n + 1}`).value = null
+        }
+        $scope.usedFor = {
+            "month": "0",
+            "year": "0"
         }
         $scope.uploadStat = [0, 0, 0, 0]
         $scope.newProduct = {
@@ -144,7 +154,10 @@ app.controller('myController', ($scope, $http) => {
         for (let n = 0; n < 4; n++) {
             toggleUploadStatus(n, 0)
         }
-        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id },
+        var usedFor = ($scope.usedFor.year * 1 ? $scope.usedFor.year + "year(s)" : "") + ($scope.usedFor.month * 1 ? $scope.usedFor.month + "month(s)" : "")
+        if (usedFor == "") usedFor = "Brand new!"
+
+        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id, usedFor: usedFor },
             $scope.httpPost('/postAd', $scope.newProduct, async (data) => {
                 $scope.newProduct.id = data.newProductid
                 for (let n = 0; n < 4; n++) {

@@ -111,6 +111,7 @@ const ProductType = new GraphQLObjectType({
         owner: { type: GraphQLID },
         postedOn: { type: GraphQLString },
         customerCount: { type: GraphQLInt },
+        usedFor: { type: GraphQLString },
         Owner: {
             type: NormalUserType,
             resolve(parent, args) {
