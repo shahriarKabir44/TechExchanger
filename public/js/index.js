@@ -2,6 +2,7 @@
 
 var app = angular.module('homepage', [])
 app.controller('myController', ($scope, $http) => {
+    //common part
     $scope.httpPost = (url, data, onSuccess, onError) => {
         var req = {
             method: 'POST',
@@ -107,7 +108,7 @@ app.controller('myController', ($scope, $http) => {
     }
     $scope.uploadStat = [0, 0, 0, 0]
     $scope.newProduct = {
-        type: "",
+        category: "",
         details: "",
         image1: "",
         image2: "",
@@ -125,7 +126,7 @@ app.controller('myController', ($scope, $http) => {
         }
         $scope.uploadStat = [0, 0, 0, 0]
         $scope.newProduct = {
-            type: "",
+            category: "",
             details: "",
             image1: "",
             image2: "",
@@ -148,7 +149,7 @@ app.controller('myController', ($scope, $http) => {
                 $scope.newProduct.id = data.newProductid
                 for (let n = 0; n < 4; n++) {
                     toggleUploadStatus(n, 1)
-                    let url = await upload(`products/${$scope.currentUser.firstName + $scope.currentUser.firstName}/${$scope.newProduct.type}s/`, imageURLProperties[n], imageIds[n], data.newProductid)
+                    let url = await upload(`products/${$scope.currentUser.firstName + $scope.currentUser.firstName}/${$scope.newProduct.category}s/`, imageURLProperties[n], imageIds[n], data.newProductid)
                     $scope.newProduct[imageURLProperties[n]] = url
                     toggleUploadStatus(n, 2)
 
@@ -233,4 +234,10 @@ app.controller('myController', ($scope, $http) => {
         }, () => { })
     }
 
+    //common part end
+
+    $scope.products = {}
+    $scope.getProducts = (category) => {
+
+    }
 })

@@ -101,7 +101,7 @@ const ProductType = new GraphQLObjectType({
     name: 'Product',
     fields: () => ({
         id: { type: GraphQLID },
-        type: { type: GraphQLString, },
+        category: { type: GraphQLString, },
         details: { type: GraphQLString },
         image1: { type: GraphQLString },
         image2: { type: GraphQLString },
@@ -110,6 +110,7 @@ const ProductType = new GraphQLObjectType({
         askedPrice: { type: GraphQLInt },
         owner: { type: GraphQLID },
         postedOn: { type: GraphQLString },
+        customerCount: { type: GraphQLInt },
         Owner: {
             type: NormalUserType,
             resolve(parent, args) {
@@ -165,6 +166,31 @@ const RootQueryType = new GraphQLObjectType({
             resolve(pparent, args) {
                 return Product.find({})
             }
+        },
+        GetProductByCategory: {
+            type: new GraphQLList(ProductType),
+            args: {
+                Type: { type: GraphQLString }
+            },
+            resolve(parent, args) {
+                console.log(args)
+                return Product.find({ category: args.Type })
+            }
+        },
+        SearchProducts: {
+            type: new GraphQLList(ProductType),
+            args: {
+                type: { type: GraphQLString },
+                askedPrice: { type: GraphQLString }
+            },
+            resolve(parent, args) {
+                var query = {
+                    $and: []
+                }
+                if (args.type != "") query.$and.push({ type: args.type })
+                if (args.price) query.$and.push({ askedPrice: { $gte: args.askedPrice } })
+                return Product.find(query, { type: args.type })
+            }
         }
     }
 })
@@ -175,11 +201,8 @@ const Mutation = new GraphQLObjectType({
         CartDelete: {
             type: CartType,
             args: {
-
                 productId: { type: GraphQLID },
                 customerId: { type: GraphQLID },
-
-
             },
             async resolve(parent, args) {
 
@@ -189,6 +212,7 @@ const Mutation = new GraphQLObjectType({
                         { customerId: args.customerId }
                     ]
                 }
+                await Product.findByIdAndUpdate(args.productId, { $inc: { customerCount: -1 } })
                 return Cart.findOneAndDelete(query)
             }
         },

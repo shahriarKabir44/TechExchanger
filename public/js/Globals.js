@@ -21,7 +21,7 @@ function getMyAdsGQL(id) {
         query: `query {User(id: "${id}"){
                 Owned{
                     id      
-                    type     
+                    category     
                     image1  
                     askedPrice
                     postedOn  
@@ -37,7 +37,7 @@ function getMyCarts(id) {
             Carts{
                 Product{
                     id          
-                    type        
+                    category        
                     details     
                     image1      
                     postedOn    
@@ -54,7 +54,7 @@ function getMyNotificationsGQL(id) {
             Notification{
                 senderId   
                 receiverId 
-                type       
+                category       
                 productId  
                 offer      
                 time   
@@ -63,7 +63,7 @@ function getMyNotificationsGQL(id) {
                     lastName
                 } 
                 Product{
-                    type
+                    category
                     image1
                 }   
             }
@@ -152,4 +152,8 @@ function convertToUnit8Array(base64str) {
 function popupShortcut(x) {
     if (window.innerWidth < 1000)
         x ? getel('shortcutList').style.left = "0px" : getel('shortcutList').style.left = "-150px"
+}
+
+function GetProductByCategoryGQL(category) {
+
 }

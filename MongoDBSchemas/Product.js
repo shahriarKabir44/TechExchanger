@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 
 const prodct = mongoose.Schema({
-    type: { type: String, },
+    category: { type: String, },
     details: { type: String },
     image1: { type: String },
     image2: { type: String },
@@ -10,7 +10,8 @@ const prodct = mongoose.Schema({
     askedPrice: { type: Number },
     owner: { type: mongoose.Schema.ObjectId },
     postedOn: { type: String },
-    lastUpdated: { type: String }
+    lastUpdated: { type: String },
+    customerCount: { type: Number }
 })
 const products = mongoose.model('products', prodct)
 

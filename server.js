@@ -22,8 +22,8 @@ mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechEx
 const cluster = require('cluster');
 const User = require('./MongoDBSchemas/User');
 const Product = require('./MongoDBSchemas/Product')
-var Cart = require('./MongoDBSchemas/Cart')
-var Notification = require('./MongoDBSchemas/Notification')
+const Cart = require('./MongoDBSchemas/Cart')
+const Notification = require('./MongoDBSchemas/Notification')
 
 const totalCPUs = require('os').cpus().length;
 
@@ -125,13 +125,14 @@ function startExpress() {
         delete newCart.customerName
         var updatedCart = await Cart.findOneAndUpdate({
             $and: [
-                { productId: args.productId },
-                { customerId: args.customerId }
+                { productId: req.body.productId },
+                { customerId: req.body.customerId }
             ]
         }, newCart)
         var now = (new Date() * 1) + ''
         if (!updatedCart) {
             var toSave = new Cart({ ...newCart, time: now, status: 0 })
+            await Product.findByIdAndUpdate(req.body.productId, { $inc: { customerCount: 1 } })
             await toSave.save()
         }
         var message = `${customerName} has offered ${req.body.offeredPrice} for your ${productName}!`;
