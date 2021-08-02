@@ -42,7 +42,7 @@ app.controller('myController', ($scope, $http) => {
                 $scope.isAuthorized = 1
                 $scope.currentUser = data
                 console.log(data)
-                subscribeToPush()
+                //subscribeToPush()
             }
             else {
                 localStorage.clear()
@@ -219,7 +219,7 @@ app.controller('myController', ($scope, $http) => {
                     $scope.currentUser = data.user
                     alert(`Welcome ${data.user.firstName}!`)
                     $scope.isAuthorized = 1
-                    subscribeToPush()
+                    // subscribeToPush()
                 }, () => { })
             }
         }, () => { })
@@ -240,7 +240,7 @@ app.controller('myController', ($scope, $http) => {
                 alert(`Welcome ${data.user.firstName}!`)
                 localStorage.setItem('token', data.token)
                 $scope.isAuthorized = 1
-                subscribeToPush()
+                //subscribeToPush()
             }
         }, () => { })
     }

@@ -44,12 +44,13 @@ if (cluster.isMaster) {
 
 function startExpress() {
     const app = express();
-    app.use(express.static('public'))
+
     app.use(cors())
     app.use(express.json())
     var PORT = process.env.PORT || 3000;
     app.listen(PORT)
-
+    var path = require('path')
+    app.use(express.static(path.join(__dirname, 'public')))
 
     app.post('/subscribe', verifyAuthToken, async (req, res) => {
         const subscription = req.body
@@ -115,6 +116,10 @@ function startExpress() {
             res.send({ data: null })
         }
 
+    })
+
+    app.get('/product/:id', (req, res) => {
+        res.sendFile(__dirname + '/public/pages/productPage.html')
     })
 
     app.post('/addToCart', verifyAuthToken, async (req, res) => {

@@ -1,65 +1,255 @@
+var app = angular.module('produstPage')
 
-function getel(x) {
-    return document.getElementById(x)
-}
-var acptbtn = document.getElementsByClassName('ownerLogd')
-for (let n = 0; n < acptbtn.length; n++) {
-    acptbtn[n].style.display = 'none'
-}
-
-var active = getel('loggedin')
-active.style.display = 'none'
-
-
-var userStatus = 0
-userLoggedIn();
-
-
-function userLoggedIn() {
-    userStatus = 1;
-    active.style.display = 'block'
-    $('signup-modal').modal('hide')
-    for (let n = 0; n < acptbtn.length; n++) {
-        acptbtn[n].style.display = 'block'
+app.controller('productController', ($scope, $http) => {
+    $scope.httpPost = (url, data, onSuccess, onError) => {
+        var req = {
+            method: 'POST',
+            url: url,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `bearer ${localStorage.getItem('token')}`
+            },
+            data: data
+        }
+        $http(req).then(function ({ data }) {
+            onSuccess(data)
+        }, function (error) {
+            if (onError) onError(error)
+        });
     }
-}
+    $scope.httpGet = (url, onSuccess, onError) => {
+        var req = {
+            method: 'GET',
+            url: url,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `bearer ${localStorage.getItem('token')}`
+            },
+        }
+        $http(req).then(function ({ data }) {
+            onSuccess(data)
+        }, function (error) {
+            onError(error)
+        });
+    }
+    $scope.isAuthorized = 0
+    $scope.currentUser = {}
+    $scope.InitializeApp = () => {
+        $scope.httpPost('/isAuthorized', {}, ({ data }) => {
+            if (data) {
+                $scope.isAuthorized = 1
+                $scope.currentUser = data
+                console.log(data)
+                //subscribeToPush()
+            }
+            else {
+                localStorage.clear()
+                $scope.isAuthorized = 0
+                $scope.currentUser = null
+            }
+        }, () => { })
+    }
+    //authorized parts
 
-var productroot = document.getElementsByClassName('product')
-for (let n = 0; n < productroot.length; n++) {
-    productroot[n].onclick = () => {
-        window.location.href = './productpage.html'
+    $scope.toStore = {}
+    $scope.UpdateInfo = () => {
+        var toStore = { ...$scope.toUpdate }
+        delete toStore.id
+        delete toStore.curPassword
+        var tosend = {
+            id: $scope.currentUser.id,
+            curPassword: $scope.toUpdate.curPassword,
+            toStore: toStore
+        }
+        console.log(tosend)
+        $scope.httpPost('/updateUser', tosend, ({ data }) => {
+            if (data == null) {
+                alert('Incorrect password!')
+            }
+            else {
+                localStorage.setItem('token', data.token)
+                $scope.currentUser = data.user
+                alert('Updating sucessful!')
+                $('#update-modal').modal('hide')
+            }
+        }, () => { })
     }
-}
 
-getel('searchBtn').onclick = () => {
-    var vl = getel('prods').value
-    var pc = getel('searchbar').value
-    var a = document.getElementsByClassName('prixe')
-    for (let n = 0; n < a.length; n++) {
-        let m = parseInt(pc) + (n * 9);
-        a[n].innerHTML = `Price: ৳ ${m}`
-    }
-    var b = document.getElementsByClassName('ctgr')
-    for (let n = 0; n < a.length; n++) {
-        b[n].innerHTML = `Category: ${vl}`
-    }
-    var b = document.getElementsByClassName('negro')
-    for (let n = 0; n < a.length; n++) {
-        b[n].src = `./assets/products/${vl}${n + 1}.jpg`
-    }
-    $('#searchResultModal').modal({ show: true })
-}
-getel('postAdd').onclick = () => {
-    var posted = getel('products-posted')
-    posted.innerHTML = `
-    <div class="d-flex justify-content-between">
-        <img src="./assets/products/a.jpg" style="height: 50px;width:50px" alt="">
-        Table -> 500 taka.
-        <a href="./adsPage.html" class="btn btn-primary">view</a>
-    </div>
-    `
-        + posted.innerHTML;
-    $('#postAd-modal').modal('hide')
-    $('#product-modal-ads').modal({ show: true })
+    $scope.initUpdate = () => {
+        $scope.toUpdate = { ...$scope.currentUser }
+        delete $scope.toUpdate.password
 
-}
+        $('#update-modal').modal('show')
+    }
+
+    $scope.mycarts = []
+    $scope.getmycarts = () => {
+        $scope.httpPost('/graphql', getMyCarts($scope.currentUser.id), ({ data }) => {
+            $scope.mycarts = data.User.Carts
+            console.log($scope.mycarts)
+            $('#myCarts').modal('show')
+        }, () => { })
+    }
+    $scope.myads = []
+    $scope.getMyAds = () => {
+        $scope.httpPost('/graphql', getMyAdsGQL($scope.currentUser.id), ({ data }) => {
+            $scope.myads = data.User.Owned
+            console.log(data.User.Owned)
+            $('#product-modal-ads').modal('show')
+        })
+    }
+    $scope.notifications = []
+    $scope.getNotifications = () => {
+        $scope.httpPost('/graphql', getMyNotificationsGQL($scope.currentUser.id), ({ data }) => {
+            $scope.notifications = data.User.Notification
+            $('#notif_modal').modal('show')
+        }, () => { })
+    }
+    $scope.uploadStat = [0, 0, 0, 0]
+    $scope.newProduct = {
+        category: "",
+        details: "",
+        image1: "",
+        image2: "",
+        image3: "",
+        image4: "",
+        askedPrice: "",
+        owner: $scope.currentUser.id,
+        postedOn: "",
+        lastUpdated: ""
+
+    }
+    $scope.usedFor = {
+        "month": "0",
+        "year": "0"
+    }
+    $scope.initPostAd = () => {
+        for (let n = 0; n < 4; n++) {
+            toggleUploadStatus(n, 0)
+            getel(`file${n + 1}`).value = null
+        }
+        $scope.usedFor = {
+            "month": "0",
+            "year": "0"
+        }
+        $scope.uploadStat = [0, 0, 0, 0]
+        $scope.newProduct = {
+            category: "",
+            details: "",
+            image1: "",
+            image2: "",
+            image3: "",
+            image4: "",
+            askedPrice: "",
+            owner: "",
+            lastUpdated: ""
+        }
+        $('#postAd-modal').modal('show')
+    }
+    $scope.postAd = async () => {
+        var imageIds = ['#file1', '#file2', '#file3', '#file4']
+        var imageURLProperties = ['image1', 'image2', 'image3', 'image4']
+        for (let n = 0; n < 4; n++) {
+            toggleUploadStatus(n, 0)
+        }
+        var usedFor = ($scope.usedFor.year * 1 ? $scope.usedFor.year + "year(s)" : "") + ($scope.usedFor.month * 1 ? $scope.usedFor.month + "month(s)" : "")
+        if (usedFor == "") usedFor = "Brand new!"
+
+        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id, usedFor: usedFor }
+        $scope.httpPost('/postAd', $scope.newProduct, async (data) => {
+            $scope.newProduct.id = data.newProductid
+            for (let n = 0; n < 4; n++) {
+                toggleUploadStatus(n, 1)
+                let url = await upload(`products/${$scope.currentUser.firstName + $scope.currentUser.firstName}/${$scope.newProduct.category}s/`, imageURLProperties[n], imageIds[n], data.newProductid)
+                $scope.newProduct[imageURLProperties[n]] = url
+                toggleUploadStatus(n, 2)
+
+            }
+            $scope.httpPost('/updateProduct', $scope.newProduct, ({ data }) => {
+                $('#postAd-modal').modal('hide')
+                alert('Your ad as been successfully posted!')
+            }, () => { })
+        })
+
+    }
+
+    navigator.serviceWorker.onmessage = e => {
+        $scope.$apply(function () {
+        })
+    }
+
+    $scope.logout = () => {
+        if (window.confirm('Are you sure?')) {
+            $scope.httpPost('/logout', {}, ({ data }) => {
+                if (data) {
+                    alert(`Hope we meet again, ${$scope.currentUser.firstName}!`)
+                    $scope.isAuthorized = 0
+                    $scope.currentUser = {}
+                    localStorage.clear()
+                }
+
+            })
+        }
+    }
+
+
+    //authorized part end
+    $scope.signupModel = {
+        password: "",
+        phoneNumber: "",
+        email: "",
+        address: "",
+        imageURL: "",
+        firstName: "",
+        lastName: "",
+    }
+    $scope.submitSignUp = () => {
+        $scope.httpPost('/signup', $scope.signupModel, async ({ data }) => {
+            if (!data) alert('invalid Phone number')
+            else {
+                localStorage.setItem('token', data.token)
+                $scope.currentUser = data.user
+
+                var imageURL = await upload('profilePictures', 'propic', '#proPic', $scope.currentUser.id)
+                $scope.httpPost('/updateProfilePicture', { id: $scope.currentUser.id, imageURL: imageURL }, ({ data }) => {
+                    localStorage.setItem('token', data.token)
+                    $('#signup-modal').modal('hide')
+                    $scope.currentUser = data.user
+                    alert(`Welcome ${data.user.firstName}!`)
+                    $scope.isAuthorized = 1
+                    // subscribeToPush()
+                }, () => { })
+            }
+        }, () => { })
+    }
+
+
+    $scope.loginEntity = {
+        phoneNumber: "",
+        password: ""
+    }
+    $scope.login = () => {
+        $scope.httpPost('/login', $scope.loginEntity, ({ data }) => {
+            if ((!data)) alert('Invalid credentials')
+            else {
+                console.log(data)
+                $scope.currentUser = data.user
+                $('#login-modal').modal('hide')
+                alert(`Welcome ${data.user.firstName}!`)
+                localStorage.setItem('token', data.token)
+                $scope.isAuthorized = 1
+                //subscribeToPush()
+            }
+        }, () => { })
+    }
+
+    $scope.products = {}
+    $scope.getProductsBycategory = (category) => {
+        $scope.httpPost('/graphql', GetProductByCategoryGQL(category), ({ data }) => {
+            $scope.products[category] = data.GetProductByCategory
+        })
+    }
+    $scope.getProductsBycategory('Bed')
+    $scope.getProductsBycategory('Chair')
+    $scope.getProductsBycategory('Table')
+})
