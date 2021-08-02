@@ -101,12 +101,11 @@
                 <br>
                 <div style="margin-bottom: 200px;clear: both;">
 
-                    <div ng-include="'./shared/templates/horizontalDisplayRow.html'" ng-if="true">
-                    </div>
+                    <card-list product-list="products.Bed"></card-list>
                 </div>
                 <br>
                 <br>
-                <div class="jumbotron" id="section2">
+                <div class=" jumbotron" id="section2">
                     <h1 style="display: flex;">Today's Featured</h1>
                     <hr>
                     <div class="row d-flex" style="display: flex;justify-content: center; align-items: center;">
@@ -179,12 +178,10 @@
                 <div class="pdlist">
                     <hr>
                     <div style="clear: both;margin-bottom: 200px;">
-                        <div ng-include="'./shared/templates/horizontalDisplayRow.html'" ng-if="true">
-
-                        </div>
+                        <card-list product-list="products.Chair"></card-list>
 
                     </div>
-                    <div class="extra1" style="text-align: center;">
+                    <div class=" extra1" style="text-align: center;">
                         <h2>Wait there's more!</h2>
                     </div>
 
@@ -194,8 +191,8 @@
                     </div>
                     <div style="margin-bottom: 200px;clear: both;">
 
-                        <div ng-include="'./shared/templates/horizontalDisplayRow.html'" ng-if="true">
-                        </div>
+                        <card-list product-list="products.Table"></card-list>
+                        <!-- <card product=></card> -->
                     </div>
 
                 </div>

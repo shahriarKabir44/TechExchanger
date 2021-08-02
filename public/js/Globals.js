@@ -16,6 +16,8 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 
+
+//graphqls
 function getMyAdsGQL(id) {
     return {
         query: `query {User(id: "${id}"){
@@ -70,6 +72,21 @@ function getMyNotificationsGQL(id) {
         }}`
     }
 }
+
+function GetProductByCategoryGQL(category) {
+    return {
+        query: `query{ GetProductByCategory(Type:"${category}"){
+              id
+              image1
+              customerCount
+              askedPrice
+              usedFor
+            }
+          }`
+    }
+}
+
+//graphqls end
 
 /**
  * 
@@ -154,6 +171,3 @@ function popupShortcut(x) {
         x ? getel('shortcutList').style.left = "0px" : getel('shortcutList').style.left = "-150px"
 }
 
-function GetProductByCategoryGQL(category) {
-
-}

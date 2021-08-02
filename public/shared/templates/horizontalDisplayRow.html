@@ -1,10 +1,15 @@
-<div class="container productList" style="display: flex;flex-wrap: nowrap;overflow-x: auto;">
-    <div ng-include="'./shared/templates/productCard.html'"></div>
-    <div ng-include="'./shared/templates/productCard.html'"></div>
-    <div ng-include="'./shared/templates/productCard.html'"></div>
-    <div ng-include="'./shared/templates/productCard.html'"></div>
-    <div ng-include="'./shared/templates/productCard.html'"></div>
+<div>
+    <div class="container productList" style="display: flex;flex-wrap: nowrap;overflow-x: auto;">
 
-
-
+        <div ng-if="productList && productList.length" ng-repeat="pd in productList">
+            <product-card current-product="pd"></product-card>
+        </div>
+        <div class="container" ng-if="!productList || !productList.length">
+            <h5 style="text-align: center;">
+                Looks like no such product is available now :(
+                <p style="display: inline-block;"> Would you like to <button class="btn btn-primary">Post an ad</button>
+                </p>
+            </h5>
+        </div>
+    </div>
 </div>

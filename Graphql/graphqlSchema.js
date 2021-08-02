@@ -174,7 +174,6 @@ const RootQueryType = new GraphQLObjectType({
                 Type: { type: GraphQLString }
             },
             resolve(parent, args) {
-                console.log(args)
                 return Product.find({ category: args.Type })
             }
         },

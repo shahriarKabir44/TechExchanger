@@ -26,6 +26,8 @@ self.addEventListener('install', event => {
         caches.open(cacheName)
             .then(cache => cache.addAll([
                 '/',
+                'index.html',
+
             ]))
     );
 });

@@ -157,28 +157,26 @@ app.controller('myController', ($scope, $http) => {
         var usedFor = ($scope.usedFor.year * 1 ? $scope.usedFor.year + "year(s)" : "") + ($scope.usedFor.month * 1 ? $scope.usedFor.month + "month(s)" : "")
         if (usedFor == "") usedFor = "Brand new!"
 
-        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id, usedFor: usedFor },
-            $scope.httpPost('/postAd', $scope.newProduct, async (data) => {
-                $scope.newProduct.id = data.newProductid
-                for (let n = 0; n < 4; n++) {
-                    toggleUploadStatus(n, 1)
-                    let url = await upload(`products/${$scope.currentUser.firstName + $scope.currentUser.firstName}/${$scope.newProduct.category}s/`, imageURLProperties[n], imageIds[n], data.newProductid)
-                    $scope.newProduct[imageURLProperties[n]] = url
-                    toggleUploadStatus(n, 2)
+        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id, usedFor: usedFor }
+        $scope.httpPost('/postAd', $scope.newProduct, async (data) => {
+            $scope.newProduct.id = data.newProductid
+            for (let n = 0; n < 4; n++) {
+                toggleUploadStatus(n, 1)
+                let url = await upload(`products/${$scope.currentUser.firstName + $scope.currentUser.firstName}/${$scope.newProduct.category}s/`, imageURLProperties[n], imageIds[n], data.newProductid)
+                $scope.newProduct[imageURLProperties[n]] = url
+                toggleUploadStatus(n, 2)
 
-                }
-                $scope.httpPost('/updateProduct', $scope.newProduct, ({ data }) => {
-                    $('#postAd-modal').modal('hide')
-                    alert('Your ad as been successfully posted!')
-                }, () => { })
-            })
+            }
+            $scope.httpPost('/updateProduct', $scope.newProduct, ({ data }) => {
+                $('#postAd-modal').modal('hide')
+                alert('Your ad as been successfully posted!')
+            }, () => { })
+        })
 
     }
+
     navigator.serviceWorker.onmessage = e => {
-        console.log(e)
         $scope.$apply(function () {
-            $scope.name = "xnxx"
-            console.log('object')
         })
     }
 
@@ -247,10 +245,42 @@ app.controller('myController', ($scope, $http) => {
         }, () => { })
     }
 
+    $scope.products = {}
+    $scope.getProductsBycategory = (category) => {
+        $scope.httpPost('/graphql', GetProductByCategoryGQL(category), ({ data }) => {
+            $scope.products[category] = data.GetProductByCategory
+        })
+    }
+    $scope.getProductsBycategory('Bed')
+    $scope.getProductsBycategory('Chair')
+    $scope.getProductsBycategory('Table')
     //common part end
 
-    $scope.products = {}
-    $scope.getProducts = (category) => {
 
+})
+
+
+app.directive('productCard', function () {
+    return {
+        scope: {
+            'currentProduct': '='
+        },
+        templateUrl: './shared/templates/productCard.html',
+
+        link: function (scope) {
+            console.log(scope.currentProduct)
+        }
+
+    }
+})
+
+app.directive('cardList', function () {
+    return {
+        scope: {
+            'productList': '='
+        },
+        templateUrl: './shared/templates/horizontalDisplayRow.html',
+        link: function (scope) {
+        }
     }
 })
