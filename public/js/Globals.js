@@ -115,6 +115,7 @@ var getProductDetailsById = id => {
               firstName
               lastName
             }
+            owner
           }
         }`
     }

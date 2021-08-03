@@ -45,7 +45,28 @@ app.controller('productController', ($scope, $http) => {
         console.log($scope.productId)
         $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
             $scope.currentDisplayingProduct = data.GetProductById
+            console.log(data.GetProductById)
+            $scope.setUserToProductRelation()
         })
+    }
+    $scope.userToProductRelation = 0
+    $scope.setUserToProductRelation = () => {
+        if ($scope.isAuthorized == 0) {
+            $scope.userToProductRelation = 0
+            return
+        }
+        console.log($scope.currentDisplayingProduct.owner, $scope.currentUser.id)
+        if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id)
+            $scope.userToProductRelation = 1
+        else {
+            $scope.currentDisplayingProduct.Offerers.forEach(offerer => {
+                if (offerer.Buyer.id == $scope.currentUser.id) {
+                    $scope.userToProductRelation = 2
+                    return
+                }
+            });
+        }
+        console.log($scope.userToProductRelation)
     }
 
     $scope.isAuthorized = 0
@@ -210,6 +231,7 @@ app.controller('productController', ($scope, $http) => {
                     $scope.isAuthorized = 0
                     $scope.currentUser = {}
                     localStorage.clear()
+                    $scope.userToProductRelation = 0
                 }
 
             })
@@ -241,6 +263,8 @@ app.controller('productController', ($scope, $http) => {
                     $scope.currentUser = data.user
                     alert(`Welcome ${data.user.firstName}!`)
                     $scope.isAuthorized = 1
+                    $scope.setUserToProductRelation()
+
                     // subscribeToPush()
                 }, () => { })
             }
@@ -262,6 +286,7 @@ app.controller('productController', ($scope, $http) => {
                 alert(`Welcome ${data.user.firstName}!`)
                 localStorage.setItem('token', data.token)
                 $scope.isAuthorized = 1
+                $scope.setUserToProductRelation()
                 //subscribeToPush()
             }
         }, () => { })
