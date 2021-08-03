@@ -50,7 +50,9 @@ function startExpress() {
     var PORT = process.env.PORT || 3000;
     app.listen(PORT)
     var path = require('path')
-    app.use(express.static(('public')))
+    app.use(express.static(__dirname + '/public'));
+    app.use('/product/:id', express.static(__dirname + '/public'));
+    app.set('view engine', 'ejs')
 
     app.post('/subscribe', verifyAuthToken, async (req, res) => {
         const subscription = req.body
@@ -119,7 +121,8 @@ function startExpress() {
     })
 
     app.get('/product/:id', (req, res) => {
-        res.sendFile(__dirname + '/public/pages/productPage.html')
+        console.log('object')
+        res.render('productPage.ejs')
     })
 
     app.post('/addToCart', verifyAuthToken, async (req, res) => {
@@ -222,7 +225,7 @@ function startExpress() {
         }
     })
     app.get('/', (req, res) => {
-        res.sendFile('index.html')
+        res.render('index.ejs')
     })
     app.post('/logout', verifyAuthToken, (req, res) => {
         User.findByIdAndUpdate(req.user.id, { notificationId: '' }, (er, data) => {

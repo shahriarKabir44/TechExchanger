@@ -1,4 +1,4 @@
-var app = angular.module('produstPage')
+var app = angular.module('produstPage', [])
 
 app.controller('productController', ($scope, $http) => {
     $scope.httpPost = (url, data, onSuccess, onError) => {
