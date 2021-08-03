@@ -37,8 +37,10 @@ const UserType = new GraphQLObjectType({
         },
         Carts: {
             type: new GraphQLList(CartType),
-            resolve(parent, args) {
-                return Cart.find({ customerId: parent.id })
+            async resolve(parent, args) {
+                var x = await Cart.find({ customerId: parent.id })
+                console.log(x)
+                return x
             }
         },
         Notification: {
@@ -85,13 +87,13 @@ const CartType = new GraphQLObjectType({
         Buyer: {
             type: UserType,
             resolve(parent, args) {
-                return User.findById(parent.ownerId)
+                return User.findById(parent.customerId)
             }
         },
         Seller: {
             type: UserType,
             resolve(parent, args) {
-                return user.findById(parent.customerId)
+                return user.findById(parent.ownerId)
             }
         }
     })

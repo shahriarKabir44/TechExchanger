@@ -50,22 +50,20 @@ app.controller('productController', ($scope, $http) => {
         })
     }
     $scope.userToProductRelation = 0
+    $scope.customerList = []
     $scope.setUserToProductRelation = () => {
-        if ($scope.isAuthorized == 0) {
-            $scope.userToProductRelation = 0
-            return
-        }
-        console.log($scope.currentDisplayingProduct.owner, $scope.currentUser.id)
+        $scope.customerList = []
+
         if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id)
             $scope.userToProductRelation = 1
-        else {
-            $scope.currentDisplayingProduct.Offerers.forEach(offerer => {
-                if (offerer.Buyer.id == $scope.currentUser.id) {
-                    $scope.userToProductRelation = 2
-                    return
-                }
-            });
-        }
+
+        $scope.currentDisplayingProduct.Offerers.forEach(offerer => {
+            $scope.customerList.push(offerer.Buyer)
+            if ($scope.userToProductRelation && offerer.Buyer.id == $scope.currentUser.id) {
+                $scope.userToProductRelation = 2
+                return
+            }
+        });
         console.log($scope.userToProductRelation)
     }
 
@@ -302,6 +300,34 @@ app.controller('productController', ($scope, $http) => {
     $scope.getProductsBycategory('Chair')
     $scope.getProductsBycategory('Table')
 
+    $scope.cart = {
 
+    }
+
+    $scope.initAddToCart = () => {
+        if (!$scope.isAuthorized) {
+            return
+        }
+        $scope.cart = {
+        }
+        $('#bargain-modal').modal('show')
+
+    }
+    $scope.addToCart = () => {
+        var newCart = {
+            ownerId: $scope.currentDisplayingProduct.owner,
+            productId: $scope.productId,
+            customerId: $scope.currentUser.id,
+            offeredPrice: $scope.cart.offeredPrice,
+            productName: $scope.currentDisplayingProduct.category,
+            customerName: $scope.currentUser.firstName + $scope.currentUser.lastName,
+        }
+        $scope.httpPost('/addToCart', newCart, ({ data }) => {
+            $('#bargain-modal').modal('hide')
+            $scope.userToProductRelation = 2
+            $scope.customerList.push($scope.currentUser)
+
+        })
+    }
 
 })

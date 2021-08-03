@@ -138,6 +138,7 @@ function startExpress() {
         var productName = req.body.productName
         var customerName = req.body.customerName
         var newCart = { ...req.body }
+        console.log(req.body)
         delete newCart.productName
         delete newCart.customerName
         var updatedCart = await Cart.findOneAndUpdate({
@@ -148,9 +149,9 @@ function startExpress() {
         }, newCart)
         var now = (new Date() * 1) + ''
         if (!updatedCart) {
-            var toSave = new Cart({ ...newCart, time: now, status: 0 })
+            var updatedCart = new Cart({ ...newCart, time: now, status: 0 })
             await Product.findByIdAndUpdate(req.body.productId, { $inc: { customerCount: 1 } })
-            await toSave.save()
+            await updatedCart.save()
         }
         var message = `${customerName} has offered ${req.body.offeredPrice} for your ${productName}!`;
         var newNotification = new Notification({
@@ -162,12 +163,16 @@ function startExpress() {
             time: now,
         })
         await newNotification.save()
-        var sellerNotificationId = await User.findById(req.body.ownerId)
-        webPush.sendNotification(JSON.parse(sellerNotificationId), JSON.stringify({ title: 'Offer!', body: message }))
-            .then(data => {
-                res.send({ data: newNotification })
-            })
-            .catch(err => console.log(err))
+        var seller = await User.findById(req.body.ownerId)
+        var sellerNotificationId = seller.notificationId
+        console.log(sellerNotificationId)
+        if (sellerNotificationId != '')
+            webPush.sendNotification(JSON.parse(sellerNotificationId), JSON.stringify({ title: 'Offer!', body: message }))
+                .then(data => {
+                    res.send({ data: updatedCart })
+                })
+                .catch(err => console.log(sellerNotificationId))
+        else res.send({ data: updatedCart })
     })
     app.post('/login', async (req, res) => {
         var { phoneNumber, password } = req.body;

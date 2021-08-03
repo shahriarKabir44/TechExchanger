@@ -99,6 +99,7 @@ var getProductDetailsById = id => {
             postedFrom
             category
             customerCount
+            usedFor
             Offerers{
               Buyer{
                 id

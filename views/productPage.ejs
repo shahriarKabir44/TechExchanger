@@ -137,14 +137,14 @@
                     </div>
 
                     <div>
-                        <button ng-if=" userToProductRelation==0" class="btn btn-success">
+                        <button ng-if=" userToProductRelation==0" ng-click="initAddToCart()" class="btn btn-success">
                             Add to cart!
                         </button>
                         <button class="btn btn-danger" ng-if=" userToProductRelation==1">
-                            Remove from cart
+                            Delete Ad!
                         </button>
                         <button class="btn btn-danger" ng-if=" userToProductRelation==2">
-                            Delete Ad!
+                            Remove from cart
                         </button>
                     </div>
 
