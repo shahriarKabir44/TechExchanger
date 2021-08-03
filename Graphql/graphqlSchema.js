@@ -193,6 +193,15 @@ const RootQueryType = new GraphQLObjectType({
                 if (args.price) query.$and.push({ askedPrice: { $gte: args.askedPrice } })
                 return Product.find(query, { type: args.type })
             }
+        },
+        GetProductById: {
+            type: ProductType,
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve(parent, args) {
+                return Product.findById(args.id)
+            }
         }
     }
 })

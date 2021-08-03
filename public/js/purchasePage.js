@@ -32,9 +32,25 @@ app.controller('productController', ($scope, $http) => {
             onError(error)
         });
     }
+    $scope.productId = 0
+    $scope.getProductId = () => {
+        var s = location.href.split('/')[4]
+        $scope.productId = s;
+    }
+
+    $scope.currentDisplayingProduct = {}
+    $scope.userToProductRelation = 0
+    $scope.getProductDetails = () => {
+        $scope.getProductId()
+        console.log($scope.productId)
+        $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
+            $scope.currentDisplayingProduct = data.GetProductById
+        })
+    }
+
     $scope.isAuthorized = 0
     $scope.currentUser = {}
-    $scope.InitializeApp = () => {
+    $scope.getCurrentUser = () => {
         $scope.httpPost('/isAuthorized', {}, ({ data }) => {
             if (data) {
                 $scope.isAuthorized = 1
@@ -47,8 +63,15 @@ app.controller('productController', ($scope, $http) => {
                 $scope.isAuthorized = 0
                 $scope.currentUser = null
             }
+            $scope.getProductDetails()
+
         }, () => { })
     }
+    $scope.InitProductPage = () => {
+
+        $scope.getCurrentUser()
+    }
+
     //authorized parts
 
     $scope.toStore = {}
@@ -253,4 +276,7 @@ app.controller('productController', ($scope, $http) => {
     $scope.getProductsBycategory('Bed')
     $scope.getProductsBycategory('Chair')
     $scope.getProductsBycategory('Table')
+
+
+
 })

@@ -122,11 +122,16 @@ function startExpress() {
 
     app.get('/product/:id', async (req, res) => {
         var id = req.params.id
-        if (await Product.findById(id)) {
-            res.render('productPage.ejs')
+        try {
+            if (await Product.findById(id)) {
+                res.render('productPage.ejs')
+            }
+
+            else res.redirect('/')
+        } catch (error) {
+            res.redirect('/')
         }
 
-        else res.redurect('/')
     })
 
     app.post('/addToCart', verifyAuthToken, async (req, res) => {

@@ -86,6 +86,40 @@ function GetProductByCategoryGQL(category) {
     }
 }
 
+var getProductDetailsById = id => {
+    return {
+        query: `query{ GetProductById(id:"${id}"){
+            image1
+            image2
+            image3
+            image4
+            askedPrice
+            details
+            postedOn
+            postedFrom
+            category
+            customerCount
+            Offerers{
+              Buyer{
+                id
+                firstName
+                lastName
+                address
+                imageURL
+                
+              }
+              offeredPrice
+            }
+            Owner{
+              imageURL
+              firstName
+              lastName
+            }
+          }
+        }`
+    }
+}
+
 //graphqls end
 
 /**
