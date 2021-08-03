@@ -257,7 +257,10 @@ app.controller('myController', ($scope, $http) => {
     $scope.getProductsBycategory('Chair')
     $scope.getProductsBycategory('Table')
     //common part end
-
+    $scope.viewProd = (id) => {
+        console.log(id)
+        location.href = "product/" + id
+    }
 
 })
 
@@ -268,9 +271,9 @@ app.directive('productCard', function () {
             'currentProduct': '='
         },
         templateUrl: './shared/templates/productCard.html',
+        controller: "myController",
 
         link: function (scope) {
-            console.log(scope.currentProduct)
         }
 
     }
@@ -281,6 +284,8 @@ app.directive('cardList', function () {
         scope: {
             'productList': '='
         },
+        controller: "myController",
+
         templateUrl: './shared/templates/horizontalDisplayRow.html',
         link: function (scope) {
         }

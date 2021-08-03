@@ -165,6 +165,9 @@ function toggleUploadStatus(index, stat) {
 //     return outputArray
 // }
 
+function viewProd(id) {
+    console.log(id)
+}
 
 function popupShortcut(x) {
     if (window.innerWidth < 1000)

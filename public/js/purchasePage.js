@@ -116,8 +116,8 @@ app.controller('productController', ($scope, $http) => {
         askedPrice: "",
         owner: $scope.currentUser.id,
         postedOn: "",
-        lastUpdated: ""
-
+        lastUpdated: "",
+        postedFrom: ""
     }
     $scope.usedFor = {
         "month": "0",
@@ -142,7 +142,8 @@ app.controller('productController', ($scope, $http) => {
             image4: "",
             askedPrice: "",
             owner: "",
-            lastUpdated: ""
+            lastUpdated: "",
+            postedFrom: ""
         }
         $('#postAd-modal').modal('show')
     }
