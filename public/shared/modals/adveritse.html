@@ -64,7 +64,14 @@
                         <div class="valid-feedback">Valid.</div>
                         <div class="invalid-feedback">Please fill out this field.</div>
                     </div>
-                    <div class="form-group my-3">
+                    <div class="form-group form-group-lg my-3">
+
+                        <input type="text" class="form-control" id="address" ng-model="newProduct.postedFrom"
+                            placeholder="The current address of the product" name="address" required>
+                        <div class="valid-feedback">Valid.</div>
+                        <div class="invalid-feedback">Please fill out this field.</div>
+                    </div>
+                    <div class="form-group my-3 d-flex">
                         <label for="types">Select Type</label>
                         <select class="form-control" name="types" ng-model="newProduct.category">
                             <option value="">Select Category (select one):</option>

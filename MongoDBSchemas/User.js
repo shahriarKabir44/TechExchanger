@@ -9,6 +9,7 @@ var userSchema = new mongoose.Schema({
     firstName: { type: String, },
     lastName: { type: String },
     notificationId: { type: String },
+    createdOn: { type: String }
 })
 
 const User = mongoose.model('User', userSchema)

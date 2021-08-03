@@ -206,7 +206,7 @@ function startExpress() {
     app.post('/signup', async (req, res) => {
         var newUser = req.body
         try {
-            var toSave = new User(newUser)
+            var toSave = new User({ ...newUser, createdOn: (new Date() * 1) + '' })
             await toSave.save();
             var tempdata = {
                 ...newUser,
