@@ -100,6 +100,21 @@ var getProductDetailsById = id => {
             category
             customerCount
             usedFor
+            Owner{
+              imageURL
+              firstName
+              lastName
+            }
+            owner
+          }
+        }`
+    }
+}
+
+function getCustomerList(id) {
+    return {
+        query: `query{ GetProductById(id:"${id}"){
+             
             Offerers{
               Buyer{
                 id
@@ -111,12 +126,8 @@ var getProductDetailsById = id => {
               }
               offeredPrice
             }
-            Owner{
-              imageURL
-              firstName
-              lastName
-            }
-            owner
+             
+             
           }
         }`
     }
@@ -210,3 +221,32 @@ function popupShortcut(x) {
         x ? getel('shortcutList').style.left = "0px" : getel('shortcutList').style.left = "-150px"
 }
 
+function renderCustomers(data) {
+    console.log(data)
+    var noCustomer = getel('noCustomer')
+    var root = getel('customerListRoot')
+    if (!data.length) {
+        noCustomer.style.display = 'block'
+        root.style.display = 'none'
+    }
+    else {
+        noCustomer.style.display = 'none'
+        root.style.display = 'block'
+        root.innerHTML = ""
+        data.forEach(offerer => {
+            var s = `<div class="card" style="width:400px;flex: 0 0 auto">
+            <div class="card-body">
+                <div class="crdbod product">
+                    <div class="card m-3 pb-3" style="align-items: center;">
+                        <img src="${offerer.Buyer.imageURL}" style="width: 300px;max-height: 400px;" alt="">
+                        <h4 class="text-success">Offered: ${offerer.offeredPrice} taka</h4>
+                        <h5>Name: ${offerer.Buyer.firstName} ${offerer.Buyer.lastName}</h5>
+
+                    </div>
+                </div>
+            </div>
+        </div>`
+            root.innerHTML += s
+        })
+    }
+}

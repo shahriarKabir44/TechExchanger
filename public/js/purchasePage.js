@@ -36,6 +36,11 @@ app.controller('productController', ($scope, $http) => {
     $scope.getProductId = () => {
         var s = location.href.split('/')[4]
         $scope.productId = s;
+        $scope.httpPost('/graphql', getCustomerList(s), ({ data }) => {
+            $scope.customerList = data.GetProductById.Offerers
+            renderCustomers(data.GetProductById.Offerers)
+            $scope.setUserToProductRelation()
+        })
     }
 
     $scope.currentDisplayingProduct = {}
@@ -44,27 +49,26 @@ app.controller('productController', ($scope, $http) => {
         $scope.getProductId()
         console.log($scope.productId)
         $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
+
             $scope.currentDisplayingProduct = data.GetProductById
-            console.log(data.GetProductById)
-            $scope.setUserToProductRelation()
+
+
         })
     }
     $scope.userToProductRelation = 0
     $scope.customerList = []
     $scope.setUserToProductRelation = () => {
-        $scope.customerList = []
 
         if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id)
             $scope.userToProductRelation = 1
 
-        $scope.currentDisplayingProduct.Offerers.forEach(offerer => {
-            $scope.customerList.push(offerer.Buyer)
-            if ($scope.userToProductRelation && offerer.Buyer.id == $scope.currentUser.id) {
+        $scope.customerList.forEach(offerer => {
+            if ($scope.isAuthorized && offerer.Buyer.id == $scope.currentUser.id) {
                 $scope.userToProductRelation = 2
                 return
             }
         });
-        console.log($scope.userToProductRelation)
+        console.log($scope.customerList)
     }
 
     $scope.isAuthorized = 0
@@ -325,9 +329,54 @@ app.controller('productController', ($scope, $http) => {
         $scope.httpPost('/addToCart', newCart, ({ data }) => {
             $('#bargain-modal').modal('hide')
             $scope.userToProductRelation = 2
-            $scope.customerList.push($scope.currentUser)
-
+            $scope.customerList.push({
+                Buyer: $scope.currentUser,
+                offeredPrice: newCart.offeredPrice
+            })
+            renderCustomers($scope.customerList)
         })
     }
 
+})
+
+
+app.directive('customerlistComponent', function () {
+    return {
+        scope: {
+            'currentProduct': '='
+        },
+        templateUrl: './shared/templates/customerList.html',
+        controller: "productController",
+
+        link: function (scope) {
+        }
+
+    }
+})
+
+app.directive('productCard', function () {
+    return {
+        scope: {
+            'currentProduct': '='
+        },
+        templateUrl: './shared/templates/productCard.html',
+        controller: "productController",
+
+        link: function (scope) {
+        }
+
+    }
+})
+
+app.directive('cardList', function () {
+    return {
+        scope: {
+            'productList': '='
+        },
+        controller: "productController",
+
+        templateUrl: './shared/templates/horizontalDisplayRow.html',
+        link: function (scope) {
+        }
+    }
 })
