@@ -45,13 +45,14 @@ app.controller('productController', ($scope, $http) => {
 
     $scope.currentDisplayingProduct = {}
     $scope.userToProductRelation = 0
+    $scope.p = "y"
     $scope.getProductDetails = () => {
         $scope.getProductId()
         console.log($scope.productId)
         $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
 
             $scope.currentDisplayingProduct = data.GetProductById
-
+            $scope.getProductsBycategory($scope.currentDisplayingProduct.category)
 
         })
     }
@@ -298,11 +299,11 @@ app.controller('productController', ($scope, $http) => {
     $scope.getProductsBycategory = (category) => {
         $scope.httpPost('/graphql', GetProductByCategoryGQL(category), ({ data }) => {
             $scope.products[category] = data.GetProductByCategory
+            renderSimilarProducts(data.GetProductByCategory)
+
         })
     }
-    $scope.getProductsBycategory('Bed')
-    $scope.getProductsBycategory('Chair')
-    $scope.getProductsBycategory('Table')
+
 
     $scope.cart = {
 
@@ -354,13 +355,13 @@ app.directive('customerlistComponent', function () {
     }
 })
 
-app.directive('productCard', function () {
+app.directive('productRenderer', function () {
     return {
         scope: {
             'currentProduct': '='
         },
-        templateUrl: './shared/templates/productCard.html',
-        controller: "productController",
+        templateUrl: './shared/templates/productRenderer.html',
+
 
         link: function (scope) {
         }
@@ -368,15 +369,3 @@ app.directive('productCard', function () {
     }
 })
 
-app.directive('cardList', function () {
-    return {
-        scope: {
-            'productList': '='
-        },
-        controller: "productController",
-
-        templateUrl: './shared/templates/horizontalDisplayRow.html',
-        link: function (scope) {
-        }
-    }
-})

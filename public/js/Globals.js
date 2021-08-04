@@ -222,7 +222,6 @@ function popupShortcut(x) {
 }
 
 function renderCustomers(data) {
-    console.log(data)
     var noCustomer = getel('noCustomer')
     var root = getel('customerListRoot')
     if (!data.length) {
@@ -247,6 +246,41 @@ function renderCustomers(data) {
             </div>
         </div>`
             root.innerHTML += s
+        })
+    }
+}
+
+function renderSimilarProducts(datas) {
+    console.log(datas.length)
+    var productsRoot = getel('similarProductRoot')
+    var noProductRoot = getel('noSimilarProductRoot')
+    if (datas.lenth == 0) {
+        productsRoot.style.display = 'none'
+        noProductRoot.style.display = 'block'
+        console.log('object')
+    }
+    else {
+        productsRoot.style.display = 'flex'
+        noProductRoot.style.display = 'none'
+        productsRoot.innerHTML = ''
+        datas.forEach(currentProduct => {
+            var s = `
+            <div class="card" style="width:400px;flex: 0 0 auto">
+                <div class="card-body">
+                    <div class="crdbod product">
+                        <div class="card m-3 pb-3" style="align-items: center;">
+                            <img src="${currentProduct.image1}" style="width: 300px;max-height: 400px;" alt="">
+                            <h4 class="text-success">Price: ${currentProduct.askedPrice} taka</h4>
+                            <h5>Used for: ${currentProduct.usedFor}</h5>
+                            <h6>${currentProduct.customerCount} user(s) have offered</h6>
+
+                            <button onclick="viewProd(${currentProduct.id})" class="btn btn-primary">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `
+            productsRoot.innerHTML += s
         })
     }
 }
