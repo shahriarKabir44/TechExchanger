@@ -39,7 +39,6 @@ const UserType = new GraphQLObjectType({
             type: new GraphQLList(CartType),
             async resolve(parent, args) {
                 var x = await Cart.find({ customerId: parent.id })
-                console.log(x)
                 return x
             }
         },

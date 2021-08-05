@@ -11,16 +11,16 @@
             <div class="modal-body">
                 <ul id="products-posted" style="list-style: none;">
                     <!--dynamic contents-->
-                    <li style="box-shadow: 5px 5px 5px;">
-                        <div ng-repeat="cart in carts"
-                            style="display: grid;grid-template-columns: 30% 55% 15%;border-radius: 5px;">
-                            <img ng-src="{{cart.product.image1}}" style="height: 50px;width:50px" alt="">
+                    <li style="box-shadow: 5px 5px 5px;" ng-repeat="cart in mycarts">
+                        <div style="display: grid;grid-template-columns: 30% 55% 15%;border-radius: 5px;">
+                            <img ng-src="{{cart.Product.image1}}" style="height: 50px;width:50px" alt="">
                             <div>
-                                <p style="margin:-2px;">Type: {{cart.product.category}}</p>
+                                <p style="margin:-2px;">Type: {{cart.Product.category}}</p>
                                 <p style="margin:-2px;">Price: {{cart.offeredPrice}} taka.</p>
-                                <p style="margin:-2px;">Time: {{new Date(cart.time)}} </p>
+                                <p style="margin:-2px;">Time: {{(cart.time)}} </p>
                             </div>
-                            <a style="margin-top: 15px;" href="./adsPage.html" class="btn btn-primary">view</a>
+                            <a style="margin-top: 15px;" ng-click="viewProd(cart.Product.id)"
+                                class="btn btn-primary">view</a>
                         </div>
                     </li>
 

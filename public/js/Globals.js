@@ -41,12 +41,22 @@ function getMyCarts(id) {
                     id          
                     category        
                     details     
-                    image1      
-                    postedOn    
+                    image1          
                 }
                 offeredPrice
+                time
             }
         }}`
+    }
+}
+
+function removeCartGQL(user, product) {
+    return {
+        query: `mutation{
+            CartDelete(productId:"${user}",customerId:"${product}"){
+              offeredPrice
+            }
+          }`
     }
 }
 

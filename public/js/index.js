@@ -171,6 +171,8 @@ app.controller('myController', ($scope, $http) => {
             }
             $scope.httpPost('/updateProduct', $scope.newProduct, ({ data }) => {
                 $('#postAd-modal').modal('hide')
+                $('#product-modal-ads').modal('hide')
+
                 alert('Your ad as been successfully posted!')
             }, () => { })
         })

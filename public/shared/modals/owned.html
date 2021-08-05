@@ -21,7 +21,8 @@
                                 <p style="margin:-2px;">Price: {{product.askedPrice}} taka.</p>
                                 <p style="margin:-2px;">Time: {{product.postedOn}} </p>
                             </div>
-                            <a style="margin-top: 15px;" href="./adsPage.html" class="btn btn-primary">view</a>
+                            <a style="margin-top: 15px;" ng-click="viewProd(product.id)"
+                                class="btn btn-primary">View</a>
                         </div>
                     </li>
 
