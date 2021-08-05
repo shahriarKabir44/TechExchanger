@@ -5,7 +5,6 @@ app.controller('myController', ($scope, $http) => {
     //common part
     $scope.isAJAXBusy = 0
     $scope.httpPost = (url, data, onSuccess, onError) => {
-        if ($scope.isAJAXBusy == 1) return
         $scope.isAJAXBusy = 1
         var req = {
             method: 'POST',
@@ -42,7 +41,9 @@ app.controller('myController', ($scope, $http) => {
     $scope.isAuthorized = 0
     $scope.currentUser = {}
     $scope.InitializeApp = () => {
+        console.log('object')
         $scope.httpPost('/isAuthorized', {}, ({ data }) => {
+            console.log(data)
             if (data) {
                 $scope.isAuthorized = 1
                 $scope.currentUser = data
@@ -55,6 +56,11 @@ app.controller('myController', ($scope, $http) => {
                 $scope.currentUser = null
             }
         }, () => { })
+    }
+    $scope.parseTime = (x) => {
+        var time = new Date(x * 1)
+        var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
+        return res
     }
     //authorized parts
 
@@ -274,14 +280,20 @@ app.controller('myController', ($scope, $http) => {
     }
 
     $scope.products = {}
-    $scope.getProductsBycategory = (category) => {
-        $scope.httpPost('/graphql', GetProductByCategoryGQL(category), ({ data }) => {
-            $scope.products[category] = data.GetProductByCategory
+    $scope.getProductsBycategory = () => {
+        $scope.httpPost('/graphql', GetProductByCategoryGQL('Chair'), ({ data }) => {
+            $scope.products['Chair'] = data.GetProductByCategory
+            $scope.httpPost('/graphql', GetProductByCategoryGQL('Bed'), ({ data }) => {
+                $scope.products['Bed'] = data.GetProductByCategory
+                $scope.httpPost('/graphql', GetProductByCategoryGQL('Table'), ({ data }) => {
+                    $scope.products['Table'] = data.GetProductByCategory
+                })
+            })
         })
+
+
     }
-    $scope.getProductsBycategory('Bed')
-    $scope.getProductsBycategory('Chair')
-    $scope.getProductsBycategory('Table')
+    $scope.getProductsBycategory()
     //common part end
     $scope.viewProd = (id) => {
         console.log(id)

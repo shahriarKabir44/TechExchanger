@@ -14,6 +14,7 @@ app.controller('productController', ($scope, $http) => {
             data: data
         }
         $http(req).then(function ({ data }) {
+            console.log(data)
             $scope.isAJAXBusy = 0
             onSuccess(data)
         }, function (error) {
@@ -73,11 +74,16 @@ app.controller('productController', ($scope, $http) => {
             }
         });
     }
-
+    $scope.parseTime = (x) => {
+        var time = new Date(x * 1)
+        var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
+        return res
+    }
     $scope.isAuthorized = 0
     $scope.currentUser = {}
     $scope.getCurrentUser = () => {
         $scope.httpPost('/isAuthorized', {}, ({ data }) => {
+            console.log(data)
             if (data) {
                 $scope.isAuthorized = 1
                 $scope.currentUser = data

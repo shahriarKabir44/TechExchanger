@@ -85,7 +85,11 @@ function startExpress() {
         else {
             jwt.verify(token, process.env.secret, (err, user) => {
                 if (err) {
-                    res.send({ data: null })
+                    res.send({
+                        data: {
+                            unauthorized: true
+                        }
+                    })
                 }
                 else {
                     req.user = user

@@ -17,7 +17,7 @@
                             <div>
                                 <p style="margin:-2px;">Type: {{cart.Product.category}}</p>
                                 <p style="margin:-2px;">Price: {{cart.offeredPrice}} taka.</p>
-                                <p style="margin:-2px;">Time: {{(cart.time)}} </p>
+                                <p style="margin:-2px;">Time: {{parseTime(cart.time)}} </p>
                             </div>
                             <a style="margin-top: 15px;" ng-click="viewProd(cart.Product.id)"
                                 class="btn btn-primary">view</a>
