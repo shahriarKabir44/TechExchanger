@@ -150,6 +150,25 @@ app.controller('myController', ($scope, $http) => {
         }
         $('#postAd-modal').modal('show')
     }
+
+    $scope.initializePostAd = () => {
+        if (!$scope.isAuthorized) {
+            $('#login-or-signup-modal').modal('show')
+            return
+        }
+        $scope.initPostAd()
+    }
+
+    $scope.initAddToCart = () => {
+        if (!$scope.isAuthorized) {
+            $('#login-or-signup-modal').modal('show')
+            return
+        }
+        $scope.cart = {
+        }
+        $('#bargain-modal').modal('show')
+
+    }
     $scope.postAd = async () => {
         var imageIds = ['#file1', '#file2', '#file3', '#file4']
         var imageURLProperties = ['image1', 'image2', 'image3', 'image4']

@@ -261,13 +261,15 @@ function renderCustomers(data) {
 }
 
 function renderSimilarProducts(datas) {
-    console.log(datas.length)
     var productsRoot = getel('similarProductRoot')
     var noProductRoot = getel('noSimilarProductRoot')
-    if (datas.lenth == 0) {
+    console.log(datas.length == 0)
+
+    if (datas.length == 0) {
         productsRoot.style.display = 'none'
         noProductRoot.style.display = 'block'
         console.log('object')
+        return
     }
     else {
         productsRoot.style.display = 'flex'

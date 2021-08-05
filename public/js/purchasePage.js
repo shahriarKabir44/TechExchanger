@@ -58,12 +58,12 @@ app.controller('productController', ($scope, $http) => {
     $scope.userToProductRelation = 0
     $scope.customerList = []
     $scope.setUserToProductRelation = () => {
-
+        if ($scope.isAuthorized == 0) return
         if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id)
             $scope.userToProductRelation = 1
 
         $scope.customerList.forEach(offerer => {
-            if ($scope.isAuthorized && offerer.Buyer.id == $scope.currentUser.id) {
+            if (offerer.Buyer.id == $scope.currentUser.id) {
                 $scope.userToProductRelation = 2
                 return
             }
@@ -292,8 +292,8 @@ app.controller('productController', ($scope, $http) => {
     $scope.products = {}
     $scope.getProductsBycategory = (category) => {
         $scope.httpPost('/graphql', GetProductByCategoryGQL(category), ({ data }) => {
-            $scope.products[category] = data.GetProductByCategory
-            renderSimilarProducts(data.GetProductByCategory)
+            $scope.products[category] = data.GetProductByCategory.filter(x => x.id != $scope.productId)
+            renderSimilarProducts($scope.products[category])
 
         })
     }
@@ -303,8 +303,17 @@ app.controller('productController', ($scope, $http) => {
 
     }
 
+    $scope.initializePostAd = () => {
+        if (!$scope.isAuthorized) {
+            $('#login-or-signup-modal').modal('show')
+            return
+        }
+        $scope.initPostAd()
+    }
+
     $scope.initAddToCart = () => {
         if (!$scope.isAuthorized) {
+            $('#login-or-signup-modal').modal('show')
             return
         }
         $scope.cart = {

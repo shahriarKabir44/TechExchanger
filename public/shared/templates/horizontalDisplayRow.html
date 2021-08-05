@@ -7,7 +7,8 @@
         <div class="container" ng-if="!productList || !productList.length">
             <h5 style="text-align: center;">
                 Looks like no such product is available now :(
-                <p style="display: inline-block;"> Would you like to <button class="btn btn-primary">Post an ad</button>
+                <p style="display: inline-block;"> Would you like to <button class="btn btn-primary"
+                        ng-click="initializePostAd()">Post an ad</button>
                 </p>
             </h5>
         </div>
