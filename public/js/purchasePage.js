@@ -1,7 +1,9 @@
 var app = angular.module('produstPage', [])
 
 app.controller('productController', ($scope, $http) => {
+    $scope.isAJAXBusy = 0
     $scope.httpPost = (url, data, onSuccess, onError) => {
+        $scope.isAJAXBusy = 1
         var req = {
             method: 'POST',
             url: url,
@@ -12,8 +14,10 @@ app.controller('productController', ($scope, $http) => {
             data: data
         }
         $http(req).then(function ({ data }) {
+            $scope.isAJAXBusy = 0
             onSuccess(data)
         }, function (error) {
+            $scope.isAJAXBusy = 0
             if (onError) onError(error)
         });
     }
@@ -49,7 +53,7 @@ app.controller('productController', ($scope, $http) => {
     $scope.getProductDetails = () => {
         $scope.getProductId()
         $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
-
+            console.log(data)
             $scope.currentDisplayingProduct = data.GetProductById
             $scope.getProductsBycategory($scope.currentDisplayingProduct.category)
 
