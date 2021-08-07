@@ -135,6 +135,7 @@ function getCustomerList(id) {
                 
               }
               offeredPrice
+              time
             }
              
              
@@ -225,7 +226,11 @@ function toggleUploadStatus(index, stat) {
 function viewProd(id) {
     console.log(id)
 }
-
+var parseTime = (x) => {
+    var time = new Date(x * 1)
+    var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
+    return res
+}
 function popupShortcut(x) {
     if (window.innerWidth < 1000)
         x ? getel('shortcutList').style.left = "0px" : getel('shortcutList').style.left = "-150px"
@@ -241,20 +246,24 @@ function renderCustomers(data) {
     else {
         noCustomer.style.display = 'none'
         root.style.display = 'block'
-        root.innerHTML = ""
+        root.innerHTML = `<tr>
+        <td>Image </td>
+        <td>Name </td>
+        <td>offered </td>
+        <td>Time </td>
+        <td>Action </td>
+    </tr>`
         data.forEach(offerer => {
-            var s = `<div class="card" style="width:400px;flex: 0 0 auto">
-            <div class="card-body">
-                <div class="crdbod product">
-                    <div class="card m-3 pb-3" style="align-items: center;">
-                        <img src="${offerer.Buyer.imageURL}" style="width: 300px;max-height: 400px;" alt="">
-                        <h4 class="text-success">Offered: ${offerer.offeredPrice} taka</h4>
-                        <h5>Name: ${offerer.Buyer.firstName} ${offerer.Buyer.lastName}</h5>
-
-                    </div>
-                </div>
-            </div>
-        </div>`
+            var s = `
+        <tr>
+            <td><img src="${offerer.Buyer.imageURL}" style="width: 30px;max-height: 30px;" alt=""></td>
+            <td> ${offerer.Buyer.firstName} ${offerer.Buyer.lastName}</td>
+            <td>${offerer.offeredPrice} taka </td>
+            <td>${parseTime(offerer.time)}    </td>
+            <td>  <button class="btn btn-success">Accept offer</button> </td>
+        </tr>
+        
+        `
             root.innerHTML += s
         })
     }
