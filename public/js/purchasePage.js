@@ -54,7 +54,6 @@ app.controller('productController', ($scope, $http) => {
     $scope.getProductDetails = () => {
         $scope.getProductId()
         $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
-            console.log(data)
             $scope.currentDisplayingProduct = data.GetProductById
             $scope.getProductsBycategory($scope.currentDisplayingProduct.category)
 
@@ -83,7 +82,6 @@ app.controller('productController', ($scope, $http) => {
     $scope.currentUser = {}
     $scope.getCurrentUser = () => {
         $scope.httpPost('/isAuthorized', {}, ({ data }) => {
-            console.log(data)
             if (data) {
                 $scope.isAuthorized = 1
                 $scope.currentUser = data
@@ -224,6 +222,11 @@ app.controller('productController', ($scope, $http) => {
             }, () => { })
         })
 
+    }
+
+    $scope.viewFullSize = (name) => {
+        $scope.selectedImg = name
+        $('#modal-fullscreen-xl').modal('show')
     }
 
     navigator.serviceWorker.onmessage = e => {
