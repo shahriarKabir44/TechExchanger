@@ -56,15 +56,18 @@ app.controller('productController', ($scope, $http) => {
         $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
             $scope.currentDisplayingProduct = data.GetProductById
             $scope.getProductsBycategory($scope.currentDisplayingProduct.category)
-
+            $scope.setUserToProductRelation()
         })
     }
     $scope.userToProductRelation = 0
     $scope.customerList = []
     $scope.setUserToProductRelation = () => {
         if ($scope.isAuthorized == 0) return
-        if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id)
-            $scope.userToProductRelation = 1
+        console.log($scope.currentDisplayingProduct, $scope.currentUser.id)
+        if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id) {
+            $scope.userToProductRelation = 1;
+            return
+        }
 
         $scope.customerList.forEach(offerer => {
             if (offerer.Buyer.id == $scope.currentUser.id) {
@@ -149,6 +152,7 @@ app.controller('productController', ($scope, $http) => {
     }
     $scope.notifications = []
     $scope.getNotifications = () => {
+        console.log('xnxx')
         $scope.httpPost('/graphql', getMyNotificationsGQL($scope.currentUser.id), ({ data }) => {
             $scope.notifications = data.User.Notification
             $('#notif_modal').modal('show')

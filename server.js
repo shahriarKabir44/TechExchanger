@@ -161,7 +161,7 @@ function startExpress() {
         var newNotification = new Notification({
             senderId: req.body.customerId,
             receiverId: req.body.ownerId,
-            type: 1,
+            category: 1,
             productId: req.body.productId,
             offer: req.body.offeredPrice,
             time: now,

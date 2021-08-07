@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const notificationSchema = mongoose.Schema({
     senderId: { type: mongoose.Schema.ObjectId },
     receiverId: { type: mongoose.Schema.ObjectId },
-    type: { type: Number },
+    category: { type: Number },
     productId: { type: mongoose.Schema.ObjectId },
     offer: { type: Number },
     time: { type: String },

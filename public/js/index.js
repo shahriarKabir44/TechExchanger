@@ -41,7 +41,6 @@ app.controller('myController', ($scope, $http) => {
     $scope.isAuthorized = 0
     $scope.currentUser = {}
     $scope.InitializeApp = () => {
-        console.log('object')
         $scope.httpPost('/isAuthorized', {}, ({ data }) => {
             console.log(data)
             if (data) {
@@ -113,6 +112,7 @@ app.controller('myController', ($scope, $http) => {
     }
     $scope.notifications = []
     $scope.getNotifications = () => {
+        console.log($scope.currentUser.id)
         $scope.httpPost('/graphql', getMyNotificationsGQL($scope.currentUser.id), ({ data }) => {
             $scope.notifications = data.User.Notification
             $('#notif_modal').modal('show')

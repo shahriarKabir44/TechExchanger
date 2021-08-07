@@ -136,7 +136,7 @@ const NofiticationType = new GraphQLObjectType({
         id: { type: GraphQLID },
         senderId: { type: GraphQLID },
         receiverId: { type: GraphQLID },
-        type: { type: GraphQLInt },
+        category: { type: GraphQLInt },
         productId: { type: GraphQLID },
         offer: { type: GraphQLInt },
         time: { type: GraphQLString },
