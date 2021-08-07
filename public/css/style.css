@@ -167,6 +167,13 @@ footer{
 	background-attachment: fixed;  
   
 }
+.extrax{
+ 	max-height: 300px;
+ 	display: flex;
+	justify-content: center;
+	align-items: center;
+   overflow: auto;
+}
 
 .extra1 h2{
 	flex-shrink: 0;

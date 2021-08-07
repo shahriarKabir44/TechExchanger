@@ -75,6 +75,8 @@ app.controller('productController', ($scope, $http) => {
                 return
             }
         });
+        renderCustomers($scope.customerList, $scope.userToProductRelation)
+
     }
     $scope.parseTime = (x) => {
         var time = new Date(x * 1)
@@ -247,6 +249,8 @@ app.controller('productController', ($scope, $http) => {
                     $scope.currentUser = {}
                     localStorage.clear()
                     $scope.userToProductRelation = 0
+                    renderCustomers($scope.customerList, $scope.userToProductRelation)
+
                 }
 
             })
@@ -301,7 +305,7 @@ app.controller('productController', ($scope, $http) => {
                 localStorage.setItem('token', data.token)
                 $scope.isAuthorized = 1
                 $scope.setUserToProductRelation()
-                //subscribeToPush()
+
             }
         }, () => { })
     }
@@ -352,10 +356,12 @@ app.controller('productController', ($scope, $http) => {
             $scope.userToProductRelation = 2
             $scope.customerList.push({
                 Buyer: $scope.currentUser,
-                offeredPrice: newCart.offeredPrice
+                offeredPrice: newCart.offeredPrice,
+                time: (new Date() * 1) + ''
             })
-            renderCustomers($scope.customerList)
+            renderCustomers($scope.customerList, $scope.userToProductRelation)
         })
+
     }
 
     $scope.removeFromCart = () => {

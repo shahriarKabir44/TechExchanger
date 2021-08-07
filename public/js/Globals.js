@@ -260,7 +260,7 @@ function renderCustomers(data) {
             <td> ${offerer.Buyer.firstName} ${offerer.Buyer.lastName}</td>
             <td>${offerer.offeredPrice} taka </td>
             <td>${parseTime(offerer.time)}    </td>
-            <td>  <button class="btn btn-success">Accept offer</button> </td>
+            <td ng-if="userToProductRelation==1">  <button class="btn btn-success">Accept offer</button> </td>
         </tr>
         
         `
