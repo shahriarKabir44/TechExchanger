@@ -182,9 +182,10 @@
                                         <td> {{offerer.Buyer.firstName}} {{offerer.Buyer.lastName}}</td>
                                         <td>{{offerer.offeredPrice}} taka </td>
                                         <td>{{ parseTime(offerer.time)}} </td>
-                                        <th ng-if="userToProductRelation==1">
-                                            <button class="btn btn-success">Accept offer!</button>
-                                        </th>
+                                        <td ng-if="userToProductRelation==1">
+                                            <button class="btn btn-success" ng-click="initiateAcceptOffer()">Accept
+                                                offer!</button>
+                                        </td>
 
                                     </tr>
                                 </tbody>
@@ -217,16 +218,6 @@
                     <div>
                         <div class="container productList">
 
-                            <div id="similarProductRoot" style="display: flex;flex-wrap: nowrap;overflow-x: auto;">
-                            </div>
-                            <div class="container" id="noSimilarProductRoot">
-                                <h5 style="text-align: center;">
-                                    Looks like no such product is available now :(
-                                    <p style="display: inline-block;"> Would you like to <button class="btn btn-primary"
-                                            ng-click="initializePostAd()">Post an ad</button>
-
-                                </h5>
-                            </div>
                             <card-list product-list="toShow"></card-list>
                         </div>
                     </div>

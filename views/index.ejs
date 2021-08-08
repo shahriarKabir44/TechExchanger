@@ -48,6 +48,12 @@
         background-size: cover;
         background-attachment: fixed;
     }
+
+    @media screen and (min-width:1000px) {
+        #highlights {
+            min-width: 500px
+        }
+    }
 </style>
 
 <body ng-app="homepage" ng-controller="myController" ng-init="InitializeApp()">
@@ -92,7 +98,7 @@
             <div class="col-sm-12 col-md-2 mt-5 cvb"></div>
             <!-- Shortcut end -->
 
-            <div class="col-sm-12 col-lg-10" style="float:right; min-width: 500px; ">
+            <div class="col-sm-12 col-lg-10" id="highlights" style="float:right;  ">
                 <div class="extra" style="text-align: center;" id="section1">
                     <h3 class="mt-5">Looking for some Beds?</h3>
 

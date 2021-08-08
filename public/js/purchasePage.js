@@ -316,6 +316,9 @@ app.controller('productController', ($scope, $http) => {
         })
     }
 
+    $scope.initiateAcceptOffer = () => {
+
+    }
 
     $scope.cart = {
 
