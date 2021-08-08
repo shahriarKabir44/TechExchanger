@@ -43,7 +43,7 @@ app.controller('productController', ($scope, $http) => {
         $scope.productId = s;
         $scope.httpPost('/graphql', getCustomerList(s), ({ data }) => {
             $scope.customerList = data.GetProductById.Offerers
-            renderCustomers(data.GetProductById.Offerers)
+            renderCustomers(data.GetProductById.Offerers, $scope.userToProductRelation)
             $scope.setUserToProductRelation()
         })
     }
@@ -209,9 +209,11 @@ app.controller('productController', ($scope, $http) => {
             toggleUploadStatus(n, 0)
         }
         var usedFor = ($scope.usedFor.year * 1 ? $scope.usedFor.year + "year(s)" : "") + ($scope.usedFor.month * 1 ? $scope.usedFor.month + "month(s)" : "")
+        var usageNumber = $scope.usedFor.year * 12 + $scope.usedFor.month * 1
+
         if (usedFor == "") usedFor = "Brand new!"
 
-        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id, usedFor: usedFor }
+        $scope.newProduct = { ...$scope.newProduct, owner: $scope.currentUser.id, usedFor: usedFor, usageNumber: usageNumber }
         $scope.httpPost('/postAd', $scope.newProduct, async (data) => {
             $scope.newProduct.id = data.newProductid
             for (let n = 0; n < 4; n++) {

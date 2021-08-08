@@ -23,7 +23,8 @@ const cluster = require('cluster');
 const User = require('./MongoDBSchemas/User');
 const Product = require('./MongoDBSchemas/Product')
 const Cart = require('./MongoDBSchemas/Cart')
-const Notification = require('./MongoDBSchemas/Notification')
+const Notification = require('./MongoDBSchemas/Notification');
+const runStat = require('./runStat');
 
 const totalCPUs = require('os').cpus().length;
 
@@ -220,6 +221,12 @@ function startExpress() {
     app.post('/isAuthorized', verifyAuthToken, (req, res) => {
         var user = req.user;
         res.send({ data: user })
+    })
+    app.get('/getStat', (req, res) => {
+        runStat()
+            .then(stat => {
+                res.send({ data: stat })
+            })
     })
     app.post('/signup', async (req, res) => {
         var newUser = req.body

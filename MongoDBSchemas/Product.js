@@ -13,7 +13,8 @@ const prodct = mongoose.Schema({
     lastUpdated: { type: String },
     customerCount: { type: Number, default: 0 },
     usedFor: { type: String },
-    postedFrom: { type: String }
+    postedFrom: { type: String },
+    usageNumber: { type: Number }
 })
 const products = mongoose.model('products', prodct)
 

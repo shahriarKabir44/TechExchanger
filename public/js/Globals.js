@@ -236,7 +236,7 @@ function popupShortcut(x) {
         x ? getel('shortcutList').style.left = "0px" : getel('shortcutList').style.left = "-150px"
 }
 
-function renderCustomers(data) {
+function renderCustomers(data, realtion) {
     var noCustomer = getel('noCustomer')
     var root = getel('customerListRoot')
     if (!data.length) {
@@ -246,15 +246,16 @@ function renderCustomers(data) {
     else {
         noCustomer.style.display = 'none'
         root.style.display = 'block'
-        root.innerHTML = `<tr>
-        <td>Image </td>
-        <td>Name </td>
-        <td>offered </td>
-        <td>Time </td>
-        <td>Action </td>
-    </tr>`
-        data.forEach(offerer => {
-            var s = `
+        root.innerHTML = `
+        <tr>
+            <td>Image </td>
+            <td>Name </td>
+            <td>offered </td>
+            <td>Time </td>
+        </tr>`
+        if (realtion) {
+            data.forEach(offerer => {
+                var s = `
         <tr>
             <td><img src="${offerer.Buyer.imageURL}" style="width: 30px;max-height: 30px;" alt=""></td>
             <td> ${offerer.Buyer.firstName} ${offerer.Buyer.lastName}</td>
@@ -264,8 +265,23 @@ function renderCustomers(data) {
         </tr>
         
         `
-            root.innerHTML += s
-        })
+                root.innerHTML += s
+            })
+        }
+        else {
+            data.forEach(offerer => {
+                var s = `
+        <tr>
+            <td><img src="${offerer.Buyer.imageURL}" style="width: 30px;max-height: 30px;" alt=""></td>
+            <td> ${offerer.Buyer.firstName} ${offerer.Buyer.lastName}</td>
+            <td>${offerer.offeredPrice} taka </td>
+            <td>${parseTime(offerer.time)}    </td>
+         </tr>
+        
+        `
+                root.innerHTML += s
+            })
+        }
     }
 }
 

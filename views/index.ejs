@@ -116,13 +116,16 @@
                         <div class="col-sm-12 col-lg-6 mb-5"
                             style="display: flex;justify-content: center;align-items: center;">
                             <div class="card product" style="width:400px">
-                                <img class="card-img-top" src="./assets/products/a.jpg" alt="Card image"
+                                <img class="card-img-top" ng-src="{{least_price.image1}}" alt="Card image"
                                     style="width:100%">
                                 <div class="card-body">
-                                    <h4 class="text-success">Price: 1450 taka</h4>
-                                    <h5>Category: Bed</h5>
-                                    <h5>Used for: 5 year</h5>
-                                    <h6>9 users have offered</h6>
+                                    <h4 class="text-success">Price: {{least_price.askedPrice}} taka</h4>
+                                    <h5>Category: {{least_price.category}}</h5>
+                                    <h5>Used for: {{least_price.usedFor}}</h5>
+                                    <h6>{{least_price.customerCount}} users have offered</h6>
+                                    <button ng-click="viewProd(least_price.id)" class="btn btn-primary">View
+                                        Details</button>
+
                                 </div>
                             </div>
                         </div>
@@ -132,13 +135,16 @@
                         <div class="col-sm-12 col-lg-6 mb-5"
                             style="display: flex;justify-content: center;align-items: center;">
                             <div class="card product" style="width:400px">
-                                <img class="card-img-top" src="./assets/products/a.jpg" alt="Card image"
+                                <img class="card-img-top" ng-src="{{least_used.image1}}" alt="Card image"
                                     style="width:100%">
                                 <div class="card-body">
-                                    <h4 class="text-success">Price: 2430 taka</h4>
-                                    <h5>Category: Table</h5>
-                                    <h5>Used for: 5 months</h5>
-                                    <h6>12 users have offered</h6>
+                                    <h4 class="text-success">Price: {{least_used.askedPrice}} taka</h4>
+                                    <h5>Category: {{least_used.category}}</h5>
+                                    <h5>Used for: {{least_used.usedFor}}</h5>
+                                    <h6>{{least_used.customerCount}} users have offered</h6>
+                                    <button ng-click="viewProd(least_used.id)" class="btn btn-primary">View
+                                        Details</button>
+
                                 </div>
                             </div>
                         </div>
@@ -155,13 +161,16 @@
                         <div class="col-sm-12 col-lg-6 mb-5"
                             style="display: flex;justify-content: center;align-items: center;">
                             <div class="card product" style="width:400px">
-                                <img class="card-img-top" src="./assets/products/a.jpg" alt="Card image"
+                                <img class="card-img-top" ng-src="{{most_popular.image1}}" alt="Card image"
                                     style="width:100%">
                                 <div class="card-body">
-                                    <h4 class="text-success">Price: 2250 taka</h4>
-                                    <h5>Category: Chair</h5>
-                                    <h5>Used for: 1 year</h5>
-                                    <h6>19 users have offered</h6>
+                                    <h4 class="text-success">Price: {{most_popular.askedPrice}} taka</h4>
+                                    <h5>Category: {{most_popular.category}}</h5>
+                                    <h5>Used for: {{most_popular.usedFor}}</h5>
+                                    <h6>{{most_popular.customerCount}} users have offered</h6>
+                                    <button ng-click="viewProd(most_popular.id)" class="btn btn-primary">View
+                                        Details</button>
+
                                 </div>
 
                             </div>

@@ -35,7 +35,7 @@ app.controller('myController', ($scope, $http) => {
         $http(req).then(function ({ data }) {
             onSuccess(data)
         }, function (error) {
-            onError(error)
+            if (onError) onError(error)
         });
     }
     $scope.isAuthorized = 0
@@ -54,8 +54,15 @@ app.controller('myController', ($scope, $http) => {
                 $scope.isAuthorized = 0
                 $scope.currentUser = null
             }
+            $scope.httpGet('/getStat', ({ data }) => {
+                $scope.least_price = JSON.parse(data.least_price)
+                $scope.least_used = JSON.parse(data.least_used)
+                $scope.most_popular = JSON.parse(data.most_popular)
+
+            })
         }, () => { })
     }
+
     $scope.parseTime = (x) => {
         var time = new Date(x * 1)
         var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
