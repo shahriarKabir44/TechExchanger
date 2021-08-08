@@ -4,6 +4,15 @@
         <table class="table col-lg-12">
 
             <tbody id="customerListRoot"> </tbody>
+
+
+        </table>
+        <table>
+            <tbody>
+                <tr ng-repeat="offerer in customerList">
+                    <td> {{offerer}} </td>
+                </tr>
+            </tbody>
         </table>
         <div class="container" id="noCustomer">
             <h5 style="text-align: center;">

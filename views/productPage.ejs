@@ -109,7 +109,7 @@
                 </div>
                 <div class="col-sm-12 col-lg-6">
                     <div>
-                        <h3>Description:</h3>
+                        <h3>Description: </h3>
                         <p> {{currentDisplayingProduct.details}} </p>
                     </div>
                     <div class="d-flex justify-content-between mt-4">
@@ -159,16 +159,51 @@
             <div>
                 <h4 class="mt-5 d-flex justify-content-center">People offered for this product</h4>
                 <hr>
-                <div class="container extrax justify-content-center" id="mt">
-                    <customerlist-component></customerlist-component>
+                <div class="container extrax justify-content-center" style="overflow-x: hidden;" id="mt">
+                    <div>
+                        <div class="container productList row">
 
+                            <table style="width: 100vw;" ng-if="customerList.length"
+                                class="table table-hover table-bordered table-striped col-lg-12">
+
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th></th>
+                                        <th>Name</th>
+                                        <th>Offered</th>
+                                        <th>Time</th>
+                                        <th ng-if="userToProductRelation==1"> Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="offerer in customerList">
+                                        <td><img ng-src="{{offerer.Buyer.imageURL}}"
+                                                style="width: 50px;max-height: 50px;border-radius: 50%;" alt=""></td>
+                                        <td> {{offerer.Buyer.firstName}} {{offerer.Buyer.lastName}}</td>
+                                        <td>{{offerer.offeredPrice}} taka </td>
+                                        <td>{{ parseTime(offerer.time)}} </td>
+                                        <th ng-if="userToProductRelation==1">
+                                            <button class="btn btn-success">Accept offer!</button>
+                                        </th>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div ng-if="!customerList.length" class="container">
+                                <h5 style="text-align: center;">
+                                    Looks like no has offered for this product yet! :(
+
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <br><br>
             <!-- buyers end-->
 
-
             <div class="extra1" style="text-align: center;">
-                <h2>See also..</h2>
+                <h2>See also.. </h2>
             </div>
 
             <div class="extra my-5" style="text-align: center;">
@@ -192,6 +227,7 @@
 
                                 </h5>
                             </div>
+                            <card-list product-list="toShow"></card-list>
                         </div>
                     </div>
 

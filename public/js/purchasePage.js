@@ -14,7 +14,6 @@ app.controller('productController', ($scope, $http) => {
             data: data
         }
         $http(req).then(function ({ data }) {
-            console.log(data)
             $scope.isAJAXBusy = 0
             onSuccess(data)
         }, function (error) {
@@ -43,7 +42,6 @@ app.controller('productController', ($scope, $http) => {
         $scope.productId = s;
         $scope.httpPost('/graphql', getCustomerList(s), ({ data }) => {
             $scope.customerList = data.GetProductById.Offerers
-            renderCustomers(data.GetProductById.Offerers, $scope.userToProductRelation)
             $scope.setUserToProductRelation()
         })
     }
@@ -63,7 +61,6 @@ app.controller('productController', ($scope, $http) => {
     $scope.customerList = []
     $scope.setUserToProductRelation = () => {
         if ($scope.isAuthorized == 0) return
-        console.log($scope.currentDisplayingProduct, $scope.currentUser.id)
         if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id) {
             $scope.userToProductRelation = 1;
             return
@@ -75,7 +72,6 @@ app.controller('productController', ($scope, $http) => {
                 return
             }
         });
-        renderCustomers($scope.customerList, $scope.userToProductRelation)
 
     }
     $scope.parseTime = (x) => {
@@ -154,7 +150,6 @@ app.controller('productController', ($scope, $http) => {
     }
     $scope.notifications = []
     $scope.getNotifications = () => {
-        console.log('xnxx')
         $scope.httpPost('/graphql', getMyNotificationsGQL($scope.currentUser.id), ({ data }) => {
             $scope.notifications = data.User.Notification
             $('#notif_modal').modal('show')
@@ -251,7 +246,6 @@ app.controller('productController', ($scope, $http) => {
                     $scope.currentUser = {}
                     localStorage.clear()
                     $scope.userToProductRelation = 0
-                    renderCustomers($scope.customerList, $scope.userToProductRelation)
 
                 }
 
@@ -313,10 +307,11 @@ app.controller('productController', ($scope, $http) => {
     }
 
     $scope.products = {}
+    $scope.toShow = []
     $scope.getProductsBycategory = (category) => {
         $scope.httpPost('/graphql', GetProductByCategoryGQL(category), ({ data }) => {
             $scope.products[category] = data.GetProductByCategory.filter(x => x.id != $scope.productId)
-            renderSimilarProducts($scope.products[category])
+            $scope.toShow = data.GetProductByCategory.filter(x => x.id != $scope.productId)
 
         })
     }
@@ -361,7 +356,6 @@ app.controller('productController', ($scope, $http) => {
                 offeredPrice: newCart.offeredPrice,
                 time: (new Date() * 1) + ''
             })
-            renderCustomers($scope.customerList, $scope.userToProductRelation)
         })
 
     }
@@ -372,11 +366,9 @@ app.controller('productController', ($scope, $http) => {
         $scope.httpPost('/graphql', removeCartGQL($scope.currentUser.id, $scope.productId), ({ data }) => {
             $scope.customerList = $scope.customerList.filter(x => x.Buyer.id != $scope.currentUser.id)
             $scope.userToProductRelation = 0
-            renderCustomers($scope.customerList)
         })
     }
     $scope.viewProd = (id) => {
-        console.log(id)
         location.href = "http://localhost:3000/product/" + id
     }
 
@@ -387,7 +379,7 @@ app.controller('productController', ($scope, $http) => {
 app.directive('customerlistComponent', function () {
     return {
         scope: {
-            'currentProduct': '='
+            'customerList': '='
         },
         templateUrl: './shared/templates/customerList.html',
         controller: "productController",
@@ -398,17 +390,31 @@ app.directive('customerlistComponent', function () {
     }
 })
 
-app.directive('productRenderer', function () {
+app.directive('productCard', function () {
     return {
         scope: {
             'currentProduct': '='
         },
-        templateUrl: './shared/templates/productRenderer.html',
-
+        templateUrl: './shared/templates/productCard.html',
+        controller: "productController",
 
         link: function (scope) {
         }
 
+    }
+})
+
+app.directive('cardList', function () {
+    return {
+        scope: {
+            'productList': '='
+        },
+        controller: "productController",
+
+        templateUrl: './shared/templates/horizontalDisplayRow.html',
+        link: function (scope) {
+            console.log(scope.productList)
+        }
     }
 })
 
