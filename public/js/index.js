@@ -42,17 +42,16 @@ app.controller('myController', ($scope, $http) => {
     $scope.currentUser = {}
     $scope.InitializeApp = () => {
         $scope.httpPost('/isAuthorized', {}, ({ data }) => {
-            console.log(data)
-            if (data) {
+            if (data.unauthorized) {
+                localStorage.clear()
+                $scope.isAuthorized = 0
+                $scope.currentUser = null
+            }
+            else {
                 $scope.isAuthorized = 1
                 $scope.currentUser = data
                 console.log(data)
                 //subscribeToPush()
-            }
-            else {
-                localStorage.clear()
-                $scope.isAuthorized = 0
-                $scope.currentUser = null
             }
             $scope.httpGet('/getStat', ({ data }) => {
                 $scope.least_price = JSON.parse(data.least_price)

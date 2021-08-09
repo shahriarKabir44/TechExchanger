@@ -156,7 +156,7 @@
             <!-- Product Slider -->
 
             <!-- buyers -->
-            <div>
+            <div ng-if="userToProductRelation==1">
                 <h4 class="mt-5 d-flex justify-content-center">People offered for this product</h4>
                 <hr>
                 <div class="container extrax justify-content-center" style="overflow-x: hidden;" id="mt">
@@ -187,6 +187,74 @@
 
                                     </tr>
                                 </tbody>
+                            </table>
+                            <div ng-if="!customerList.length" class="container">
+                                <h5 style="text-align: center;">
+                                    Looks like no has offered for this product yet! :(
+
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="userToProductRelation==2">
+                <h4 class="mt-5 d-flex justify-content-center">Your Cart Status</h4>
+                <hr>
+                <div class="container extrax justify-content-center" style="overflow-x: hidden;" id="mt">
+                    <div>
+                        <div class="container productList row">
+
+                            <table style="width: 100vw;"
+                                class="table table-hover table-bordered table-striped col-lg-12">
+
+                                <tr>
+                                    <th> Offered Price </th>
+                                    <td> {{myCartDetails.offeredPrice}} </td>
+                                </tr>
+                                <tr>
+                                    <th> Time </th>
+                                    <td> {{parseTime(myCartDetails.time)}} </td>
+                                </tr>
+                                <tr>
+                                    <th> Location for receiving </th>
+                                    <td> {{(myCartDetails.whereToReceive)}} </td>
+                                </tr>
+
+                            </table>
+                            <div ng-if="!customerList.length" class="container">
+                                <h5 style="text-align: center;">
+                                    Looks like no has offered for this product yet! :(
+
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="userToProductRelation==0">
+                <h4 class="mt-5 d-flex justify-content-center">User Response for this product:</h4>
+                <hr>
+                <div class="container extrax justify-content-center" style="overflow-x: hidden;" id="mt">
+                    <div>
+                        <div class="container productList row">
+
+                            <table style="width: 100vw;"
+                                class="table table-hover table-bordered table-striped col-lg-12">
+
+                                <tr>
+                                    <th> Number of offerers </th>
+                                    <td> {{productStat.offerers}} </td>
+                                </tr>
+                                <tr>
+                                    <th> Highest Offered Price </th>
+                                    <td> {{productStat.maxOfffer}} Taka</td>
+                                </tr>
+                                <tr>
+                                    <th> Lowest Offered Price </th>
+                                    <td> {{ (productStat.minOffer)}} Taka</td>
+                                </tr>
+
                             </table>
                             <div ng-if="!customerList.length" class="container">
                                 <h5 style="text-align: center;">

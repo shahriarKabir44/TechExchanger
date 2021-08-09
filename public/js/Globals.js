@@ -45,6 +45,7 @@ function getMyCarts(id) {
                 }
                 offeredPrice
                 time
+                whereToReceive
             }
         }}`
     }
@@ -136,6 +137,7 @@ function getCustomerList(id) {
               }
               offeredPrice
               time
+              whereToReceive
             }
              
              

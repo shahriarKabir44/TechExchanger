@@ -36,8 +36,6 @@ app.controller('productController', ($scope, $http) => {
         $scope.$apply(function () {
             $scope.isAJAXBusy = 0
         })
-
-        console.log(url, resp)
         return resp.data.data
     }
 
@@ -71,18 +69,24 @@ app.controller('productController', ($scope, $http) => {
     $scope.userToProductRelation = 0
     $scope.customerList = []
     $scope.setUserToProductRelation = () => {
-        if ($scope.isAuthorized == 0) return
-        if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id) {
-            $scope.userToProductRelation = 1;
-            return
-        }
-
-        $scope.customerList.forEach(offerer => {
-            if (offerer.Buyer.id == $scope.currentUser.id) {
-                $scope.userToProductRelation = 2
+        console.log($scope.currentUser.id, $scope.customerList)
+        if ($scope.isAuthorized) {
+            if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id) {
+                $scope.userToProductRelation = 1;
+                $scope.setView()
                 return
             }
-        });
+
+            $scope.customerList.forEach(offerer => {
+                if (offerer.Buyer.id == $scope.currentUser.id) {
+                    $scope.userToProductRelation = 2
+                    $scope.setView()
+                    return
+                }
+            });
+        }
+
+        else $scope.setView()
 
     }
     $scope.parseTime = (x) => {
@@ -100,7 +104,7 @@ app.controller('productController', ($scope, $http) => {
 
     $scope.checkAuthorized = async () => {
         var userDat = await $scope.httpReq('/isAuthorized', {})
-        if (userDat) {
+        if (!userDat.unauthorized) {
             $scope.isAuthorized = 1
             $scope.currentUser = userDat
         }
@@ -138,6 +142,25 @@ app.controller('productController', ($scope, $http) => {
         await $scope.getProductsBycategory()
         $scope.isAJAXBusy = 0
         $scope.setUserToProductRelation()
+    }
+
+    $scope.setView = () => {
+        if ($scope.userToProductRelation == 2) {
+            $scope.myCartDetails = $scope.customerList.filter(x => x.Buyer.id == $scope.currentUser.id)[0]
+        }
+        else if ($scope.userToProductRelation == 0) {
+            $scope.productStat = {
+                maxOfffer: 0,
+                minOffer: 10 ** 10,
+                offerers: $scope.currentDisplayingProduct.customerCount
+            }
+            $scope.customerList.forEach(x => {
+                $scope.productStat.maxOfffer = Math.max($scope.productStat.maxOfffer, x.offeredPrice)
+                $scope.productStat.minOffer = Math.min($scope.productStat.minOffer, x.offeredPrice)
+
+            })
+            console.log($scope.productStat)
+        }
     }
 
     //authorized parts
@@ -448,7 +471,6 @@ app.directive('cardList', function () {
 
         templateUrl: './shared/templates/horizontalDisplayRow.html',
         link: function (scope) {
-            console.log(scope.productList)
         }
     }
 })

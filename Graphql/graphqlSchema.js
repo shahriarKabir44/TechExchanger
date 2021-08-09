@@ -77,6 +77,7 @@ const CartType = new GraphQLObjectType({
         offeredPrice: { type: GraphQLInt },
         status: { type: GraphQLInt },
         time: { type: GraphQLString },
+        whereToReceive: { type: GraphQLString },
         Product: {
             type: ProductType,
             resolve(parent, args) {
