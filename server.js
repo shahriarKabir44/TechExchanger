@@ -143,7 +143,6 @@ function startExpress() {
         var productName = req.body.productName
         var customerName = req.body.customerName
         var newCart = { ...req.body }
-        console.log(req.body)
         delete newCart.productName
         delete newCart.customerName
         var updatedCart = await Cart.findOneAndUpdate({
@@ -170,7 +169,6 @@ function startExpress() {
         await newNotification.save()
         var seller = await User.findById(req.body.ownerId)
         var sellerNotificationId = seller.notificationId
-        console.log(sellerNotificationId)
         if (sellerNotificationId != '')
             webPush.sendNotification(JSON.parse(sellerNotificationId), JSON.stringify({ title: 'Offer!', body: message }))
                 .then(data => {

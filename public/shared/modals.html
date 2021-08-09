@@ -129,9 +129,14 @@
                     <div class="form-group d-flex">
                         <p for="bargainPc" class="my-auto">Price: </p>
                         <input ng-model="cart.offeredPrice" class="form-control" autocomplete="off" type="number"
-                            name="Price" placeholder="e.g. ৳700" required="">
+                            name="Price" placeholder="e.g. 700" required="">
                     </div>
-                    <button type="submit" class="btn btn-success" type="submit">Done!</button>
+                    <div class="form-group d-flex">
+                        <p for="bargainPc" class="my-auto">Place where you want to receive this product: </p>
+                        <input ng-model="cart.whereToReceive" class="form-control" autocomplete="off" type="text"
+                            name="Price" required>
+                    </div>
+                    <button type="submit" class="btn btn-large btn-success" type="submit">Done!</button>
                 </form>
             </div>
 
@@ -185,3 +190,4 @@
             </div>
         </div>
     </div>
+</div>

@@ -239,7 +239,7 @@
                     <div>
                         <div class="container productList row">
 
-                            <table style="width: 100vw;"
+                            <table ng-if="productStat.offerers>0" style="width: 100vw;"
                                 class="table table-hover table-bordered table-striped col-lg-12">
 
                                 <tr>
@@ -256,7 +256,7 @@
                                 </tr>
 
                             </table>
-                            <div ng-if="!customerList.length" class="container">
+                            <div ng-if="!productStat.offerers" class="container">
                                 <h5 style="text-align: center;">
                                     Looks like no has offered for this product yet! :(
 

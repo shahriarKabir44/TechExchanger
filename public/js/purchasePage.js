@@ -76,14 +76,14 @@ app.controller('productController', ($scope, $http) => {
                 $scope.setView()
                 return
             }
-
+            console.log('object')
             $scope.customerList.forEach(offerer => {
                 if (offerer.Buyer.id == $scope.currentUser.id) {
                     $scope.userToProductRelation = 2
-                    $scope.setView()
                     return
                 }
             });
+            $scope.setView()
         }
 
         else $scope.setView()
@@ -405,6 +405,7 @@ app.controller('productController', ($scope, $http) => {
             offeredPrice: $scope.cart.offeredPrice,
             productName: $scope.currentDisplayingProduct.category,
             customerName: $scope.currentUser.firstName + $scope.currentUser.lastName,
+            whereToReceive: $scope.cart.whereToReceive
         }
         $scope.httpPost('/addToCart', newCart, ({ data }) => {
             $('#bargain-modal').modal('hide')
@@ -412,8 +413,10 @@ app.controller('productController', ($scope, $http) => {
             $scope.customerList.push({
                 Buyer: $scope.currentUser,
                 offeredPrice: newCart.offeredPrice,
-                time: (new Date() * 1) + ''
+                time: (new Date() * 1) + '',
+                whereToReceive: $scope.cart.whereToReceive
             })
+            $scope.setView()
         })
 
     }
