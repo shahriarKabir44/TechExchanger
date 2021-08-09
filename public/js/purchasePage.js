@@ -21,6 +21,27 @@ app.controller('productController', ($scope, $http) => {
             if (onError) onError(error)
         });
     }
+    $scope.httpReq = async (url, toSend) => {
+        $scope.isAJAXBusy = 1
+        var req = {
+            method: toSend ? 'POST' : 'GET',
+            url: url,
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': `bearer ${localStorage.getItem('token')}`
+            },
+            data: toSend
+        }
+        var resp = await $http(req)
+        $scope.$apply(function () {
+            $scope.isAJAXBusy = 0
+        })
+
+        console.log(url, resp)
+        return resp.data.data
+    }
+
+
     $scope.httpGet = (url, onSuccess, onError) => {
         var req = {
             method: 'GET',
@@ -40,23 +61,13 @@ app.controller('productController', ($scope, $http) => {
     $scope.getProductId = () => {
         var s = location.href.split('/')[4]
         $scope.productId = s;
-        $scope.httpPost('/graphql', getCustomerList(s), ({ data }) => {
-            $scope.customerList = data.GetProductById.Offerers
-            $scope.setUserToProductRelation()
-        })
+
     }
 
     $scope.currentDisplayingProduct = {}
     $scope.userToProductRelation = 0
     $scope.p = "y"
-    $scope.getProductDetails = () => {
-        $scope.getProductId()
-        $scope.httpPost('/graphql', getProductDetailsById($scope.productId), ({ data }) => {
-            $scope.currentDisplayingProduct = data.GetProductById
-            $scope.getProductsBycategory($scope.currentDisplayingProduct.category)
-            $scope.setUserToProductRelation()
-        })
-    }
+
     $scope.userToProductRelation = 0
     $scope.customerList = []
     $scope.setUserToProductRelation = () => {
@@ -81,25 +92,52 @@ app.controller('productController', ($scope, $http) => {
     }
     $scope.isAuthorized = 0
     $scope.currentUser = {}
-    $scope.getCurrentUser = () => {
-        $scope.httpPost('/isAuthorized', {}, ({ data }) => {
-            if (data) {
-                $scope.isAuthorized = 1
-                $scope.currentUser = data
-                //subscribeToPush()
-            }
-            else {
-                localStorage.clear()
-                $scope.isAuthorized = 0
-                $scope.currentUser = null
-            }
-            $scope.getProductDetails()
 
-        }, () => { })
-    }
     $scope.InitProductPage = () => {
 
-        $scope.getCurrentUser()
+        $scope.runPipeLine()
+    }
+
+    $scope.checkAuthorized = async () => {
+        var userDat = await $scope.httpReq('/isAuthorized', {})
+        if (userDat) {
+            $scope.isAuthorized = 1
+            $scope.currentUser = userDat
+        }
+        else {
+            $scope.isAuthorized = 0
+            $scope.currentUser = null
+        }
+    }
+    $scope.getProductDetails = async () => {
+
+        var data = await $scope.httpReq('/graphql', getProductDetailsById($scope.productId))
+        $scope.$apply(function () {
+            $scope.currentDisplayingProduct = data.GetProductById
+
+        })
+    }
+
+    $scope.getCustomers = async () => {
+        var data = await $scope.httpReq('/graphql', getCustomerList($scope.productId))
+        $scope.customerList = data.GetProductById.Offerers
+
+    }
+    $scope.getProductsBycategory = async () => {
+        var data = await $scope.httpReq('/graphql', GetProductByCategoryGQL($scope.currentDisplayingProduct.category))
+        $scope.$apply(function () {
+            $scope.toShow = data.GetProductByCategory.filter(x => x.id != $scope.productId)
+        })
+    }
+
+    $scope.runPipeLine = async () => {
+        $scope.getProductId()
+        await $scope.checkAuthorized()
+        await $scope.getCustomers()
+        await $scope.getProductDetails()
+        await $scope.getProductsBycategory()
+        $scope.isAJAXBusy = 0
+        $scope.setUserToProductRelation()
     }
 
     //authorized parts
@@ -308,13 +346,7 @@ app.controller('productController', ($scope, $http) => {
 
     $scope.products = {}
     $scope.toShow = []
-    $scope.getProductsBycategory = (category) => {
-        $scope.httpPost('/graphql', GetProductByCategoryGQL(category), ({ data }) => {
-            $scope.products[category] = data.GetProductByCategory.filter(x => x.id != $scope.productId)
-            $scope.toShow = data.GetProductByCategory.filter(x => x.id != $scope.productId)
 
-        })
-    }
 
     $scope.initiateAcceptOffer = () => {
 

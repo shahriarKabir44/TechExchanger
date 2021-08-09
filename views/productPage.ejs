@@ -171,7 +171,6 @@
                                         <th></th>
                                         <th>Name</th>
                                         <th>Offered</th>
-                                        <th>Time</th>
                                         <th ng-if="userToProductRelation==1"> Action</th>
                                     </tr>
                                 </thead>
@@ -181,7 +180,6 @@
                                                 style="width: 50px;max-height: 50px;border-radius: 50%;" alt=""></td>
                                         <td> {{offerer.Buyer.firstName}} {{offerer.Buyer.lastName}}</td>
                                         <td>{{offerer.offeredPrice}} taka </td>
-                                        <td>{{ parseTime(offerer.time)}} </td>
                                         <td ng-if="userToProductRelation==1">
                                             <button class="btn btn-success" ng-click="initiateAcceptOffer()">Accept
                                                 offer!</button>

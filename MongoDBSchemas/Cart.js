@@ -6,7 +6,8 @@ const cartSchema = mongoose.Schema({
     customerId: { type: mongoose.Schema.ObjectId },
     offeredPrice: { type: Number },
     status: { type: Number },
-    time: { type: String }
+    time: { type: String },
+    whereToReceive: { type: String }
 })
 
 const Cart = mongoose.model('Cart', cartSchema)
