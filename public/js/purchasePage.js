@@ -69,7 +69,6 @@ app.controller('productController', ($scope, $http) => {
     $scope.userToProductRelation = 0
     $scope.customerList = []
     $scope.setUserToProductRelation = () => {
-        console.log($scope.currentUser.id, $scope.customerList)
         if ($scope.isAuthorized) {
             if ($scope.currentDisplayingProduct.owner == $scope.currentUser.id) {
                 $scope.userToProductRelation = 1;
@@ -125,7 +124,7 @@ app.controller('productController', ($scope, $http) => {
     $scope.getCustomers = async () => {
         var data = await $scope.httpReq('/graphql', getCustomerList($scope.productId))
         $scope.customerList = data.GetProductById.Offerers
-
+        console.log($scope.customerList)
     }
     $scope.getProductsBycategory = async () => {
         var data = await $scope.httpReq('/graphql', GetProductByCategoryGQL($scope.currentDisplayingProduct.category))
@@ -307,7 +306,7 @@ app.controller('productController', ($scope, $http) => {
                     $scope.currentUser = {}
                     localStorage.clear()
                     $scope.userToProductRelation = 0
-
+                    $scope.setUserToProductRelation()
                 }
 
             })
@@ -371,8 +370,9 @@ app.controller('productController', ($scope, $http) => {
     $scope.toShow = []
 
 
-    $scope.initiateAcceptOffer = () => {
-
+    $scope.initiateAcceptOffer = (offerer) => {
+        $scope.selectedBuyer = offerer
+        $('#confirmationModal').modal('show')
     }
 
     $scope.cart = {
