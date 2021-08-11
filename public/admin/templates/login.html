@@ -1,0 +1,38 @@
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Admin Login</title>
+    <link rel="icon" href="admin/images/favicon.png" type="image/gif" sizes="16x16">
+    <link rel="stylesheet" href="admin/style.css">
+    <link rel="stylesheet" href="admin/css/bootstrap.min.css">
+
+</head>
+
+<body ng-controller="unAuthorized">
+    <div ng-if="!isAuthorized" ng-init="initApp()" class="container-fluid _container">
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-6 login">
+                <h1 class="alogin">Admin Login Form</h1>
+
+
+                <form>
+                    <br>
+                    <input type="text" placeholder="Username" required="true">
+                    <br><br>
+                    <input type="password" placeholder="Password" required="true">
+                    <br><br><br>
+                    <div class="btndiv">
+                        <input class="loginbtn" type="submit">
+                        <a class="backbtn" href=" ">back</a>
+                    </div>
+                </form>
+
+            </div>
+            <div class="col-lg-3"></div>
+        </div>
+    </div>
+
+    <script src="admin/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="admin/js/bootstrap.min.js"></script>
+</body>

@@ -82,7 +82,7 @@ app.get('/product/:id', async (req, res) => {
     var id = req.params.id
     try {
         if (await Product.findById(id)) {
-            res.render('productPage.ejs')
+            res.render('mainSite/productPage.ejs')
         }
 
         else res.redirect('/')
@@ -201,7 +201,7 @@ app.post('/signup', async (req, res) => {
     }
 })
 app.get('/', (req, res) => {
-    res.render('index.ejs')
+    res.render('mainSite/index.ejs')
 })
 app.post('/logout', verifyAuthToken, (req, res) => {
     User.findByIdAndUpdate(req.user.id, { notificationId: '' }, (er, data) => {

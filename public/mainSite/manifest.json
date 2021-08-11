@@ -3,7 +3,7 @@
     "name": "Tech Exchanger",
     "icons": [
         {
-            "src": "/assets/system/favicon.png",
+            "src": "/favicon.png",
             "type": "image/png",
             "sizes": "192x192"
         }

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="mainSite/manifest.json">
     <!--firebase js-->
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-storage.js"></script>
@@ -13,10 +13,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Marketplace</title>
-    <link rel="icon" href="./assets/system/favicon.png" type="image/gif" sizes="16x16">
-    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="icon" href="./favicon.png" type="image/gif" sizes="16x16">
+    <link rel="stylesheet" href="mainSite/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Lora&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="mainSite/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/css/lightslider.min.css"
         integrity="sha512-yJHCxhu8pTR7P2UgXFrHvLMniOAL5ET1f5Cj+/dzl+JIlGTh5Cz+IeklcXzMavKvXP8vXqKMQyZjscjf3ZDfGA=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -25,16 +25,16 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="css/loader.css">
+    <link rel="stylesheet" href="mainSite/css/loader.css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lightslider/1.1.6/js/lightslider.min.js"
         integrity="sha512-Gfrxsz93rxFuB7KSYlln3wFqBaXUc1jtt3dGCp+2jTb563qYvnUBM/GP2ZUtRC27STN/zUamFtVFAIsRFoT6/w=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link rel="stylesheet" href="./css/homepage.css">
+    <link rel="stylesheet" href="./mainSite/css/homepage.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
         integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
         crossorigin="anonymous" />
-    <script src="js/angular.js"></script>
+    <script src="mainSite/js/angular.js"></script>
 </head>
 
 <style>
@@ -42,7 +42,7 @@
         display: fixed;
         min-height: 100vh;
         background: green;
-        background: url("assets/loginbg.jpg");
+        background: url("mainSite/assets/loginbg.jpg");
         background-repeat: top;
         background-position: center;
         background-size: cover;
@@ -58,11 +58,11 @@
 
 <body ng-app="homepage" ng-controller="myController" ng-init="InitializeApp()">
 
-    <div ng-include="'./shared/modals.html'"></div>
+    <div ng-include="'./mainSite/shared/modals.html'"></div>
 
 
     <!-- Nav Bar -->
-    <div ng-include="'./shared/navbar.html'"></div>
+    <div ng-include="'./mainSite/shared/navbar.html'"></div>
     <!-- Nav Bar End -->
 
 
@@ -72,7 +72,7 @@
         <div class="row d-flex">
             <!-- Shortcut -->
             <div class="col-xs-12 col-md-2 panel scfalse" style="float: left;">
-                <img class="scimg" onclick="popupShortcut(1)" src="./assets/system/SHORTCUT.png" alt="">
+                <img class="scimg" onclick="popupShortcut(1)" src="./mainSite/assets/system/SHORTCUT.png" alt="">
                 <fieldset class="fieldset" id="shortcutList">
                     <legend class="text-secondary" onclick="popupShortcut(0)">Shortcuts</legend>
 
@@ -215,11 +215,11 @@
             <!-- Product Slider End-->
         </div>
     </div>
-    <div ng-include="'./shared/footer.html'"></div>
+    <div ng-include="'./mainSite/shared/footer.html'"></div>
 
 </body>
 
-<script src="./js/Globals.js"></script>
-<script src="./js/index.js"></script>
+<script src="./mainSite/js/Globals.js"></script>
+<script src="./mainSite/js/index.js"></script>
 
 </html>

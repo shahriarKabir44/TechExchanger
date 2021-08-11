@@ -48,9 +48,11 @@ function startExpress() {
     var path = require('path')
     app.use(express.static(__dirname + '/public'));
     app.use('/product/:id', express.static(__dirname + '/public'));
+    app.use('/admin/:param', express.static(__dirname + '/adminStaticFiles'));
     app.set('view engine', 'ejs')
 
     app.use('/', homeRouter)
+    app.use('/epstein', require('./routers/adminRouter'))
 
     app.use('/graphql', graphqlHTTP.graphqlHTTP(req => (
         {

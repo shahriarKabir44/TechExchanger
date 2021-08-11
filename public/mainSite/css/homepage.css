@@ -8,7 +8,7 @@ body{
     display: fixed;
     min-height: 100vh;
     background: green;
-    background: url("assets/loginbg.jpg");
+    background: url("mainSite/assets/loginbg.jpg");
     background-repeat: top;
     background-position: center;
     background-size: cover;
