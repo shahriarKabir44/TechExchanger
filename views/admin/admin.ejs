@@ -1,21 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<body>
+<head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"
         integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <div ng-app="adminApp">
+</head>
 
-        <div>
-            <un-authorized></un-authorized>
+<body>
+
+    <div ng-app="adminApp" ng-controller="rootController">
+
+        <div ng-if="!isAuthorized" ng-controller="unAuthorized">
+            <un-authorized xn-xx="2" ng-init="f()"></un-authorized>
         </div>
 
+        <div ng-if="isAuthorized" ng-controller="authorized">
+
+        </div>
 
     </div>
 </body>
 
-<script src="admin/js/admin.js"></script>
-<script src="admin/js/login.js"></script>
+<script>
+    var app = angular.module('adminApp', [])
+
+    app.directive('unAuthorized', function () {
+        return {
+            scope: {
+                'xnXx': '='
+            },
+            controller: "unAuthorized",
+
+            templateUrl: './admin/templates/login.html',
+            link: function (scope) {
+                console.log(scope)
+            }
+        }
+    })
+</script>
+
+<script src="/admin/js/pagesJs/adminIndex.js"></script>
+<script src="/admin/js/pagesJs/adminLogin.js"></script>
+<script src="/admin/js/pagesJs/authorizedAdmin.js"></script>
+
 
 </html>

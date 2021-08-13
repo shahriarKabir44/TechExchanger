@@ -1,5 +1,4 @@
-var app = angular.module('adminApp', [])
-
+// var app = angular.module('adminApp', [])
 app.controller('unAuthorized', ($scope, $http) => {
 
     $scope.httpReq = async (url, body) => {
@@ -21,5 +20,8 @@ app.controller('unAuthorized', ($scope, $http) => {
         if (user) {
             $scope.isAuthorized = 1;
         }
+    }
+    $scope.f = () => {
+        console.log($scope.xnXx)
     }
 })
