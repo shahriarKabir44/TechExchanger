@@ -9,10 +9,10 @@
 
 <body>
 
-    <div ng-app="adminApp" ng-controller="rootController">
+    <div ng-app="adminApp" ng-controller="rootController" ng-init="initAdmin()">
 
         <div ng-if="!isAuthorized" ng-controller="unAuthorized">
-            <un-authorized xn-xx="2" ng-init="f()"></un-authorized>
+            <un-authorized ab-cd="'d'"></un-authorized>
         </div>
 
         <div ng-if="isAuthorized" ng-controller="authorized">
@@ -28,7 +28,7 @@
     app.directive('unAuthorized', function () {
         return {
             scope: {
-                'xnXx': '='
+                abCd: '='
             },
             controller: "unAuthorized",
 

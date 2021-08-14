@@ -20,10 +20,11 @@ app.controller('rootController', ($scope, $http) => {
     }
     console.log('object')
     $scope.initAdmin = async () => {
-        var authStat = await $scope.httpReq('/admin/isAuthorized')
+        var authStat = await $scope.httpReq('/epstein/isAuthorized')
         if (authStat) {
             $scope.isAuthorized = 1
             $scope.currentUser = authStat
+            localStorage.setItem('user', JSON.stringify($scope.currentUser))
         }
         else {
             $scope.isAuthorized = 0

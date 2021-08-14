@@ -1,13 +1,15 @@
 // var app = angular.module('adminApp', [])
+
+const SERVER_ROOT = '/epstein'
 app.controller('unAuthorized', ($scope, $http) => {
 
     $scope.httpReq = async (url, body) => {
         var req = {
-            url: url,
+            url: SERVER_ROOT + url,
             method: body ? 'POST' : 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': `bearer ${localStorage.getItem('joe_biden')}`
+                'jeffreyEpstein': `bearer ${localStorage.getItem('joe_biden')}`
             },
             data: body
         }
@@ -16,12 +18,15 @@ app.controller('unAuthorized', ($scope, $http) => {
     }
     $scope.isAuthorized = 0
     $scope.initApp = async () => {
-        var user = $scope.httpReq('/isAuthorized')
-        if (user) {
-            $scope.isAuthorized = 1;
-        }
+        var response = await $scope.httpReq('/')
     }
-    $scope.f = () => {
-        console.log($scope.xnXx)
+    $scope.loginModel = {}
+    $scope.adminLogin = async () => {
+        var resp = await $scope.httpReq('/login', $scope.loginModel)
+        if (!resp) alert('Invalid Credentials!')
+        else {
+            localStorage.setItem('joe_biden', JSON.stringify(resp.token))
+            location.reload()
+        }
     }
 })
