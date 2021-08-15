@@ -1,6 +1,5 @@
 // var app = angular.module('adminApp', [])
 
-const SERVER_ROOT = '/epstein'
 app.controller('unAuthorized', ($scope, $http) => {
 
     $scope.httpReq = async (url, body) => {
@@ -9,7 +8,7 @@ app.controller('unAuthorized', ($scope, $http) => {
             method: body ? 'POST' : 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'jeffreyEpstein': `bearer ${localStorage.getItem('joe_biden')}`
+                'jeffreyepstein': `bearer ${localStorage.getItem('joe_biden')}`
             },
             data: body
         }
@@ -22,10 +21,11 @@ app.controller('unAuthorized', ($scope, $http) => {
     }
     $scope.loginModel = {}
     $scope.adminLogin = async () => {
+        console.log($scope.loginModel)
         var resp = await $scope.httpReq('/login', $scope.loginModel)
         if (!resp) alert('Invalid Credentials!')
         else {
-            localStorage.setItem('joe_biden', JSON.stringify(resp.token))
+            localStorage.setItem('joe_biden', (resp.token))
             location.reload()
         }
     }
