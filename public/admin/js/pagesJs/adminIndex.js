@@ -24,12 +24,16 @@ app.controller('rootController', ($scope, $http) => {
         var authStat = await $scope.httpReq('/isAuthorized')
         console.log(authStat)
         if (authStat) {
-            $scope.isAuthorized = 1
+            $scope.$apply(() => {
+                $scope.isAuthorized = 1
+            })
             $scope.currentUser = authStat.user
             localStorage.setItem('user', JSON.stringify($scope.currentUser))
         }
         else {
-            $scope.isAuthorized = 0
+            $scope.$apply(() => {
+                $scope.isAuthorized = 0
+            })
             $scope.currentUser = null
             //localStorage.clear()
         }

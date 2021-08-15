@@ -12,11 +12,11 @@
     <div ng-app="adminApp" ng-controller="rootController" ng-init="initAdmin()">
 
         <div ng-if="!isAuthorized" ng-controller="unAuthorized">
-            <un-authorized ab-cd="'d'"></un-authorized>
+            <un-authorized></un-authorized>
         </div>
 
-        <div ng-if="isAuthorized" ng-controller="authorized">
-
+        <div ng-if="isAuthorized" ng-controller="authorized" ng-init="initAuthorized()">
+            <authorized-admin></authorized-admin>
         </div>
 
     </div>
@@ -29,13 +29,24 @@
     app.directive('unAuthorized', function () {
         return {
             scope: {
-                abCd: '='
             },
             controller: "unAuthorized",
 
             templateUrl: './admin/templates/login.html',
             link: function (scope) {
-                console.log(scope)
+            }
+        }
+    })
+
+    app.directive('authorizedAdmin', function () {
+        return {
+            scope: {
+            },
+            controller: "authorized",
+
+            templateUrl: './admin/templates/authorized/authorizedIndex.html',
+            link: function (scope) {
+                console.log(33)
             }
         }
     })
@@ -44,6 +55,8 @@
 <script src="/admin/js/pagesJs/adminIndex.js"></script>
 <script src="/admin/js/pagesJs/adminLogin.js"></script>
 <script src="/admin/js/pagesJs/authorizedAdmin.js"></script>
+<script src="/admin/templates/authorized/productsView/productsView.js"></script>
+<script src="/admin/templates/authorized/productsView/usersView.js"></script>
 
 
 </html>

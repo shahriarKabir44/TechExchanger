@@ -1,30 +1,24 @@
-<div class="fluid _container">
-    <div class=" ">
+<div class=" ">
 
-        <div class="navbar navbar-expand-sm navbar-light bg_custom">
-            <img class="logo" src="images/logo.png" alt="">
+    <div class="navbar navbar-expand-sm navbar-light bg_custom">
+        <img class="logo" src="/favicon.png" alt="">
 
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#collapsible_items">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#collapsible_items">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <div class="collapse navbar-collapse" id="collapsible_items">
+        <div class="collapse navbar-collapse" id="collapsible_items">
 
 
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" ng-click="showDashboard()" href="">Dashboard</a></li>
-                    <li class="nav-item"><a class="nav-link" ng-click="showProducts()" href="products.html">Products</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" ng-click="showUsers()" href="users.html">Users</a></li>
-                    <li class="nav-item"><a class="nav-link" ng-click="showTransactions()"
-                            href="transactions.html">Transactions</a></li>
-                    <li class="nav-item"><a class="nav-link" ng-click="renderView()" href="login.html">Logout</a></li>
-                </ul>
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Dashboard</a></li>
+                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Products</a>
+                </li>
+                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Users</a></li>
+                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Transactions</a></li>
+                <li class="nav-item"><a class="nav-link" ng-click="logout()">Logout</a></li>
+            </ul>
 
-            </div>
         </div>
     </div>
-
-
-
 </div>
