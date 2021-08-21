@@ -17,6 +17,7 @@ function verifyAuthToken(req, res, next) {
             }
             else {
                 req.user = user._doc
+                console.log(3)
                 next()
             }
         })
