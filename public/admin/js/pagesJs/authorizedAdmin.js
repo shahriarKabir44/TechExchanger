@@ -22,7 +22,7 @@ app.controller('authorized', ($scope, $http) => {
         $scope.currentUser = JSON.parse(localStorage.getItem('user'))
         localStorage.removeItem('user')
     }
-    $scope.showType = 2;
+    $scope.showType = 3;
     $scope.changeView = (x) => {
         $scope.showType = x;
     }

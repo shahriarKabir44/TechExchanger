@@ -11,12 +11,17 @@
 
 
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Dashboard</a></li>
-                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Products</a>
+                <li class="nav-item" ng-class="{selected:showType==1}"><a class="nav-link" ng-click="changeView()">Dashboard</a></li>
+                <li class="nav-item" ng-class="{selected:showType==2}"><a class="nav-link" ng-click="changeView()">Products</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Users</a></li>
-                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Transactions</a></li>
-                <li class="nav-item"><a class="nav-link" ng-click="logout()">Logout</a></li>
+                <li class="nav-item" ng-class="{selected:showType==3}">
+                    <a class="nav-link" ng-click="changeView()">
+                      
+                         Users 
+                    </a>
+                </li>
+                <li class="nav-item"  ng-class="{selected:showType==4}"><a class="nav-link" ng-click="changeView()">Transactions</a></li>
+                <li class="nav-item" ng-class="{selected:showType==5}"><a class="nav-link" ng-click="logout()">Logout</a></li>
             </ul>
 
         </div>
