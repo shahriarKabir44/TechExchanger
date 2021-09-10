@@ -1,6 +1,7 @@
 const express = require('express');
 const graphqlHTTP = require('express-graphql');
 const mongoose = require('mongoose');
+var jwt = require('jsonwebtoken')
 
 
 
@@ -8,6 +9,7 @@ const webPush = require('web-push')
 require('dotenv').config()
 webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
 var graphqlSchema = require('./Graphql/graphqlSchema')
+var graphQLAdmin = require('./Graphql/adminGraphQL')
 var cors = require('cors')
 
 mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechExchanger?retryWrites=true&w=majority',
@@ -37,6 +39,26 @@ if (cluster.isMaster) {
 }
 
 
+function verifyAuthTokenAdmin(req, res, next) {
+    var authHeader = req.headers['jeffreyepstein']
+    var token = authHeader && authHeader.split(' ')[1]
+    if (!token) res.send({ data: null })
+    else {
+        jwt.verify(token, process.env.secret, (err, user) => {
+            if (err) {
+                res.send({
+                    data: null
+                })
+            }
+            else {
+                req.user = user._doc
+                console.log(3)
+                next()
+            }
+        })
+    }
+}
+
 function startExpress() {
     const app = express();
     const homeRouter = require('./routers/homeRouter')
@@ -61,4 +83,10 @@ function startExpress() {
         }
     )));
 
+    app.use('/epstein/biden', graphqlHTTP.graphqlHTTP(req => (
+        {
+            schema: graphQLAdmin,
+            graphiql: true
+        }
+    )))
 }

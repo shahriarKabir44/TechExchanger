@@ -7,8 +7,8 @@ var jwt = require('jsonwebtoken')
 
 
 const express = require('express')
-var app = express.Router()
-app.post('/subscribe', verifyAuthToken, async (req, res) => {
+var router = express.Router()
+router.post('/subscribe', verifyAuthToken, async (req, res) => {
     const subscription = req.body
     var notificationId = (JSON.stringify(subscription))
     //res.status(201).json({})
@@ -52,7 +52,7 @@ function verifyAuthToken(req, res, next) {
         })
     }
 }
-app.post('/updateUser', verifyAuthToken, async (req, res) => {
+router.post('/updateUser', verifyAuthToken, async (req, res) => {
     var { id, curPassword } = req.body
     if (req.body.toStore.password == "") {
         delete req.body.toStore.password
@@ -78,7 +78,7 @@ app.post('/updateUser', verifyAuthToken, async (req, res) => {
 
 })
 
-app.get('/product/:id', async (req, res) => {
+router.get('/product/:id', async (req, res) => {
     var id = req.params.id
     try {
         if (await Product.findById(id)) {
@@ -92,7 +92,7 @@ app.get('/product/:id', async (req, res) => {
 
 })
 
-app.post('/addToCart', verifyAuthToken, async (req, res) => {
+router.post('/addToCart', verifyAuthToken, async (req, res) => {
     var productName = req.body.productName
     var customerName = req.body.customerName
     var newCart = { ...req.body }
@@ -130,7 +130,7 @@ app.post('/addToCart', verifyAuthToken, async (req, res) => {
             .catch(err => console.log(sellerNotificationId))
     else res.send({ data: updatedCart })
 })
-app.post('/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     var { phoneNumber, password } = req.body;
     var data = await User.findOne({ $and: [{ phoneNumber: phoneNumber }, { password: password }] })
     if (data == null) res.send({ data: null })
@@ -156,30 +156,30 @@ app.post('/login', async (req, res) => {
         })
     }
 })
-app.post('/postAd', verifyAuthToken, async (req, res) => {
+router.post('/postAd', verifyAuthToken, async (req, res) => {
     var now = (new Date() * 1) + ''
     var newProd = new Product({ ...req.body, owner: req.user.id, postedOn: now })
     await newProd.save()
     res.send({ newProductid: newProd._id })
 })
-app.post('/updateProduct', verifyAuthToken, async (req, res) => {
+router.post('/updateProduct', verifyAuthToken, async (req, res) => {
     var id = req.body.id
     var newProd = { ...req.body }
     delete newProd.id
     var newpd = await Product.findByIdAndUpdate(id, newProd)
     res.send({ data: { ...newProd, id: id } })
 })
-app.post('/isAuthorized', verifyAuthToken, (req, res) => {
+router.post('/isAuthorized', verifyAuthToken, (req, res) => {
     var user = req.user;
     res.send({ data: user })
 })
-app.get('/getStat', (req, res) => {
+router.get('/getStat', (req, res) => {
     runStat()
         .then(stat => {
             res.send({ data: stat })
         })
 })
-app.post('/signup', async (req, res) => {
+router.post('/signup', async (req, res) => {
     var newUser = req.body
     try {
         var toSave = new User({ ...newUser, createdOn: (new Date() * 1) + '' })
@@ -200,16 +200,16 @@ app.post('/signup', async (req, res) => {
         res.send({ data: null })
     }
 })
-app.get('/', (req, res) => {
+router.get('/', (req, res) => {
     res.render('mainSite/index.ejs')
 })
-app.post('/logout', verifyAuthToken, (req, res) => {
+router.post('/logout', verifyAuthToken, (req, res) => {
     User.findByIdAndUpdate(req.user.id, { notificationId: '' }, (er, data) => {
         if (er) console.log(er)
         else res.send({ data: 1 })
     })
 })
-app.post('/updateProfilePicture', verifyAuthToken, async (req, res) => {
+router.post('/updateProfilePicture', verifyAuthToken, async (req, res) => {
     var { id, imageURL } = req.body
     User.findByIdAndUpdate(id, { imageURL: imageURL }, async (err, data) => {
         if (err) console.log(err)
@@ -227,4 +227,4 @@ app.post('/updateProfilePicture', verifyAuthToken, async (req, res) => {
     })
 })
 
-module.exports = app
+module.exports = router

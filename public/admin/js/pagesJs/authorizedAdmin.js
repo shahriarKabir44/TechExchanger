@@ -22,7 +22,7 @@ app.controller('authorized', ($scope, $http) => {
         $scope.currentUser = JSON.parse(localStorage.getItem('user'))
         localStorage.removeItem('user')
     }
-    $scope.showType = 1;
+    $scope.showType = 2;
     $scope.changeView = (x) => {
         $scope.showType = x;
     }
@@ -36,6 +36,18 @@ app.directive('productsView', function () {
         controller: "products",
 
         templateUrl: '/admin/templates/authorized/productsView/productsView.html',
+        link: function (scope) {
+        }
+    }
+})
+
+app.directive('usersView', function () {
+    return {
+        scope: {
+        },
+        controller: "users",
+
+        templateUrl: '/admin/templates/authorized/usersView/usersView.html',
         link: function (scope) {
         }
     }

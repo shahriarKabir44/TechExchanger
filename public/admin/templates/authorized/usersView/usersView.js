@@ -16,5 +16,42 @@ app.controller('users', ($scope, $http) => {
         })
         return resp.data.data
     }
+    $scope.currentPageNumber = 1
+    $scope.pageSize = 10;
+    $scope.userCount = 0
+    $scope.pageCount = 0
+    $scope.userList = []
+    $scope.getUserNumber = async () => {
+        var x = await $scope.httpReq('/countEntities/1')
+        $scope.pageCount = Math.ceil(x / $scope.pageSize)
+        $scope.$apply(() => {
+            $scope.userCount = x
+            console.log($scope.userCount);
+        })
+
+    }
+    $scope.initUserPage = () => {
+        $scope.getUserNumber()
+        $scope.getUsers()
+    }
+    $scope.getUsers = async () => {
+        var getUsersGQL = {
+            query: `query{
+                Users(pageNo:${$scope.currentPageNumber},pageSize:${$scope.pageSize}){
+                  
+                  fullName
+                  phoneNumber
+                  imageURL
+                  id
+                  createdOn
+                }
+              }`
+        }
+        var users = await $scope.httpReq('/biden', getUsersGQL)
+        console.log(users);
+        $scope.$apply(() => {
+            $scope.userList = users
+        })
+    }
 
 })

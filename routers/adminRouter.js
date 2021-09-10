@@ -2,6 +2,8 @@ const express = require('express')
 var jwt = require('jsonwebtoken')
 
 var Admin = require('../MongoDBSchemas/admin')
+const products = require('../MongoDBSchemas/Product')
+const User = require('../MongoDBSchemas/User')
 
 const router = express.Router()
 function verifyAuthToken(req, res, next) {
@@ -17,7 +19,6 @@ function verifyAuthToken(req, res, next) {
             }
             else {
                 req.user = user._doc
-                console.log(3)
                 next()
             }
         })
@@ -32,6 +33,22 @@ router.get('/isAuthorized', verifyAuthToken, (req, res) => {
             user: req.user
         }
     })
+})
+
+router.get('/countEntities/:id', verifyAuthToken, (req, res) => {
+    var type = req.params.id
+    if (type) {
+        User.countDocuments({}, (err, data) => {
+            if (err) throw err
+            else res.send({ data: data })
+        })
+    }
+    else {
+        products.countDocuments({}, (err, data) => {
+            if (err) throw err
+            else res.send({ data: data })
+        })
+    }
 })
 
 router.post('/login', async (req, res) => {

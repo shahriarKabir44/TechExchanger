@@ -57,7 +57,7 @@ app.controller('myController', ($scope, $http) => {
                 $scope.least_price = JSON.parse(data.least_price)
                 $scope.least_used = JSON.parse(data.least_used)
                 $scope.most_popular = JSON.parse(data.most_popular)
-
+                $scope.getProductsBycategory()
             })
         }, () => { })
     }
@@ -287,23 +287,25 @@ app.controller('myController', ($scope, $http) => {
 
     $scope.products = {}
     $scope.getProductsBycategory = () => {
+        console.log('object');
         $scope.httpPost('/graphql', GetProductByCategoryGQL('Chair'), ({ data }) => {
             $scope.products['Chair'] = data.GetProductByCategory
             $scope.httpPost('/graphql', GetProductByCategoryGQL('Bed'), ({ data }) => {
                 $scope.products['Bed'] = data.GetProductByCategory
                 $scope.httpPost('/graphql', GetProductByCategoryGQL('Table'), ({ data }) => {
                     $scope.products['Table'] = data.GetProductByCategory
+                    console.log($scope.products);
                 })
             })
         })
 
 
     }
-    $scope.getProductsBycategory()
+
     //common part end
     $scope.viewProd = (id) => {
         console.log(id)
-        location.href = "product/" + id
+        //location.href = "product/" + id
     }
 
 })
