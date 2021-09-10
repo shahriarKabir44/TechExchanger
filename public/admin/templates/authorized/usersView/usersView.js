@@ -48,10 +48,17 @@ app.controller('users', ($scope, $http) => {
               }`
         }
         var users = await $scope.httpReq('/biden', getUsersGQL)
-        console.log(users);
+
         $scope.$apply(() => {
-            $scope.userList = users
+            console.log(users);
+            $scope.userList = users.Users
         })
+    }
+
+    $scope.parseDate = (x) => {
+        var time = new Date(x * 1)
+        var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
+        return res
     }
 
 })

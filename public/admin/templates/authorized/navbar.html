@@ -14,7 +14,12 @@
                 <li class="nav-item"><a class="nav-link" ng-click="changeView()">Dashboard</a></li>
                 <li class="nav-item"><a class="nav-link" ng-click="changeView()">Products</a>
                 </li>
-                <li class="nav-item"><a class="nav-link" ng-click="changeView()">Users</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" ng-click="changeView()">
+                        <p ng-if="showType!=2">Users</p>
+                        <u ng-if="showType==2">Users</u>
+                    </a>
+                </li>
                 <li class="nav-item"><a class="nav-link" ng-click="changeView()">Transactions</a></li>
                 <li class="nav-item"><a class="nav-link" ng-click="logout()">Logout</a></li>
             </ul>

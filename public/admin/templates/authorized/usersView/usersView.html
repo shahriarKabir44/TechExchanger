@@ -18,8 +18,9 @@
             <tr ng-repeat="user in userList">
                 <td><img ng-src="{{user.imageURL}}" style="width: 50px;max-height: 50px;border-radius: 50%;" alt="">
                 </td>
-                <td> {{JSON.stringify(user)}} </td>
-                <td>{{offerer.createdOn}} </td>
+                <td> {{user.fullName}} </td>
+                <td> {{user.phoneNumber}} </td>
+                <td>{{ parseDate(user.createdOn) }} </td>
                 <td>
                     <button class="btn btn-success">Details</button>
                 </td>
