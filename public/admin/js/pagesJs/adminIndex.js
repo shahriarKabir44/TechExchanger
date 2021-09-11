@@ -19,10 +19,8 @@ app.controller('rootController', ($scope, $http) => {
         })
         return resp.data.data
     }
-    console.log('object')
     $scope.initAdmin = async () => {
         var authStat = await $scope.httpReq('/isAuthorized')
-        console.log(authStat)
         if (authStat) {
             $scope.$apply(() => {
                 $scope.isAuthorized = 1

@@ -52,3 +52,10 @@ app.directive('usersView', function () {
         }
     }
 })
+app.config(function ($routeProvider) {
+    $routeProvider
+        .when('/showUser/:id', {
+            templateUrl: "/admin/templates/authorized/userDetails/userDetails.html",
+            // controller: "authorized"
+        })
+})

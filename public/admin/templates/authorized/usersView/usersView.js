@@ -1,4 +1,4 @@
-app.controller('users', ($scope, $http) => {
+app.controller('users', ($scope, $http,$location) => {
     $scope.httpReq = async (url, body) => {
         $scope.isLoading = 1
         var req = {
@@ -17,17 +17,17 @@ app.controller('users', ($scope, $http) => {
         return resp.data.data
     }
     $scope.currentPageNumber = 1
-    $scope.pageSize = 2;
+    $scope.pageSize = 20;
     $scope.userCount = 0
     $scope.pageCount = 0
-     $scope.userList = []
+    $scope.userList = []
     $scope.getUserNumber = async () => {
         var x = await $scope.httpReq('/countEntities/1')
         $scope.pageCount = Math.ceil(x / $scope.pageSize)
         $scope.$apply(() => {
             $scope.userCount = x
             $scope.pageButtonsArray = new Array($scope.pageCount).fill(0).map((x, ind) => { return ind + 1 })
-            $scope.pageButtonsArray = [-1, ...$scope.pageButtonsArray,-2]
+            $scope.pageButtonsArray = [-1, ...$scope.pageButtonsArray, -2]
         })
 
     }
@@ -60,12 +60,16 @@ app.controller('users', ($scope, $http) => {
     }
     $scope.changePage = (x) => {
         if ($scope.currentPageNumber + x == 0 || $scope.currentPageNumber + x == $scope.pageCount + 1) return
-         $scope.gotoPage($scope.currentPageNumber + x )
+        $scope.gotoPage($scope.currentPageNumber + x)
     }
     $scope.parseDate = (x) => {
         var time = new Date(x * 1)
         var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
         return res
     }
+    $scope.viewUser = (id) => {
+        $location.path('/showUser/'+id)
+    }
 
 })
+

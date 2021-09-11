@@ -5,11 +5,15 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.8.2/angular.min.js"
         integrity="sha512-7oYXeK0OxTFxndh0erL8FsjGvrl2VMDor6fVqzlLGfwOQQqTbYsGPv4ZZ15QHfSk80doyaM0ZJdvkyDcVO7KFA=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-route/1.8.2/angular-route.min.js"
+        integrity="sha512-5zOAub3cIpqklnKmM05spv4xttemFDlbBrmRexWiP0aWV8dlayEGciapAjBQWA7lgQsxPY6ay0oIUVtY/pivXA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
 
     <div ng-app="adminApp" ng-controller="rootController" ng-init="initAdmin()">
+        <ng-view></ng-view>
 
         <div ng-if="!isAuthorized" ng-controller="unAuthorized">
             <un-authorized></un-authorized>
@@ -23,7 +27,7 @@
 </body>
 
 <script>
-    var app = angular.module('adminApp', [])
+    var app = angular.module('adminApp', ['ngRoute'])
     const SERVER_ROOT = '/epstein'
 
     app.directive('unAuthorized', function () {
@@ -46,10 +50,11 @@
 
             templateUrl: './admin/templates/authorized/authorizedIndex.html',
             link: function (scope) {
-                console.log(33)
+
             }
         }
     })
+
 </script>
 
 <script src="/admin/js/pagesJs/adminIndex.js"></script>
@@ -57,6 +62,7 @@
 <script src="/admin/js/pagesJs/authorizedAdmin.js"></script>
 <script src="/admin/templates/authorized/productsView/productsView.js"></script>
 <script src="/admin/templates/authorized/usersView/usersView.js"></script>
+<script src="/admin/templates/authorized/userDetails/userDetails.js"></script>
 
 
 </html>
