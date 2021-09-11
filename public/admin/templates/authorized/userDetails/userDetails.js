@@ -18,8 +18,50 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         })
         return resp.data.data
     }
-    $scope.initUserDetails = () => {
-        $scope.currentUserId = ($routeParams.id)
+    $scope.currentUser = {
+        personalDetails: {},
+        ads: [],
+        carts: [],
+        purchased: []
     }
+    $scope.getPersonalDetails = async () => {
+        var requestObj = {
+            query: `query{
+                      User(id:"${$scope.currentUserId}"){
+                        id
+                        phoneNumber
+                        email
+                        address
+                        imageURL
+                        fullName
+                        notificationId
+                        createdOn
+                      }
+                    }`
+        }
+        var personalDetails = await $scope.httpReq('/biden', requestObj)
+        if (!personalDetails) {
+            location.href = '/epstein'
+        }
+        $scope.$apply(function () {
+            $scope.currentUser.personalDetails = personalDetails.User
+            console.log($scope.currentUser.personalDetails);
+        })
+    }
+    $scope.initUserDetails = async () => {
+        $scope.currentUserId = ($routeParams.id)
+        await $scope.getPersonalDetails()
+        $('#userDetailsModal').modal('show')
 
+    }
+    $('#userDetailsModal').on('hidden.bs.modal', function () {
+        $scope.$apply(() => {
+            location.href = '/epstein'
+        })
+    })
+    $scope.parseTime = (x) => {
+        var time = new Date(x * 1)
+        var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
+        return res
+    }
 })

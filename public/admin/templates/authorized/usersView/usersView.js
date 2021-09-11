@@ -1,4 +1,4 @@
-app.controller('users', ($scope, $http,$location) => {
+app.controller('users', ($scope, $http, $location) => {
     $scope.httpReq = async (url, body) => {
         $scope.isLoading = 1
         var req = {
@@ -68,7 +68,7 @@ app.controller('users', ($scope, $http,$location) => {
         return res
     }
     $scope.viewUser = (id) => {
-        $location.path('/showUser/'+id)
+        $location.path('/showUser/' + id)
     }
 
 })
