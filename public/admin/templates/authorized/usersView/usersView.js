@@ -17,16 +17,17 @@ app.controller('users', ($scope, $http) => {
         return resp.data.data
     }
     $scope.currentPageNumber = 1
-    $scope.pageSize = 10;
+    $scope.pageSize = 2;
     $scope.userCount = 0
     $scope.pageCount = 0
-    $scope.userList = []
+     $scope.userList = []
     $scope.getUserNumber = async () => {
         var x = await $scope.httpReq('/countEntities/1')
         $scope.pageCount = Math.ceil(x / $scope.pageSize)
         $scope.$apply(() => {
             $scope.userCount = x
-            console.log($scope.userCount);
+            $scope.pageButtonsArray = new Array($scope.pageCount).fill(0).map((x, ind) => { return ind + 1 })
+            $scope.pageButtonsArray = [-1, ...$scope.pageButtonsArray,-2]
         })
 
     }
@@ -50,11 +51,17 @@ app.controller('users', ($scope, $http) => {
         var users = await $scope.httpReq('/biden', getUsersGQL)
 
         $scope.$apply(() => {
-            console.log(users);
             $scope.userList = users.Users
         })
     }
-
+    $scope.gotoPage = (x) => {
+        $scope.currentPageNumber = x
+        $scope.getUsers()
+    }
+    $scope.changePage = (x) => {
+        if ($scope.currentPageNumber + x == 0 || $scope.currentPageNumber + x == $scope.pageCount + 1) return
+         $scope.gotoPage($scope.currentPageNumber + x )
+    }
     $scope.parseDate = (x) => {
         var time = new Date(x * 1)
         var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
