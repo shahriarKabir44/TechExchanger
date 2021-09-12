@@ -58,8 +58,8 @@ app.config(function ($routeProvider) {
             templateUrl: "/admin/templates/authorized/userDetails/userDetails.html",
             // controller: "authorized"
         })
-        .when('/showUser/:id/owned/:productId', {
-            templateUrl: "/admin/templates/authorized/userDetails/ownedProductDetails/ownedProductDetails.html",
+        .when('/showProduct/:productId', {
+            templateUrl: "/admin/templates/authorized/productDetails/productDetails.html",
 
         })
 })

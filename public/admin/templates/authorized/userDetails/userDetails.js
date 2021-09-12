@@ -110,6 +110,6 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         })
     }
     $scope.viewProductDetails = (x) => {
-        $location.path(`/showUser/${$scope.currentUserId}/owned/${x}`)
+        $location.path(`/showProduct/${x}`)
     }
 })
