@@ -73,17 +73,6 @@ router.post('/login', async (req, res) => {
         })
     }
 })
-router.get('/p', async (req, res) => {
-    var usr = new Admin({
-        userName: "ppp",
-        password: "ppp",
-        profilePicture: "ppp",
-        phoneNumber: "ppp",
-        email: "ppp",
-        notificationString: "ppp"
-    })
-    var x = await usr.save()
-    res.send({ data: usr })
-})
+
 
 module.exports = router
