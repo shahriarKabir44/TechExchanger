@@ -39,9 +39,9 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
                       }
                     }`
         }
-        var personalDetails = await $scope.httpReq('/biden', requestObj)
+        var personalDetails = await $scope.httpReq(biden, requestObj)
         if (!personalDetails) {
-            location.href = '/epstein'
+            $location.path('')
         }
         $scope.$apply(function () {
             $scope.currentUser.personalDetails = personalDetails.User
@@ -51,17 +51,42 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
     $scope.initUserDetails = async () => {
         $scope.currentUserId = ($routeParams.id)
         await $scope.getPersonalDetails()
-        $('#userDetailsModal').modal('show')
+        $('#userDetailsModal').modal()
 
     }
     $('#userDetailsModal').on('hidden.bs.modal', function () {
         $scope.$apply(() => {
-            location.href = '/epstein'
+            $location.path('')
         })
     })
     $scope.parseTime = (x) => {
         var time = new Date(x * 1)
         var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
         return res
+    }
+
+    $scope.canShowProductsOwned = 0
+    $scope.getProductsOwned = async () => {
+        var productsOwned = await $scope.httpReq(biden, {
+            query: `query{
+                User(id:"${$scope.currentUserId}"){
+                  Owned{
+                    id
+                    category
+                    image1
+                    askedPrice
+                    customerCount
+                    postedOn
+                  }
+                }
+              }`
+        })
+        $scope.$apply(function () {
+            $scope.currentUser.ads = productsOwned.User.Owned
+            $scope.canShowProductsOwned = 1
+        })
+    }
+    $scope.viewProductDetails = (x) => {
+        $location.path(`/showUser/${$scope.currentUserId}/owned/${x}`)
     }
 })
