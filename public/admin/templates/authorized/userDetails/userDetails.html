@@ -42,10 +42,10 @@
                             <hr>
                             <hr>
                             <div class="prodList row" ng-if="canShowProductsOwned">
-                                <div class="  col-lg-4" style="display: grid;grid-template-columns: 50% 50%; border:1px solid;box-shadow: 1px 1px 1px 1px black "
-                                    ng-repeat="product in currentUser.ads">
-                                    <img ng-src="{{product.image1}}" alt="Card image" style="width:100%">
-                                    <div class="container">
+                                <div class="card col-lg-3" ng-repeat="product in currentUser.ads">
+                                    <img class="card-img-top" ng-src="{{product.image1}}" alt="Card image"
+                                        style="width:100%">
+                                    <div class="card-body">
                                         <p> Category: {{product.category}} </p>
                                         <p> Price: {{product.askedPrice}} </p>
                                         <p> Customer count: {{product.customerCount}} </p>
