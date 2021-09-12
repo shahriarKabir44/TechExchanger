@@ -21,7 +21,7 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
     $scope.currentUser = {
         personalDetails: {},
         ads: [],
-        carts: [],
+        ca: [],
         purchased: []
     }
     $scope.getPersonalDetails = async () => {
@@ -64,7 +64,30 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
         return res
     }
-
+    $scope.canShowCarts = 0
+    $scope.getCarts = async () => {
+        var productsOwned = await $scope.httpReq(biden, {
+            query: `query{
+                User(id:"${$scope.currentUserId}"){
+                  Carts{
+                    id
+                    offeredPrice
+                    time
+                    productId
+                    Product{
+                      image1
+                      category
+                    }
+                  }
+                }
+              }`
+        })
+        $scope.$apply(function () {
+            $scope.currentUser.carts = productsOwned.User.Carts
+            console.log(productsOwned);
+            $scope.canShowCarts = 1
+        })
+    }
     $scope.canShowProductsOwned = 0
     $scope.getProductsOwned = async () => {
         var productsOwned = await $scope.httpReq(biden, {
