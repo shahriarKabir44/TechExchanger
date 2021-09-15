@@ -13,7 +13,7 @@
                 <div class="modal-body">
 
                     <div class="container">
-                        <div style="display: grid; grid-template-columns:50% 50% ">
+                        <div style="display: grid; grid-template-columns:30% 20% 50% ">
                             <div class="card" style="width:100%">
                                 <img class="card-img-top" ng-src="{{currentUser.personalDetails.imageURL}}"
                                     alt="Card image" style="width:100%">
@@ -21,6 +21,7 @@
 
                                 </div>
                             </div>
+                            <div></div>
                             <div class="card" style="width:100%">
 
                                 <div class="card-body">
@@ -71,8 +72,9 @@
                                         <img ng-src="{{cart.Product.image1}}" style="width:100%">
                                         <div class="container">
                                             <p> Category: {{cart.Product.category}} </p>
-                                            <p> Offered: {{cart.offeredPrice}} </p>
+                                            <p> Offered: {{cart.offeredPrice}} taka</p>
                                             <p> Time: {{ parseTime(cart.time) }} </p>
+                                            <p>Order location: {{cart.whereToReceive}}</p>
                                             <button class="btn btn-block btn-primary"
                                                 ng-click="viewProductDetails(cart.productId)"> View
                                                 Details </button>

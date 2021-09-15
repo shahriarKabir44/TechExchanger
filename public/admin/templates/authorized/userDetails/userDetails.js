@@ -41,7 +41,7 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         }
         var personalDetails = await $scope.httpReq(biden, requestObj)
         if (!personalDetails) {
-            $location.path('')
+            $location.path('/')
         }
         $scope.$apply(function () {
             $scope.currentUser.personalDetails = personalDetails.User
@@ -55,8 +55,8 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
 
     }
     $('#userDetailsModal').on('hidden.bs.modal', function () {
-        $scope.$apply(() => {
-            $location.path('')
+        $scope.$apply(function () {
+            $location.path('/')
         })
     })
     $scope.parseTime = (x) => {
@@ -73,6 +73,7 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
                     id
                     offeredPrice
                     time
+                    whereToReceive
                     productId
                     Product{
                       image1

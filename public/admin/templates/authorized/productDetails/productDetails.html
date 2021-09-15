@@ -7,96 +7,122 @@
     }
 </style>
 <div ng-controller="productDetails" ng-init="initProductDetails()">
-    <div class="modal show fade" id="productDetailsModal">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl">
-            <div class="modal-content">
+    <div class="poop" ng-if="canShowModal">
+        <div class="modal show fade" id="productDetailsModal">
+            <div class="modal-dialog modal-dialog-scrollable modal-xl">
+                <div class="modal-content">
 
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Product Details </h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div style="padding: 5px;" class="col-lg-12">
-                                <img class="displayImage" ng-src="{{currentProduct.basicInfo.image1}}" alt="">
-                            </div>
-                            <div style="padding: 5px;" class="col-lg-12">
-                                <img class="displayImage" ng-src="{{currentProduct.basicInfo.image2}}" alt="">
-                            </div>
-                            <div style="padding: 5px;" class="col-lg-12">
-                                <img class="displayImage" ng-src="{{currentProduct.basicInfo.image3}}" alt="">
-                            </div>
-                            <div style="padding: 5px;" class="col-lg-12">
-                                <img class="displayImage" ng-src="{{currentProduct.basicInfo.image4}}" alt="">
-                            </div>
-                        </div>
+                    <!-- Modal Header -->
+                    <div class="modal-header">
+                        <h4 class="modal-title">Product Details </h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
-                    <div class="container">
-                        <div class="jumbotron">
-                            <h2 style="font-family: ui-monospace;">Basic Details</h2>
-                            <hr class="my-2">
-                            <p>Category: {{ currentProduct.basicInfo.category }} </p>
-                            <p>Asked Price: {{currentProduct.basicInfo.askedPrice}} </p>
-                            <p>Customer Count: {{currentProduct.basicInfo.customerCount}} </p>
-                            <p>Posted on: {{parseTime(currentProduct.basicInfo.postedOn)}} </p>
-                            <p>Posted from: {{currentProduct.basicInfo.postedFrom}} </p>
-                            <p>Details: {{currentProduct.basicInfo.details}}</p>
-                        </div>
-                    </div>
-                    <div class="container-fluid">
-                        <div class="jumbotron jumbotron-fluid">
-                            <div class="container">
-                                <h2 style="font-family: ui-monospace;">Owner details</h2>
-                                <hr class="my-2">
-                                <div style="display: grid;grid-template-columns: 50% 50%;">
-                                    <div class="card" style="width:100%">
-                                        <img class="card-img-top" ng-src="{{currentProduct.ownerInfo.imageURL}}"
-                                            alt="Card image" style="width:100%">
 
+                    <!-- Modal body -->
+                    <div class="modal-body">
+                        <div class="container">
+                            <div class="row">
+                                <div style="padding: 5px;" class="col-lg-12" ng-repeat="image in currentProduct.images">
+                                    <div class="carousel-item active">
+                                        <img class="displayImage" ng-src="{{image}}" alt="">
+                                        <div class="carousel-caption">
+                                            <button class="btn btn-primary" ng-click="viewImage(image)">
+                                                <h3> View fullscreen </h3>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="card" style="width:100%">
+                                </div>
 
-                                        <div class="card-body">
-                                            <h4 class="card-title">{{currentProduct.ownerInfo.fullName}}</h4>
+                            </div>
+                        </div>
+                        <div class="container">
+                            <div class="jumbotron">
+                                <h2 style="font-family: ui-monospace;">Basic Details</h2>
+                                <hr class="my-2">
+                                <p>Category: {{ currentProduct.basicInfo.category }} </p>
+                                <p>Asked Price: {{currentProduct.basicInfo.askedPrice}} </p>
+                                <p>Customer Count: {{currentProduct.basicInfo.customerCount}} </p>
+                                <p>Posted on: {{parseTime(currentProduct.basicInfo.postedOn)}} </p>
+                                <p>Posted from: {{currentProduct.basicInfo.postedFrom}} </p>
+                                <p>Details: {{currentProduct.basicInfo.details}}</p>
+                            </div>
+                        </div>
+                        <div class="container-fluid">
+                            <div class="jumbotron jumbotron-fluid">
+                                <div class="container">
+                                    <h2 style="font-family: ui-monospace;">Owner details</h2>
+                                    <hr class="my-2">
+                                    <div style="display: grid;grid-template-columns: 50% 50%;">
+                                        <div class="card" style="width:100%">
+                                            <img class="card-img-top" ng-src="{{currentProduct.ownerInfo.imageURL}}"
+                                                alt="Card image" style="width:100%">
 
-                                            <p> Phone number: {{currentProduct.ownerInfo.phoneNumber}} </p>
-                                            <p> Email address: {{currentProduct.ownerInfo.email}} </p>
-                                            <p> Address: {{currentProduct.ownerInfo.address}} </p>
-                                            <p> Created on: {{ parseTime(currentProduct.ownerInfo.createdOn) }} </p>
-                                            <button class="btn btn-primary btn-block"
-                                                ng-click="viewUser(currentProduct.basicInfo.owner)">View
-                                                details</button>
+                                        </div>
+                                        <div class="card" style="width:100%">
+
+                                            <div class="card-body">
+                                                <h4 class="card-title">{{currentProduct.ownerInfo.fullName}}</h4>
+
+                                                <p> Phone number: {{currentProduct.ownerInfo.phoneNumber}} </p>
+                                                <p> Email address: {{currentProduct.ownerInfo.email}} </p>
+                                                <p> Address: {{currentProduct.ownerInfo.address}} </p>
+                                                <p> Created on: {{ parseTime(currentProduct.ownerInfo.createdOn) }} </p>
+                                                <button class="btn btn-primary btn-block"
+                                                    ng-click="viewUser(currentProduct.basicInfo.owner)">View
+                                                    details</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <hr>
-                    <hr>
-                    <div class="container ">
-                        <button class="btn btn-primary btn-block" ng-click="viewCustomers()">View Customers</button>
-                        <div class="prodList row" ng-if="canShowCustomers">
-                            <div class="  col-lg-4"
-                                style="display: grid;grid-template-columns: 50% 50%; border:1px solid;box-shadow: 1px 1px 1px 1px black "
-                                ng-repeat="offerer in currentProduct.customerList">
-                                <img ng-src="{{offerer.Buyer.imageURL}}" alt="Card image" style="width:100%">
-                                <div class="container">
-                                    <p> Full name: {{offerer.Buyer.fullName}} </p>
-                                    <p> Offered: {{offerer.offeredPrice}} </p>
-                                    <p> Where to receive: {{offerer.whereToReceive}} </p>
-                                    <p> Offer time: {{ parseTime(offerer.time) }} </p>
-                                    <button class="btn btn-block btn-primary" ng-click="viewUser(offerer.customerId)">
-                                        View
-                                        Details </button>
+                        <hr>
+                        <hr>
+                        <div class="container ">
+                            <button class="btn btn-primary btn-block" ng-click="viewCustomers()">View Customers</button>
+                            <div class="prodList row" ng-if="canShowCustomers">
+                                <div class="  col-lg-4"
+                                    style="display: grid;grid-template-columns: 50% 50%; border:1px solid;box-shadow: 1px 1px 1px 1px black "
+                                    ng-repeat="offerer in currentProduct.customerList">
+                                    <img ng-src="{{offerer.Buyer.imageURL}}" alt="Card image" style="width:100%">
+                                    <div class="container">
+                                        <p> Full name: {{offerer.Buyer.fullName}} </p>
+                                        <p> Offered: {{offerer.offeredPrice}} </p>
+                                        <p> Where to receive: {{offerer.whereToReceive}} </p>
+                                        <p> Offer time: {{ parseTime(offerer.time) }} </p>
+                                        <button class="btn btn-block btn-primary"
+                                            ng-click="viewUser(offerer.customerId)">
+                                            View
+                                            Details </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="fillScreenImage">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <img ng-src="{{selectedImageForView}}" alt="" style="width: 100%;">
                 </div>
 
                 <!-- Modal footer -->
@@ -107,4 +133,5 @@
             </div>
         </div>
     </div>
+
 </div>

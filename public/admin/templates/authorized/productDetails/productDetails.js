@@ -17,15 +17,20 @@ app.controller('productDetails', function ($scope, $http, $routeParams, $locatio
         return resp.data.data
     }
     $scope.currentProductId = 0
-
+    $scope.canShowModal = 0
     $scope.initProductDetails = async () => {
         $scope.currentProductId = $routeParams.productId
         await $scope.getBasicInfo()
         await $scope.getOwnerInfo()
+        $scope.$apply(function () {
+            $scope.canShowModal = 1
+        })
         $('#productDetailsModal').modal('show')
     }
     $('#productDetailsModal').on('hidden.bs.modal', function () {
-        $scope.$apply(() => {
+        $scope.canShowModal = 0
+
+        $scope.$apply(function () {
             $location.path('/')
         })
     })
@@ -80,9 +85,13 @@ app.controller('productDetails', function ($scope, $http, $routeParams, $locatio
         }
         $scope.$apply(function () {
             $scope.currentProduct.basicInfo = basicInfo.GetProductById
-            console.log($scope.currentProduct.basicInfo);
+            $scope.currentProduct.images = [basicInfo.GetProductById.image1, basicInfo.GetProductById.image2, basicInfo.GetProductById.image3, basicInfo.GetProductById.image4]
         })
 
+    }
+    $scope.viewImage = (x) => {
+        $scope.selectedImageForView = x
+        $('#fillScreenImage').modal('show')
     }
     $scope.parseTime = (x) => {
         var time = new Date(x * 1)
