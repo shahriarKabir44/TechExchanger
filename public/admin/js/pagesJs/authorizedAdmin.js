@@ -29,13 +29,13 @@ app.controller('authorized', ($scope, $http) => {
 
 })
 
-app.directive('productsView', function () {
+app.directive('productList', function () {
     return {
         scope: {
         },
         controller: "products",
 
-        templateUrl: '/admin/templates/authorized/productsView/productsView.html',
+        templateUrl: '/admin/templates/authorized/productList/productList.html',
         link: function (scope) {
         }
     }

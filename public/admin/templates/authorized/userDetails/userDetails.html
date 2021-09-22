@@ -1,13 +1,12 @@
 <div ng-controller="userDetails" ng-init="initUserDetails()">
     <div ng-if="canShowUserDetails">
-        <div class="modal show fade" id="userDetailsModal">
+        <div class="modal show fade" data-backdrop="static" data-keyboard="false" id="userDetailsModal">
             <div class="modal-dialog modal-dialog-scrollable modal-xl">
                 <div class="modal-content">
 
                     <!-- Modal Header -->
                     <div class="modal-header">
                         <h4 class="modal-title">User Details </h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
                     </div>
 
                     <!-- Modal body -->
@@ -93,7 +92,7 @@
 
                     <!-- Modal footer -->
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" ng-click="closeModal()">Close</button>
                     </div>
 
                 </div>

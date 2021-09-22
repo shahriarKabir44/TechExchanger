@@ -1,4 +1,4 @@
-app.controller('products', ($scope, $http) => {
+app.controller('productList', ($scope, $http) => {
     $scope.httpReq = async (url, body) => {
         $scope.isLoading = 1
         var req = {

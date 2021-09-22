@@ -1,4 +1,4 @@
-const DailyStat = require("../MongoDBSchemas/dailyStat");
+const DailyStat = require("../MongoDBSchemas/DailyStat");
 const products = require("../MongoDBSchemas/Product");
 
 module.exports = async function () {

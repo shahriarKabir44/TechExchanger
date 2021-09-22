@@ -45,7 +45,6 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         }
         $scope.$apply(function () {
             $scope.currentUser.personalDetails = personalDetails.User
-            console.log($scope.currentUser.personalDetails);
         })
     }
     $scope.canShowUserDetails = 1
@@ -56,11 +55,12 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         $('#userDetailsModal').modal()
 
     }
-    $('#userDetailsModal').on('hidden.bs.modal', function () {
-        $scope.$apply(function () {
-            $location.path('/')
-        })
-    })
+    $scope.closeModal = () => {
+        $('#userDetailsModal').modal('hide')
+
+        $location.path('/')
+    }
+
     $scope.parseTime = (x) => {
         var time = new Date(x * 1)
         var res = time.getHours() + ":" + time.getMinutes() + " " + time.getDate() + '/' + time.getMonth() + '/' + time.getFullYear()
@@ -87,7 +87,6 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         })
         $scope.$apply(function () {
             $scope.currentUser.carts = productsOwned.User.Carts
-            console.log(productsOwned);
             $scope.canShowCarts = 1
         })
     }
