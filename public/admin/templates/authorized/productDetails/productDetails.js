@@ -27,13 +27,12 @@ app.controller('productDetails', function ($scope, $http, $routeParams, $locatio
         })
         $('#productDetailsModal').modal('show')
     }
-    $('#productDetailsModal').on('hidden.bs.modal', function () {
+    $scope.closeModal = () => {
+        $('#productDetailsModal').modal('hide')
+        $location.path('/')
         $scope.canShowModal = 0
+    }
 
-        $scope.$apply(function () {
-            $location.path('/')
-        })
-    })
     $scope.currentProduct = {
         basicInfo: {},
         customerList: {},

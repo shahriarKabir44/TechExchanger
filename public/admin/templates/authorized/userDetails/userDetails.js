@@ -48,9 +48,11 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
             console.log($scope.currentUser.personalDetails);
         })
     }
+    $scope.canShowUserDetails = 1
     $scope.initUserDetails = async () => {
         $scope.currentUserId = ($routeParams.id)
         await $scope.getPersonalDetails()
+
         $('#userDetailsModal').modal()
 
     }
@@ -111,6 +113,8 @@ app.controller('userDetails', function ($scope, $http, $routeParams, $location) 
         })
     }
     $scope.viewProductDetails = (x) => {
+        $scope.canShowUserDetails = 0
+        $('#userDetailsModal').modal('hide')
         $location.path(`/showProduct/${x}`)
     }
 })

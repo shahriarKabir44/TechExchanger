@@ -47,7 +47,7 @@ app.directive('usersView', function () {
         },
         controller: "users",
 
-        templateUrl: '/admin/templates/authorized/usersView/usersView.html',
+        templateUrl: '/admin/templates/authorized/userList/userList.html',
         link: function (scope) {
         }
     }
