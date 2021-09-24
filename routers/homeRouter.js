@@ -1,5 +1,5 @@
-const User = require('../MongoDBSchemas/User');
-const Product = require('../MongoDBSchemas/Product')
+const User = require('../models/User');
+const Product = require('../models/Product')
 const Cart = require('../MongoDBSchemas/Cart')
 const Notification = require('../MongoDBSchemas/Notification');
 const runStat = require('./runStat');
@@ -12,7 +12,7 @@ router.post('/subscribe', verifyAuthToken, async (req, res) => {
     const subscription = req.body
     var notificationId = (JSON.stringify(subscription))
     //res.status(201).json({})
-    var newDat = await User.findByIdAndUpdate(req.user.id, { notificationId: notificationId })
+    await User.updateGeneral(req.user.id, { notificationId: notificationId })
     var user = { ...req.user, notificationId: notificationId }
     var authHeader = jwt.sign(user, process.env.secret)
 
@@ -53,28 +53,8 @@ function verifyAuthToken(req, res, next) {
     }
 }
 router.post('/updateUser', verifyAuthToken, async (req, res) => {
-    var { id, curPassword } = req.body
-    if (req.body.toStore.password == "") {
-        delete req.body.toStore.password
-    }
-    var realUser = await User.findById(id)
-
-    if (realUser.password == curPassword) {
-        var toSave = { ...req.body.toStore }
-        await User.findByIdAndUpdate(id, toSave)
-        toSave.id = id
-        var user = { ...req.user, ...toSave }
-        var token = jwt.sign(user, process.env.secret)
-        res.send({
-            data: {
-                user: user,
-                token: token
-            }
-        })
-    }
-    else {
-        res.send({ data: null })
-    }
+    var data = await User.updateInfo(req.body)
+    res.send({ data: data })
 
 })
 
@@ -131,43 +111,17 @@ router.post('/addToCart', verifyAuthToken, async (req, res) => {
     else res.send({ data: updatedCart })
 })
 router.post('/login', async (req, res) => {
-    var { phoneNumber, password } = req.body;
-    var data = await User.findOne({ $and: [{ phoneNumber: phoneNumber }, { password: password }] })
-    if (data == null) res.send({ data: null })
-    else {
-        data.id = data._id
-        delete data.password
-        var toSend = {
-            id: data.id,
-            phoneNumber: data.phoneNumber,
-            email: data.email,
-            address: data.address,
-            imageURL: data.imageURL,
-            firstName: data.firstName,
-            lastName: data.lastName,
-            notificationId: data.notificationId,
-        }
-        var authHeader = jwt.sign(toSend, process.env.secret)
-        res.send({
-            data: {
-                token: authHeader,
-                user: toSend
-            }
-        })
-    }
+
+    var data = await User.login(req.body)
+    res.send(data)
 })
 router.post('/postAd', verifyAuthToken, async (req, res) => {
-    var now = (new Date() * 1) + ''
-    var newProd = new Product({ ...req.body, owner: req.user.id, postedOn: now })
-    await newProd.save()
-    res.send({ newProductid: newProd._id })
+    var newProduct = await Product.create(req)
+    res.send(newProduct)
 })
 router.post('/updateProduct', verifyAuthToken, async (req, res) => {
-    var id = req.body.id
-    var newProd = { ...req.body }
-    delete newProd.id
-    var newpd = await Product.findByIdAndUpdate(id, newProd)
-    res.send({ data: { ...newProd, id: id } })
+    var updatedProduct = await Product.update(req)
+    res.send(updatedProduct)
 })
 router.post('/isAuthorized', verifyAuthToken, (req, res) => {
     var user = req.user;
@@ -181,50 +135,22 @@ router.get('/getStat', (req, res) => {
 })
 router.post('/signup', async (req, res) => {
     var newUser = req.body
-    try {
-        var toSave = new User({ ...newUser, createdOn: (new Date() * 1) + '' })
-        await toSave.save();
-        var tempdata = {
-            ...newUser,
-            id: toSave._id
-        }
-        var token = jwt.sign(tempdata, process.env.secret)
-        res.send({
-            data: {
-                token: token,
-                user: tempdata
-            }
-        })
-    } catch (error) {
-        console.log(error)
-        res.send({ data: null })
-    }
+    var data = await User.create(newUser)
+    res.send(data)
 })
 router.get('/', (req, res) => {
     res.render('mainSite/index.ejs')
 })
 router.post('/logout', verifyAuthToken, (req, res) => {
-    User.findByIdAndUpdate(req.user.id, { notificationId: '' }, (er, data) => {
-        if (er) console.log(er)
-        else res.send({ data: 1 })
-    })
+
+    User.updateGeneral(req.user.id, { notificationId: '' })
+        .then(data => {
+            res.send(data)
+        })
 })
 router.post('/updateProfilePicture', verifyAuthToken, async (req, res) => {
-    var { id, imageURL } = req.body
-    User.findByIdAndUpdate(id, { imageURL: imageURL }, async (err, data) => {
-        if (err) console.log(err)
-        else {
-            var finalUser = await User.findById(id)
-            var userToSave = { ...req.user, imageURL: finalUser.imageURL }
-            var authToken = jwt.sign(userToSave, process.env.secret)
-            res.send({
-                data: {
-                    token: authToken,
-                    user: userToSave
-                }
-            })
-        }
-    })
+    var data = await User.updateImage(req)
+    res.send(data)
 })
 
 module.exports = router

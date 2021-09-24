@@ -1,6 +1,6 @@
 app.controller('productList', ($scope, $http) => {
     $scope.httpReq = async (url, body) => {
-        $scope.isLoading = 1
+        $scope.isLoading = 1;
         var req = {
             url: SERVER_ROOT + url,
             method: body ? 'POST' : 'GET',
@@ -16,5 +16,4 @@ app.controller('productList', ($scope, $http) => {
         })
         return resp.data.data
     }
-
 })

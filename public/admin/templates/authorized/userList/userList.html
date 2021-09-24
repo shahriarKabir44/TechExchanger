@@ -19,16 +19,16 @@
         text-decoration: none;
     }
 
-        .pageBtn.active {
-            background-color: #4CAF50;
-            color: white;
-            border: 1px solid #4CAF50;
-            cursor:not-allowed
-        }
+    .pageBtn.active {
+        background-color: #4CAF50;
+        color: white;
+        border: 1px solid #4CAF50;
+        cursor: not-allowed
+    }
 
-        .pageBtn:hover:not(.active) {
-            background-color: #ddd;
-        }
+    .pageBtn:hover:not(.active) {
+        background-color: #ddd;
+    }
 </style>
 <div ng-init="initUserPage()">
     <div class="container">
@@ -45,6 +45,10 @@
                 <th> Created on</th>
                 <th></th>
             </tr>
+            <tr>
+                <th></th>
+
+            </tr>
         </thead>
         <tbody>
             <tr ng-repeat="user in userList">
@@ -55,7 +59,7 @@
                 <td> {{user.phoneNumber}} </td>
                 <td>{{ parseDate(user.createdOn) }} </td>
                 <td>
-                    <button class="btn btn-success" ng-click="viewUser(user.id)" >Details</button>
+                    <button class="btn btn-success" ng-click="viewUser(user.id)">Details</button>
                 </td>
 
             </tr>
@@ -64,7 +68,8 @@
     <div class="center">
         <div class="pagination" ng-repeat="n in pageButtonsArray">
             <a ng-if="n==-1" class="pageBtn" ng-click="changePage(-1)">&laquo;</a>
-            <a ng-if="n>0" ng-click="gotoPage(n)" ng-class="{active: currentPageNumber==n }" class="pageBtn "> {{n}} </a>
+            <a ng-if="n>0" ng-click="gotoPage(n)" ng-class="{active: currentPageNumber==n }" class="pageBtn "> {{n}}
+            </a>
             <a ng-if="n==-2" class="pageBtn" ng-click="changePage(1)">&raquo;</a>
         </div>
     </div>

@@ -11,11 +11,11 @@ const {
 } = graphql;
 const webPush = require('web-push')
 
-var User = require('../MongoDBSchemas/User')
+var User = require('../models/User')
 var Cart = require('../MongoDBSchemas/Cart')
 var Notification = require('../MongoDBSchemas/Notification')
 var Payment = require('../MongoDBSchemas/Payment')
-var Product = require('../MongoDBSchemas/Product')
+var Product = require('../models/Product')
 
 const UserType = new GraphQLObjectType({
     name: 'User',
@@ -38,7 +38,7 @@ const UserType = new GraphQLObjectType({
         Owned: {
             type: new GraphQLList(ProductType),
             resolve(parent, args) {
-                return Product.find({ owner: parent.id })
+                return Product.findMany({ owner: parent.id })
             }
         },
         Carts: {
@@ -97,13 +97,16 @@ const CartType = new GraphQLObjectType({
         Buyer: {
             type: UserType,
             resolve(parent, args) {
-                return User.findById(parent.customerId)
+                //return User.findById(parent.customerId)
+                return User.findOneById(parent.customerId)
             }
         },
         Seller: {
             type: UserType,
             resolve(parent, args) {
-                return user.findById(parent.ownerId)
+                //return user.findById(parent.ownerId)
+                return User.findOneById(parent.ownerId)
+
             }
         }
     })
@@ -129,7 +132,9 @@ const ProductType = new GraphQLObjectType({
         Owner: {
             type: NormalUserType,
             resolve(parent, args) {
-                return User.findById(parent.owner)
+                //return User.findById(parent.owner)
+                return User.findOneById(parent.owner)
+
             }
         },
         Offerers: {
@@ -154,13 +159,13 @@ const NofiticationType = new GraphQLObjectType({
         Sender: {
             type: NormalUserType,
             resolve(parent, args) {
-                return User.findById(parent.senderId)
+                return User.findOneById(parent.senderId)
             }
         },
         Product: {
             type: ProductType,
             resolve(parent, args) {
-                return Product.findById(parent.productId)
+                return Product.findOne(parent.productId)
             }
         }
     })
@@ -172,24 +177,30 @@ const RootQueryType = new GraphQLObjectType({
         User: {
             type: UserType,
             args: { id: { type: GraphQLID } },
-            resolve(parent, args) {
-                return User.findById(args.id)
+            async resolve(parent, args) {
+                var data = await User.findOneById(args.id)
+                return data
             }
         },
         Users: {
             type: new GraphQLList(NormalUserType),
             args: {
                 pageNo: { type: GraphQLInt },
-                pageSize: { type: GraphQLInt }
+                pageSize: { type: GraphQLInt },
+                firstName: { type: GraphQLString },
+                lastName: { type: GraphQLString },
+                phoneNumber: { type: GraphQLString },
+
             },
-            resolve(parent, args) {
-                return User.find({}).limit(args.pageSize).skip((args.pageNo - 1) * args.pageSize)
+            async resolve(parent, args) {
+                var users = await User.getMany(args)
+                return users
             }
         },
         Products: {
             type: new GraphQLList(ProductType),
             resolve(pparent, args) {
-                return Product.find({})
+                return Product.findMany({})
             }
         },
         GetProductByCategory: {
@@ -198,7 +209,7 @@ const RootQueryType = new GraphQLObjectType({
                 Type: { type: GraphQLString }
             },
             resolve(parent, args) {
-                return Product.find({ category: args.Type })
+                return Product.findMany({ category: args.Type })
             }
         },
         SearchProducts: {
@@ -213,7 +224,7 @@ const RootQueryType = new GraphQLObjectType({
                 }
                 if (args.type != "") query.$and.push({ type: args.type })
                 if (args.price) query.$and.push({ askedPrice: { $gte: args.askedPrice } })
-                return Product.find(query, { type: args.type })
+                return Product.findMany(query)
             }
         },
         GetProductById: {
@@ -245,7 +256,7 @@ const Mutation = new GraphQLObjectType({
                         { customerId: args.customerId }
                     ]
                 }
-                await Product.findByIdAndUpdate(args.productId, { $inc: { customerCount: -1 } })
+                await Product.update(args.productId, { $inc: { customerCount: -1 } })
                 return Cart.findOneAndDelete(query)
             }
         },
@@ -273,15 +284,12 @@ const Mutation = new GraphQLObjectType({
                 delete currentProduct.actionType
                 delete currentProduct.id
                 if (args.actionType) {
-                    return Product.findByIdAndUpdate(args.id, currentProduct)
+                    return Product.update(args.id, currentProduct)
                 }
                 else {
                     if (await Product.findById(args.id)) {
-                        var carts = await Cart.find({ productId: args.id })
-                        for (let cart of carts) {
-                            Cart.findByIdAndDelete(cart.id)
-                        }
-                        return Product.findByIdAndDelete(args.id)
+
+                        return Product.delete(args)
                     }
                 }
             }

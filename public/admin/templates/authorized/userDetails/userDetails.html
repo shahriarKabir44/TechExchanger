@@ -44,35 +44,44 @@
                                 <hr>
                                 <hr>
                                 <div class="prodList row" ng-if="canShowProductsOwned">
-                                    <div class="  col-lg-4"
-                                        style="display: grid;grid-template-columns: 50% 50%; border:1px solid;box-shadow: 1px 1px 1px 1px black "
-                                        ng-repeat="product in currentUser.ads">
-                                        <img ng-src="{{product.image1}}" alt="Card image" style="width:100%">
-                                        <div class="container">
-                                            <p> Category: {{product.category}} </p>
-                                            <p> Price: {{product.askedPrice}} </p>
-                                            <p> Customer count: {{product.customerCount}} </p>
-                                            <p> Posted on: {{ parseTime(product.postedOn) }} </p>
-                                            <button class="btn btn-block btn-primary"
-                                                ng-click="viewProductDetails(product.id)"> View
-                                                Details </button>
+                                    <div class="  col-lg-4" ng-repeat="product in currentUser.ads">
+                                        <div class="col-sm-12 col-lg-12 mb-5"
+                                            style="display: flex;justify-content: center;align-items: center;">
+                                            <div class="card product" style="width:800px; ">
+                                                <img class="card-img-top" ng-src="{{product.image1}} alt=" Card image"
+                                                    style="height:300px">
+                                                <div class="card-body">
+                                                    <p> Category: {{product.category}} </p>
+                                                    <p> Price: {{product.askedPrice}} </p>
+                                                    <p> Customer count: {{product.customerCount}} </p>
+                                                    <p> Posted on: {{ parseTime(product.postedOn) }} </p>
+                                                    <button class="btn btn-block btn-primary"
+                                                        ng-click="viewProductDetails(product.id)"> View
+                                                        Details </button>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                        <hr>
+                        <hr>
+                        <div class="container">
+                            <button ng-click="getCarts()" class="btn-info btn btn-block">Products added to
+                                cart</button>
                             <hr>
                             <hr>
-                            <div class="container">
-                                <button ng-click="getCarts()" class="btn-info btn btn-block">Products added to
-                                    cart</button>
-                                <hr>
-                                <hr>
-                                <div class="prodList row" ng-if="canShowCarts">
-                                    <div class="  col-lg-4" ng-repeat="cart in currentUser.carts">
-                                        <div
-                                            style="display: grid; grid-template-columns: 50% 50%; box-shadow: 1px 1px 1px 1px black ">
-                                            <img ng-src="{{cart.Product.image1}}" style="width:100%">
-                                            <div class="container">
+                            <div class="prodList row" ng-if="canShowCarts">
+                                <div class="  col-lg-4" ng-repeat="cart in currentUser.carts">
+
+                                    <div class="col-sm-12 col-lg-12 mb-5"
+                                        style="display: flex;justify-content: center;align-items: center;">
+                                        <div class="card product" style="width:800px; ">
+                                            <img class="card-img-top" ng-src="{{cart.Product.image1}} alt=" Card image"
+                                                style="height:300px">
+                                            <div class="card-body">
                                                 <p> Category: {{cart.Product.category}} </p>
                                                 <p> Offered: {{cart.offeredPrice}} taka</p>
                                                 <p> Time: {{ parseTime(cart.time) }} </p>
@@ -81,24 +90,25 @@
                                                     ng-click="viewProductDetails(cart.productId)"> View
                                                     Details </button>
                                             </div>
-                                        </div>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                    </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" ng-click="closeModal()">Close</button>
                     </div>
 
                 </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" ng-click="closeModal()">Close</button>
+                </div>
+
             </div>
         </div>
     </div>
+</div>
 
 
 </div>

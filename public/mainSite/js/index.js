@@ -59,7 +59,7 @@ app.controller('myController', ($scope, $http) => {
                 $scope.most_popular = JSON.parse(data.most_popular)
                 $scope.getProductsBycategory()
             })
-        }, () => { })
+        }, (err) => { console.log(err) })
     }
 
     $scope.parseTime = (x) => {
@@ -305,7 +305,7 @@ app.controller('myController', ($scope, $http) => {
     //common part end
     $scope.viewProd = (id) => {
         console.log(id)
-        //location.href = "product/" + id
+        location.href = "product/" + id
     }
 
 })

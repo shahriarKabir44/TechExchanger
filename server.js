@@ -12,7 +12,7 @@ var graphqlSchema = require('./Graphql/graphqlSchema')
 var graphQLAdmin = require('./Graphql/adminGraphQL')
 var cors = require('cors')
 
-mongoose.connect('mongodb+srv://meme_lord:1234@cluster0.3sx7v.mongodb.net/TechExchanger?retryWrites=true&w=majority',
+mongoose.connect(process.env.CONNECTION_STRING,
     {
         useNewUrlParser: true,
         useCreateIndex: true,
@@ -52,7 +52,6 @@ function verifyAuthTokenAdmin(req, res, next) {
             }
             else {
                 req.user = user._doc
-                console.log(3)
                 next()
             }
         })
@@ -61,19 +60,17 @@ function verifyAuthTokenAdmin(req, res, next) {
 
 function startExpress() {
     const app = express();
-    const homeRouter = require('./routers/homeRouter')
 
     app.use(cors())
     app.use(express.json())
     var PORT = process.env.PORT || 3000;
     app.listen(PORT)
-    var path = require('path')
     app.use(express.static(__dirname + '/public'));
     app.use('/product/:id', express.static(__dirname + '/public'));
     app.use('/admin/:param', express.static(__dirname + '/adminStaticFiles'));
     app.set('view engine', 'ejs')
 
-    app.use('/', homeRouter)
+    app.use('/', require('./routers/homeRouter'))
     app.use('/epstein', require('./routers/adminRouter'))
 
     app.use('/graphql', graphqlHTTP.graphqlHTTP(req => (
