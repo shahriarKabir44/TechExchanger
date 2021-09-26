@@ -5,9 +5,7 @@ var jwt = require('jsonwebtoken')
 
 
 
-const webPush = require('web-push')
 require('dotenv').config()
-webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
 var graphqlSchema = require('./Graphql/graphqlSchema')
 var graphQLAdmin = require('./Graphql/adminGraphQL')
 var cors = require('cors')

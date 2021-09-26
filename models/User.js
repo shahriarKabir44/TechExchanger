@@ -1,5 +1,9 @@
-var mongoDBUserModel = require('../MongoDBSchemas/User')
+var mongoDBUserModel = require('../MongoDBSchemas/UserSchema')
 var jwt = require('jsonwebtoken')
+
+const webPush = require('web-push')
+webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
+
 
 module.exports = {
 
@@ -114,6 +118,13 @@ module.exports = {
                     user: toSend
                 }
             })
+        }
+    },
+    sendPushNotification: async function (userId, message) {
+        var user = await this.findOneById(userId)
+        var notificationId = user.notificationId;
+        if (notificationId != '') {
+            await webPush.sendNotification(JSON.parse(sellerNotificationId), JSON.stringify(message))
         }
     }
 }

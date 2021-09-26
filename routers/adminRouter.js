@@ -1,9 +1,9 @@
 const express = require('express')
 var jwt = require('jsonwebtoken')
 
-var Admin = require('../MongoDBSchemas/admin')
-const products = require('../MongoDBSchemas/Product')
-const User = require('../MongoDBSchemas/User')
+var Admin = require('../MongoDBSchemas/AdminSchema')
+const products = require('../MongoDBSchemas/ProductSchema')
+const User = require('../MongoDBSchemas/UserSchema')
 
 const router = express.Router()
 function verifyAuthToken(req, res, next) {

@@ -1,5 +1,5 @@
-const DailyStat = require("../MongoDBSchemas/DailyStat");
-const products = require("../MongoDBSchemas/Product");
+const DailyStat = require("../MongoDBSchemas/DailyStatSchema");
+const products = require("../MongoDBSchemas/ProductSchema");
 
 module.exports = async function () {
     var dailyStat = await DailyStat.findOne({ identifier: "stat" })

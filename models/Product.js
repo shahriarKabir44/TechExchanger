@@ -1,5 +1,5 @@
-var productSchema = require('../MongoDBSchemas/Product')
-var cartSchema = require('../MongoDBSchemas/Cart')
+var productSchema = require('../MongoDBSchemas/ProductSchema')
+var cartSchema = require('../MongoDBSchemas/CartSchema')
 
 module.exports = {
     findById: async function (id) {
@@ -23,6 +23,10 @@ module.exports = {
         delete newProd.id
         var newpd = await productSchema.findByIdAndUpdate(id, newProd)
         return { data: { ...newProd, id: id } }
+    },
+    updateCustomer: async function (id, type) {
+        var newProduct = await productSchema.findByIdAndUpdate(id, { $inc: { customerCount: type } })
+        return newProduct
     },
     delete: async function ({ id }) {
         var carts = await cartSchema.find({ productId: id })

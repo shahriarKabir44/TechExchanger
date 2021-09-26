@@ -1,9 +1,13 @@
 const User = require('../models/User');
 const Product = require('../models/Product')
-const Cart = require('../MongoDBSchemas/Cart')
-const Notification = require('../MongoDBSchemas/Notification');
+const Cart = require('../models/Cart')
+
 const runStat = require('./runStat');
 var jwt = require('jsonwebtoken')
+
+const webPush = require('web-push')
+webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
+
 
 
 const express = require('express')
@@ -27,9 +31,6 @@ router.post('/subscribe', verifyAuthToken, async (req, res) => {
             })
         })
         .catch(err => console.log(err))
-
-
-
 })
 
 function verifyAuthToken(req, res, next) {
@@ -73,42 +74,8 @@ router.get('/product/:id', async (req, res) => {
 })
 
 router.post('/addToCart', verifyAuthToken, async (req, res) => {
-    var productName = req.body.productName
-    var customerName = req.body.customerName
-    var newCart = { ...req.body }
-    delete newCart.productName
-    delete newCart.customerName
-    var updatedCart = await Cart.findOneAndUpdate({
-        $and: [
-            { productId: req.body.productId },
-            { customerId: req.body.customerId }
-        ]
-    }, newCart)
-    var now = (new Date() * 1) + ''
-    if (!updatedCart) {
-        var updatedCart = new Cart({ ...newCart, time: now, status: 0 })
-        await Product.findByIdAndUpdate(req.body.productId, { $inc: { customerCount: 1 } })
-        await updatedCart.save()
-    }
-    var message = `${customerName} has offered ${req.body.offeredPrice} for your ${productName}!`;
-    var newNotification = new Notification({
-        senderId: req.body.customerId,
-        receiverId: req.body.ownerId,
-        category: 1,
-        productId: req.body.productId,
-        offer: req.body.offeredPrice,
-        time: now,
-    })
-    await newNotification.save()
-    var seller = await User.findById(req.body.ownerId)
-    var sellerNotificationId = seller.notificationId
-    if (sellerNotificationId != '')
-        webPush.sendNotification(JSON.parse(sellerNotificationId), JSON.stringify({ title: 'Offer!', body: message }))
-            .then(data => {
-                res.send({ data: updatedCart })
-            })
-            .catch(err => console.log(sellerNotificationId))
-    else res.send({ data: updatedCart })
+    Cart.create(req)
+        .then(data => res.send(data))
 })
 router.post('/login', async (req, res) => {
 
