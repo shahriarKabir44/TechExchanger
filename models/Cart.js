@@ -20,7 +20,7 @@ module.exports = {
         var now = (new Date() * 1) + ''
         if (!updatedCart) {
             var updatedCart = new cartSchema({ ...newCart, time: now, status: 0 })
-            await Product.updateCustomer(req.body.productId, 1)
+            await Product.update({ _id: req.body.productId }, { $inc: { customerCount: 1 } })
             await updatedCart.save()
         }
         var message = `${customerName} has offered ${req.body.offeredPrice} for your ${productName}!`;
@@ -36,7 +36,7 @@ module.exports = {
         return { data: updatedCart }
     },
     delete: async function (query, productId) {
-        await Product.updateCustomer(productId, -1)
+        await Product.update({ _id: productId }, { $inc: { customerCount: -1 } })
         return await cartSchema.findOneAndDelete(query)
     },
     update: async function (query, data) {

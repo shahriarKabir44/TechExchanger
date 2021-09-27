@@ -87,7 +87,7 @@ router.post('/postAd', verifyAuthToken, async (req, res) => {
     res.send(newProduct)
 })
 router.post('/updateProduct', verifyAuthToken, async (req, res) => {
-    var updatedProduct = await Product.update(req)
+    var updatedProduct = await Product.update({ _id: req.body.id }, { ...req.body, id: null })
     res.send(updatedProduct)
 })
 router.post('/isAuthorized', verifyAuthToken, (req, res) => {

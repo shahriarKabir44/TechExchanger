@@ -9,7 +9,6 @@ const {
     GraphQLNonNull
 
 } = graphql;
-const webPush = require('web-push')
 
 var User = require('../models/User')
 var Cart = require('../models/Cart')
@@ -252,7 +251,7 @@ const Mutation = new GraphQLObjectType({
                 delete currentProduct.actionType
                 delete currentProduct.id
                 if (args.actionType) {
-                    return Product.update(args.id, currentProduct)
+                    return Product.update({ _id: args.id }, currentProduct)
                 }
                 else {
                     if (await Product.findById(args.id)) {

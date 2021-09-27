@@ -17,17 +17,14 @@ module.exports = {
         await newProd.save()
         return ({ newProductid: newProd._id })
     },
-    update: async function (req) {
-        var id = req.body.id
+    update: async function (query, data) {
         var newProd = { ...req.body }
-        delete newProd.id
-        var newpd = await productSchema.findByIdAndUpdate(id, newProd)
-        return { data: { ...newProd, id: id } }
+        if (newProd.id)
+            delete newProd.id
+        var newpd = await productSchema.findOneAndUpdate(query, data)
+        return { data: { ...newpd, ...data } }
     },
-    updateCustomer: async function (id, type) {
-        var newProduct = await productSchema.findByIdAndUpdate(id, { $inc: { customerCount: type } })
-        return newProduct
-    },
+
     delete: async function ({ id }) {
         var carts = await cartSchema.find({ productId: id })
         for (let cart of carts) {

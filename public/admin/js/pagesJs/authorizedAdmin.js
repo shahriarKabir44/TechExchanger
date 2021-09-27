@@ -35,7 +35,7 @@ app.directive('productList', function () {
         },
         controller: "products",
 
-        templateUrl: '/admin/templates/authorized/productList/productList.html',
+        templateUrl: '/admin/sections/authorized/productList/productList.html',
         link: function (scope) {
         }
     }
@@ -47,7 +47,7 @@ app.directive('usersView', function () {
         },
         controller: "users",
 
-        templateUrl: '/admin/templates/authorized/userList/userList.html',
+        templateUrl: '/admin/sections/authorized/userList/userList.html',
         link: function (scope) {
         }
     }
@@ -55,11 +55,11 @@ app.directive('usersView', function () {
 app.config(function ($routeProvider) {
     $routeProvider
         .when('/showUser/:id', {
-            templateUrl: "/admin/templates/authorized/userDetails/userDetails.html",
+            templateUrl: "/admin/sections/authorized/userDetails/userDetails.html",
             // controller: "authorized"
         })
         .when('/showProduct/:productId', {
-            templateUrl: "/admin/templates/authorized/productDetails/productDetails.html",
+            templateUrl: "/admin/sections/authorized/productDetails/productDetails.html",
 
         })
 })
