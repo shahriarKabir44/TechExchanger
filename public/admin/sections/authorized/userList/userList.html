@@ -45,12 +45,24 @@
                 <th> Created on</th>
                 <th></th>
             </tr>
-            <tr>
-                <th></th>
 
-            </tr>
         </thead>
         <tbody>
+            <tr>
+                <td></td>
+                <td>
+                    <span>
+                        <input type="text" ng-model="searchFilter.firstName" placeholder="first name">
+                        <input type="text" ng-model="searchFilter.lastName" placeholder="last name">
+
+
+                    </span>
+                </td>
+                <td>
+                    <input type="text" ng-model="searchFilter.phoneNumber" placeholder="phoneNumber">
+
+                </td>
+            </tr>
             <tr ng-repeat="user in userList">
                 <td>
                     <img ng-src="{{user.imageURL}}" style="width: 50px;max-height: 50px;border-radius: 50%;" alt="">

@@ -12,7 +12,7 @@ module.exports = {
         return await productSchema.find(filter)
     },
     create: async function (req) {
-        var now = (new Date() * 1) + ''
+        var now = (new Date() * 1)
         var newProd = new productSchema({ ...req.body, owner: req.user.id, postedOn: now })
         await newProd.save()
         return ({ newProductid: newProd._id })

@@ -1,4 +1,5 @@
 const graphql = require('graphql')
+const bigint = require('graphql-bigint')
 const {
     GraphQLObjectType,
     GraphQLString,
@@ -6,8 +7,6 @@ const {
     GraphQLID,
     GraphQLInt,
     GraphQLList,
-    GraphQLNonNull
-
 } = graphql;
 
 var User = require('../models/User')
@@ -27,7 +26,7 @@ const UserType = new GraphQLObjectType({
         firstName: { type: GraphQLString, },
         lastName: { type: GraphQLString },
         notificationId: { type: GraphQLString },
-        createdOn: { type: GraphQLString },
+        createdOn: { type: bigint },
         fullName: {
             type: GraphQLString,
             resolve(parent, args) {
@@ -65,7 +64,7 @@ const NormalUserType = new GraphQLObjectType({
         lastName: { type: GraphQLString },
         imageURL: { type: GraphQLString },
 
-        createdOn: { type: GraphQLString },
+        createdOn: { type: bigint },
         fullName: {
             type: GraphQLString,
             resolve(parent, args) {
@@ -122,7 +121,7 @@ const ProductType = new GraphQLObjectType({
         image4: { type: GraphQLString },
         askedPrice: { type: GraphQLInt },
         owner: { type: GraphQLID },
-        postedOn: { type: GraphQLString },
+        postedOn: { type: bigint },
         customerCount: { type: GraphQLInt },
         usedFor: { type: GraphQLString },
         postedFrom: { type: GraphQLString },
@@ -192,6 +191,7 @@ const RootQueryType = new GraphQLObjectType({
             },
             async resolve(parent, args) {
                 var users = await User.getMany(args)
+                console.log(users);
                 return users
             }
         },
@@ -269,7 +269,7 @@ const Mutation = new GraphQLObjectType({
                 image4: { type: GraphQLString },
                 askedPrice: { type: GraphQLInt },
                 owner: { type: GraphQLID },
-                postedOn: { type: GraphQLString },
+                postedOn: { type: bigint },
                 actionType: { type: GraphQLInt }
             },
             async resolve(parent, args) {

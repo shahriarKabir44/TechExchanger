@@ -49,7 +49,6 @@ app.controller('users', ($scope, $http, $location) => {
               }`
         }
         var users = await $scope.httpReq(biden, getUsersGQL)
-
         $scope.$apply(() => {
             $scope.userList = users.Users
         })

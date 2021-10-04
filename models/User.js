@@ -75,7 +75,7 @@ module.exports = {
     },
     create: async function (newUser) {
         try {
-            var toSave = new mongoDBUserModel({ ...newUser, createdOn: (new Date() * 1) + '' })
+            var toSave = new mongoDBUserModel({ ...newUser, createdOn: (new Date() * 1) })
             await toSave.save();
             var tempdata = {
                 ...newUser,

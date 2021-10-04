@@ -110,7 +110,7 @@ const ProductType = new GraphQLObjectType({
         image4: { type: GraphQLString },
         askedPrice: { type: GraphQLInt },
         owner: { type: GraphQLID },
-        postedOn: { type: GraphQLString },
+        postedOn: { type: GraphQLInt },
         customerCount: { type: GraphQLInt },
         usedFor: { type: GraphQLString },
         postedFrom: { type: GraphQLString },
@@ -239,7 +239,7 @@ const Mutation = new GraphQLObjectType({
                 image4: { type: GraphQLString },
                 askedPrice: { type: GraphQLInt },
                 owner: { type: GraphQLID },
-                postedOn: { type: GraphQLString },
+                postedOn: { type: GraphQLInt },
                 actionType: { type: GraphQLInt }
             },
             async resolve(parent, args) {
