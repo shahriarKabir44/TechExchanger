@@ -50,7 +50,6 @@ app.controller('myController', ($scope, $http) => {
             else {
                 $scope.isAuthorized = 1
                 $scope.currentUser = data
-                console.log(data)
                 //subscribeToPush()
             }
             $scope.httpGet('/getStat', ({ data }) => {
@@ -59,7 +58,7 @@ app.controller('myController', ($scope, $http) => {
                 $scope.most_popular = JSON.parse(data.most_popular)
                 $scope.getProductsBycategory()
             })
-        }, (err) => { console.log(err) })
+        }, (err) => { })
     }
 
     $scope.parseTime = (x) => {
@@ -79,7 +78,6 @@ app.controller('myController', ($scope, $http) => {
             curPassword: $scope.toUpdate.curPassword,
             toStore: toStore
         }
-        console.log(tosend)
         $scope.httpPost('/updateUser', tosend, ({ data }) => {
             if (data == null) {
                 alert('Incorrect password!')
@@ -104,7 +102,6 @@ app.controller('myController', ($scope, $http) => {
     $scope.getmycarts = () => {
         $scope.httpPost('/graphql', getMyCarts($scope.currentUser.id), ({ data }) => {
             $scope.mycarts = data.User.Carts
-            console.log($scope.mycarts)
             $('#myCarts').modal('show')
         }, () => { })
     }
@@ -112,13 +109,11 @@ app.controller('myController', ($scope, $http) => {
     $scope.getMyAds = () => {
         $scope.httpPost('/graphql', getMyAdsGQL($scope.currentUser.id), ({ data }) => {
             $scope.myads = data.User.Owned
-            console.log(data.User.Owned)
             $('#product-modal-ads').modal('show')
         })
     }
     $scope.notifications = []
     $scope.getNotifications = () => {
-        console.log($scope.currentUser.id)
         $scope.httpPost('/graphql', getMyNotificationsGQL($scope.currentUser.id), ({ data }) => {
             $scope.notifications = data.User.Notification
             $('#notif_modal').modal('show')
@@ -274,7 +269,6 @@ app.controller('myController', ($scope, $http) => {
         $scope.httpPost('/login', $scope.loginEntity, ({ data }) => {
             if ((!data)) alert('Invalid credentials')
             else {
-                console.log(data)
                 $scope.currentUser = data.user
                 $('#login-modal').modal('hide')
                 alert(`Welcome ${data.user.firstName}!`)
@@ -287,14 +281,12 @@ app.controller('myController', ($scope, $http) => {
 
     $scope.products = {}
     $scope.getProductsBycategory = () => {
-        console.log('object');
         $scope.httpPost('/graphql', GetProductByCategoryGQL('Chair'), ({ data }) => {
             $scope.products['Chair'] = data.GetProductByCategory
             $scope.httpPost('/graphql', GetProductByCategoryGQL('Bed'), ({ data }) => {
                 $scope.products['Bed'] = data.GetProductByCategory
                 $scope.httpPost('/graphql', GetProductByCategoryGQL('Table'), ({ data }) => {
                     $scope.products['Table'] = data.GetProductByCategory
-                    console.log($scope.products);
                 })
             })
         })
@@ -304,7 +296,6 @@ app.controller('myController', ($scope, $http) => {
 
     //common part end
     $scope.viewProd = (id) => {
-        console.log(id)
         location.href = "product/" + id
     }
 

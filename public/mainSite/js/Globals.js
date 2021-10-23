@@ -226,7 +226,6 @@ function toggleUploadStatus(index, stat) {
 // }
 
 function viewProd(id) {
-    console.log(id)
 }
 var parseTime = (x) => {
     var time = new Date(x * 1)

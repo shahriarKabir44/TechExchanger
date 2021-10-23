@@ -6,8 +6,8 @@ var jwt = require('jsonwebtoken')
 
 
 require('dotenv').config()
-var graphqlSchema = require('./Graphql/graphqlSchema')
-var graphQLAdmin = require('./Graphql/adminGraphQL')
+var graphqlSchema = require('./Graphql/public')
+var graphQLAdmin = require('./Graphql/admin')
 var cors = require('cors')
 
 mongoose.connect(process.env.CONNECTION_STRING,

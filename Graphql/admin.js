@@ -15,6 +15,12 @@ var Notification = require('../models/Notification')
 var Payment = require('../MongoDBSchemas/PaymentSchema')
 var Product = require('../models/Product')
 
+
+var user = new User()
+var cart = new Cart()
+var product = new Product()
+var notification = new Notification()
+
 const UserType = new GraphQLObjectType({
     name: 'User',
     fields: () => ({
@@ -36,19 +42,19 @@ const UserType = new GraphQLObjectType({
         Owned: {
             type: new GraphQLList(ProductType),
             resolve(parent, args) {
-                return Product.findMany({ owner: parent.id })
+                return product.findMany({ owner: parent.id })
             }
         },
         Carts: {
             type: new GraphQLList(CartType),
             async resolve(parent, args) {
-                return await Cart.getCartsOfUser(parent.id)
+                return await cart.getCartsOfUser(parent.id)
             }
         },
         Notification: {
             type: new GraphQLList(NofiticationType),
             async resolve(parent, args) {
-                var res = await Notification.getNotificationsOfUser(parent.id)
+                var res = await notification.getNotificationsOfUser(parent.id)
                 return res
             }
         }
@@ -88,21 +94,21 @@ const CartType = new GraphQLObjectType({
         Product: {
             type: ProductType,
             resolve(parent, args) {
-                return Product.findById(parent.productId)
+                return product.findById(parent.productId)
             }
         },
         Buyer: {
             type: UserType,
             resolve(parent, args) {
-                //return User.findById(parent.customerId)
-                return User.findOneById(parent.customerId)
+                //return user.findById(parent.customerId)
+                return user.findOneById(parent.customerId)
             }
         },
         Seller: {
             type: UserType,
             resolve(parent, args) {
                 //return user.findById(parent.ownerId)
-                return User.findOneById(parent.ownerId)
+                return user.findOneById(parent.ownerId)
 
             }
         }
@@ -129,15 +135,15 @@ const ProductType = new GraphQLObjectType({
         Owner: {
             type: NormalUserType,
             resolve(parent, args) {
-                //return User.findById(parent.owner)
-                return User.findOneById(parent.owner)
+                //return user.findById(parent.owner)
+                return user.findOneById(parent.owner)
 
             }
         },
         Offerers: {
             type: new GraphQLList(CartType),
             resolve(parent, args) {
-                return Cart.getCartsOfUser(parent.id)
+                return cart.getCartsOfUser(parent.id)
             }
         }
     })
@@ -156,13 +162,13 @@ const NofiticationType = new GraphQLObjectType({
         Sender: {
             type: NormalUserType,
             resolve(parent, args) {
-                return User.findOneById(parent.senderId)
+                return user.findOneById(parent.senderId)
             }
         },
         Product: {
             type: ProductType,
             resolve(parent, args) {
-                return Product.findOne(parent.productId)
+                return product.findOne(parent.productId)
             }
         }
     })
@@ -175,7 +181,7 @@ const RootQueryType = new GraphQLObjectType({
             type: UserType,
             args: { id: { type: GraphQLID } },
             async resolve(parent, args) {
-                return await User.findOneById(args.id)
+                return await user.findOneById(args.id)
 
             }
         },
@@ -190,15 +196,14 @@ const RootQueryType = new GraphQLObjectType({
 
             },
             async resolve(parent, args) {
-                var users = await User.getMany(args)
-                console.log(users);
+                var users = await user.getMany(args)
                 return users
             }
         },
         Products: {
             type: new GraphQLList(ProductType),
             resolve(pparent, args) {
-                return Product.findMany({})
+                return product.findMany({})
             }
         },
         GetProductByCategory: {
@@ -207,7 +212,7 @@ const RootQueryType = new GraphQLObjectType({
                 Type: { type: GraphQLString }
             },
             resolve(parent, args) {
-                return Product.findMany({ category: args.Type })
+                return product.findMany({ category: args.Type })
             }
         },
         SearchProducts: {
@@ -222,7 +227,7 @@ const RootQueryType = new GraphQLObjectType({
                 }
                 if (args.type != "") query.$and.push({ type: args.type })
                 if (args.price) query.$and.push({ askedPrice: { $gte: args.askedPrice } })
-                return Product.findMany(query)
+                return product.findMany(query)
             }
         },
         GetProductById: {
@@ -231,7 +236,7 @@ const RootQueryType = new GraphQLObjectType({
                 id: { type: GraphQLID }
             },
             resolve(parent, args) {
-                return Product.findById(args.id)
+                return product.findById(args.id)
             }
         }
     }
@@ -254,7 +259,7 @@ const Mutation = new GraphQLObjectType({
                         { customerId: args.customerId }
                     ]
                 }
-                return Cart.delete(query, args.productId)
+                return cart.delete(query, args.productId)
             }
         },
         ProductEditDelete: {
@@ -281,11 +286,11 @@ const Mutation = new GraphQLObjectType({
                 delete currentProduct.actionType
                 delete currentProduct.id
                 if (args.actionType) {
-                    return Product.update({ _id: args.id }, currentProduct)
+                    return product.update({ _id: args.id }, currentProduct)
                 }
                 else {
-                    if (await Product.findById(args.id)) {
-                        return Product.delete(args)
+                    if (await product.findById(args.id)) {
+                        return product.delete(args)
                     }
                 }
             }

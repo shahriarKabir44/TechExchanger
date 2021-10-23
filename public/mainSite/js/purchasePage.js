@@ -75,7 +75,6 @@ app.controller('productController', ($scope, $http) => {
                 $scope.setView()
                 return
             }
-            console.log('object')
             $scope.customerList.forEach(offerer => {
                 if (offerer.Buyer.id == $scope.currentUser.id) {
                     $scope.userToProductRelation = 2
@@ -124,7 +123,6 @@ app.controller('productController', ($scope, $http) => {
     $scope.getCustomers = async () => {
         var data = await $scope.httpReq('/graphql', getCustomerList($scope.productId))
         $scope.customerList = data.GetProductById.Offerers
-        console.log($scope.customerList)
     }
     $scope.getProductsBycategory = async () => {
         var data = await $scope.httpReq('/graphql', GetProductByCategoryGQL($scope.currentDisplayingProduct.category))
@@ -158,7 +156,6 @@ app.controller('productController', ($scope, $http) => {
                 $scope.productStat.minOffer = Math.min($scope.productStat.minOffer, x.offeredPrice)
 
             })
-            console.log($scope.productStat)
         }
     }
 

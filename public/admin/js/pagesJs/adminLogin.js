@@ -21,7 +21,6 @@ app.controller('unAuthorized', ($scope, $http) => {
     }
     $scope.loginModel = {}
     $scope.adminLogin = async () => {
-        console.log($scope.loginModel)
         var resp = await $scope.httpReq('/login', $scope.loginModel)
         if (!resp) alert('Invalid Credentials!')
         else {

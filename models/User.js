@@ -5,16 +5,15 @@ const webPush = require('web-push')
 webPush.setVapidDetails('mailto:abc@def.com', process.env.public_key, process.env.private_key)
 
 
-module.exports = {
-
-    findOneById: async function (id) {
+function User() {
+    this.findOneById = async function (id) {
         if (id == undefined) return null
         return await mongoDBUserModel.findById(id)
-    },
-    findOne: async function (filter) {
+    }
+    this.findOne = async function (filter) {
         return await mongoDBUserModel.findOne(filter)
-    },
-    getMany: async function (args) {
+    }
+    this.getMany = async function (args) {
         var filterObject = {
             $and: []
         }
@@ -32,8 +31,8 @@ module.exports = {
         }
         return await mongoDBUserModel.find(filterObject.$and.length ? filterObject : {}).limit(args.pageSize).skip((args.pageNo - 1) * args.pageSize)
 
-    },
-    updateInfo: async function (data) {
+    }
+    this.updateInfo = async function (data) {
         var { id, curPassword } = data
         if (req.body.toStore.password == "") {
             delete data.toStore.password
@@ -56,8 +55,8 @@ module.exports = {
         else {
             return { data: null }
         }
-    },
-    updateImage: async function (req) {
+    }
+    this.updateImage = async function (req) {
         var { id, imageURL } = req.body
         await this.updateGeneral(id, { imageURL: imageURL })
         var userToSave = { ...req.user, imageURL: imageURL }
@@ -69,11 +68,11 @@ module.exports = {
             }
         }
 
-    },
-    updateGeneral: async function (id, data) {
+    }
+    this.updateGeneral = async function (id, data) {
         return await mongoDBUserModel.findByIdAndUpdate(id, data)
-    },
-    create: async function (newUser) {
+    }
+    this.create = async function (newUser) {
         try {
             var toSave = new mongoDBUserModel({ ...newUser, createdOn: (new Date() * 1) })
             await toSave.save();
@@ -91,8 +90,8 @@ module.exports = {
         } catch (error) {
             return { data: null }
         }
-    },
-    login: async function ({ phoneNumber, password }) {
+    }
+    this.login = async function ({ phoneNumber, password }) {
         var data = await this.findOne({
             phoneNumber: phoneNumber,
             password: password
@@ -119,12 +118,15 @@ module.exports = {
                 }
             })
         }
-    },
-    sendPushNotification: async function (userId, message) {
+    }
+    this.sendPushNotification = async function (userId, message) {
         var user = await this.findOneById(userId)
         var notificationId = user.notificationId;
         if (notificationId != '') {
             await webPush.sendNotification(JSON.parse(sellerNotificationId), JSON.stringify(message))
         }
     }
+
 }
+
+module.exports = User

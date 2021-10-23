@@ -30,7 +30,7 @@ router.post('/subscribe', verifyAuthToken, async (req, res) => {
                 }
             })
         })
-        .catch(err => console.log(err))
+        .catch(err => { })
 })
 
 function verifyAuthToken(req, res, next) {
