@@ -31,6 +31,9 @@ app.controller('users', ($scope, $http, $location) => {
         })
 
     }
+    $scope.searchUsers = async function () {
+
+    }
     $scope.initUserPage = () => {
         $scope.getUserNumber()
         $scope.getUsers()

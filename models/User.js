@@ -17,15 +17,16 @@ function User() {
         var filterObject = {
             $and: []
         }
-        if (args.firstName != undefined) {
+        console.log(args);
+        if (args.firstName != undefined && args.firstName.length != 0) {
             var pattern = RegExp(`^${args.firstName}`, 'i')
             filterObject.$and.push({ firstName: { $regex: pattern } })
         }
-        if (args.lastName != undefined) {
+        if (args.lastName != undefined && args.lastName.length != 0) {
             var pattern = RegExp(`^${args.lastName}`, 'i')
             filterObject.$and.push({ lastName: { $regex: pattern } })
         }
-        if (args.phoneNumber != undefined) {
+        if (args.phoneNumber != undefined && args.phoneNumber.length != 0) {
             var pattern = RegExp(`^${args.phoneNumber}`, 'i')
             filterObject.$and.push({ phoneNumber: { $regex: pattern } })
         }
